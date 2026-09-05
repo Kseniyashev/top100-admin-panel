@@ -8,22 +8,24 @@
 
 :root{
   --ground:#e9e8e4; --card:#fff; --ink:#111; --ink2:#3b3a37; --muted:#8f8e8a; --line:#e2e0da;
-  --orange:#f4794f; --beige:#b09777; --blue:#7691e6; --green:#33a16e; --red:#d9513f;
-  --orange-t:#fbe1d6; --beige-t:#eee4d6; --blue-t:#dfe6fa; --green-t:#d6efe2; --gray-t:#efeeea;
+  --orange:#f4794f; --beige:#b09777; --blue:#7691e6; --green:#33a16e; --red:#d9513f; --lilac:#9a86d8;
+  --orange-t:#fbe1d6; --beige-t:#eee4d6; --blue-t:#dfe6fa; --green-t:#d6efe2; --gray-t:#efeeea; --lilac-t:#e9e4f7; --red-t:#f9dcd7;
   --serif:"Brygada 1918",Georgia,serif; --sans:"GSans","Google Sans","Product Sans",-apple-system,"Helvetica Neue",Arial,sans-serif;
 }
 *{box-sizing:border-box}
 html{color-scheme:light}
 body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;min-height:100vh}
 button{font:inherit;color:inherit;cursor:pointer}
+input,textarea,select{font:inherit;color:inherit}
 h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
 .wrap{max-width:980px;margin:0 auto;padding:18px 16px 80px}
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
 .logo{display:flex;align-items:center;gap:8px}
 .logo img{height:26px}
 .logo span{font-size:12px;color:var(--muted)}
-.top .dl{font-size:13px;color:var(--ink2);background:#fff;padding:6px 12px;border-radius:99px}
+.top .dl{font-size:13px;color:var(--ink2);background:#fff;padding:6px 12px;border-radius:99px;display:flex;gap:8px;align-items:center}
 .top .dl b{font-weight:700}
+.top .dl .late{color:#b03b2c;font-weight:700}
 
 /* hero */
 .hero{background:var(--card);border-radius:26px;padding:24px 24px 22px;position:relative;overflow:hidden}
@@ -33,6 +35,7 @@ h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
 .stats{display:flex;gap:22px;flex-wrap:wrap;margin-top:18px;align-items:flex-end}
 .stat .n{font-family:var(--serif);font-size:44px;line-height:1;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
 .stat .n small{font-family:var(--sans);font-size:14px;color:var(--muted);margin-left:4px}
+.stat .n.bad{color:#b03b2c}
 .stat .k{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;margin-top:4px}
 .bar{position:relative;height:18px;border-radius:99px;background:var(--gray-t);margin-top:18px;overflow:visible}
 .bar .fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#4fb886,var(--green));width:0;transition:width .6s cubic-bezier(.2,.8,.2,1);position:relative}
@@ -53,17 +56,20 @@ h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
 .legend{display:flex;gap:6px;flex-wrap:wrap;margin:18px 0 10px;align-items:center}
 .lg{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink2);padding:5px 10px;border-radius:99px;background:#fff}
 .lg i{width:10px;height:10px;border-radius:3px}
+.lg i.o{background:transparent;border:2px solid var(--red);border-radius:50%}
 .legend .sp{flex:1}
 .legend .reset{font-size:12px;color:var(--muted);background:none;border:0;text-decoration:underline;text-underline-offset:2px}
 
 /* tiles */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
-.tile{position:relative;border:0;border-radius:20px;padding:16px 16px 14px;min-height:168px;text-align:left;display:flex;flex-direction:column;gap:8px;background:var(--tc);color:var(--ink);transition:transform .15s,box-shadow .15s;overflow:hidden}
+.tile{position:relative;border:0;border-radius:20px;padding:16px 16px 14px;min-height:178px;text-align:left;display:flex;flex-direction:column;gap:6px;background:var(--tc);color:var(--ink);transition:transform .15s,box-shadow .15s;overflow:hidden}
 .tile:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(0,0,0,.12)}
 .tile .ty{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--tt)}
 .tile .ty svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.tile .ty .no{font-family:var(--sans);font-weight:400;letter-spacing:0;text-transform:none;opacity:.7}
-.tile h3{font-family:var(--serif);font-size:20px;line-height:1.12;flex:1;font-weight:400;letter-spacing:-.005em}
+.tile h3{font-family:var(--serif);font-size:20px;line-height:1.12;flex:1;font-weight:400;letter-spacing:-.005em;margin-top:2px}
+.tile .dl{font-size:12px;color:var(--ink2);display:flex;align-items:center;gap:5px}
+.tile .dl svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.tile .dl.late{color:#b03b2c;font-weight:700}
 .tile .ft{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--ink2)}
 .tile .min{display:inline-flex;align-items:center;gap:5px}
 .tile .min svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
@@ -71,27 +77,37 @@ h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
 .tile.reels{--tc:var(--orange-t);--tt:#b8461f}
 .tile.posts{--tc:var(--blue-t);--tt:#3350bd}
 .tile.stories{--tc:var(--beige-t);--tt:#7c6238}
-.tile.tg{--tc:var(--green-t);--tt:#1e7048}
+.tile.tg{--tc:var(--lilac-t);--tt:#5b47a8}
 .tile.done{--tc:var(--green);color:#fff}
-.tile.done .ty,.tile.done .ft,.tile.done .cta{color:#fff}
-.tile.done .ft{opacity:.9}
+.tile.done .ty,.tile.done .ft,.tile.done .cta,.tile.done .dl{color:#fff}
+.tile.done .ft,.tile.done .dl{opacity:.9}
 .tile .stamp{position:absolute;right:12px;top:12px;width:34px;height:34px;border-radius:50%;background:#fff;color:var(--green);display:grid;place-items:center;font-weight:700;font-size:18px;transform:scale(0);transition:transform .35s cubic-bezier(.2,1.6,.4,1)}
 .tile.done .stamp{transform:scale(1)}
 .tile.done h3{padding-right:30px}
 .tile.partial{outline:3px solid var(--orange);outline-offset:-3px}
 .tile.partial .cta{color:#b8461f}
+.tile.late{outline:3px solid var(--red);outline-offset:-3px}
+.tile.late .cta{color:#b03b2c}
 .tile.corpus{--tc:#e6f1ea;color:var(--ink)}
 .tile.corpus .stamp{transform:scale(1);background:var(--green);color:#fff}
 .tile.corpus .ty,.tile.corpus .cta{color:#1f6f48}
 .tile.off{--tc:#f1f0ec;color:var(--muted)}
-.tile.off .ty,.tile.off .cta,.tile.off .ft{color:var(--muted)}
+.tile.off .ty,.tile.off .cta,.tile.off .ft,.tile.off .dl{color:var(--muted)}
 .tile.off h3{color:var(--ink2)}
-.tile.cancel{--tc:#f1f0ec;color:var(--muted);text-decoration:line-through}
-.tile.cancel .ty,.tile.cancel .cta,.tile.cancel .ft{color:var(--muted);text-decoration:none}
+.tile.cancel{--tc:var(--red-t);color:#8a3a2c}
+.tile.cancel h3{text-decoration:line-through;color:#8a3a2c}
+.tile.cancel .ty,.tile.cancel .cta,.tile.cancel .ft,.tile.cancel .dl{color:#b03b2c}
+.tile.cancel .why{font-size:12px;color:#8a3a2c;font-style:italic}
+.tile.add{--tc:transparent;border:2px dashed #cfcdc7;color:var(--muted);align-items:center;justify-content:center;gap:6px}
+.tile.add:hover{border-color:var(--ink2);color:var(--ink2);box-shadow:none}
+.tile.add .plus{font-family:var(--serif);font-size:44px;line-height:1}
+.tile.add span{font-size:13px}
 .tile.pop{animation:pop .5s cubic-bezier(.2,1.4,.4,1)}
 @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.06)}100%{transform:scale(1)}}
 .sect{grid-column:1/-1;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:700;margin-top:10px;display:flex;align-items:center;gap:10px}
 .sect::after{content:"";flex:1;height:1px;background:var(--line)}
+.sect .sd{font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted)}
+.sect.red{color:#b03b2c}
 
 /* tips */
 .tips{background:#fff;border-radius:20px;padding:18px 22px;margin-top:22px}
@@ -106,15 +122,24 @@ h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
 .sheet.on{transform:translate(-50%,0)}
 @media (min-width:760px){.sheet{bottom:auto;top:50%;transform:translate(-50%,60%);border-radius:26px;max-height:88vh}.sheet.on{transform:translate(-50%,-50%)}}
 @media (prefers-reduced-motion:reduce){.sheet,.bar .fill,.tile,.badge{transition:none}.done-btn.ready,.tile.pop{animation:none}}
-.sheet .hd{padding:18px 24px 12px;display:flex;align-items:flex-start;gap:12px;border-bottom:1px solid var(--line)}
+.sheet .hd{padding:18px 24px 12px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);flex-wrap:wrap}
 .sheet .hd .tyb{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:8px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.sheet .hd .meta{font-size:13px;color:var(--muted)}
+.sheet .hd .meta b{color:var(--ink);font-weight:700}
+.sheet .hd .meta.late b{color:#b03b2c}
 .sheet .hd .x{margin-left:auto;border:1px solid var(--line);background:#fff;border-radius:50%;width:34px;height:34px;display:grid;place-items:center;flex:none}
 .sheet .bd{padding:6px 24px 24px;overflow-y:auto;display:flex;flex-direction:column;gap:16px}
 .f{display:grid;grid-template-columns:96px 1fr;gap:6px 14px}
 .f .k{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;padding-top:3px}
-.f .v{color:var(--ink)}
-.f .v h2{font-family:var(--serif);font-size:24px;line-height:1.1}
+.f .k small{display:block;font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:#b3b2ad}
+.f .v{color:var(--ink);min-width:0}
+.f .v h2{font-family:var(--serif);font-size:24px;line-height:1.1;display:flex;align-items:flex-start;gap:8px}
 .f .v p{margin:0;color:var(--ink2)}
+.pen{border:0;background:var(--gray-t);border-radius:99px;font-size:12px;padding:4px 10px;color:var(--ink2);flex:none;margin-top:4px;font-family:var(--sans)}
+.pen:hover{background:#e4e2dc}
+.inp{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;font-size:15px;background:#fff}
+textarea.inp{min-height:76px;resize:vertical}
+select.inp{appearance:none;background:#fff}
 .brief{margin-top:6px;font-size:13px;color:var(--ink2);background:var(--gray-t);border-radius:12px;padding:10px 12px;line-height:1.5}
 .brief summary{cursor:pointer;font-weight:700;color:var(--ink);list-style:none;display:flex;align-items:center;gap:6px}
 .brief summary::before{content:"›";display:inline-block;transition:transform .15s;font-size:16px}
@@ -123,24 +148,34 @@ h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
 .ask{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:14px 16px;font-size:15px;line-height:1.5}
 .ask .lead{color:var(--muted);font-size:13px;margin-bottom:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .ask .lead b{color:var(--ink);font-weight:700}
-.ask .lead svg,.sheet .tyb svg,.btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.ask .lead svg,.sheet .tyb svg,.btn svg,.file svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .ask ol{margin:8px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
 .ask ol li{display:grid;grid-template-columns:28px 1fr;gap:10px}
 .ask ol li i{width:26px;height:26px;border-radius:50%;background:var(--ac,var(--orange));color:#fff;display:grid;place-items:center;font-style:normal;font-weight:700;font-size:13px;margin-top:1px}
 .ask .no{margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);color:var(--ink2);font-size:14px}
 .ask .no b{color:var(--red)}
 .ask p{margin:0 0 6px}
+.ask ul{margin:6px 0 0;padding-left:18px;color:var(--ink2)}
 .warn{background:var(--orange-t);border-radius:14px;padding:12px 14px;font-size:14px;color:#8a3a1c}
 .warn b{display:block;margin-bottom:2px;color:#b8461f}
+.warn.red{background:var(--red-t);color:#8a2c20}
+.warn.red b{color:#b03b2c}
 .okbox{background:var(--green-t);border-radius:14px;padding:12px 14px;font-size:14px;color:#1f6f48}
 .okbox b{display:block}
+.files{display:flex;flex-direction:column;gap:6px}
+.file{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;font-size:13.5px}
+.file .play{width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;flex:none;font-size:11px}
+.file .len{font-variant-numeric:tabular-nums;font-weight:700}
+.file .w{color:var(--muted);margin-left:auto;font-size:12.5px}
 .actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .btn{border:0;border-radius:99px;padding:14px 22px;font-size:15px;font-weight:700;display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:#fff}
 .btn.rec{background:var(--red);box-shadow:0 8px 22px rgba(217,81,63,.35)}
 .btn.rec i{width:12px;height:12px;border-radius:50%;background:#fff;display:inline-block}
 .btn.ghost{background:var(--gray-t);color:var(--ink)}
 .btn.sm{padding:9px 14px;font-size:13px}
+.btn:disabled{opacity:.4;cursor:not-allowed}
 .lnk{background:none;border:0;color:var(--muted);text-decoration:underline;text-underline-offset:2px;font-size:13px;padding:6px 0}
+.hint{font-size:13px;color:var(--muted)}
 .recorder{display:none;background:#111;color:#fff;border-radius:18px;padding:18px 20px;align-items:center;gap:16px}
 .recorder.on{display:flex}
 .recorder .t{font-family:var(--serif);font-size:32px;font-variant-numeric:tabular-nums;min-width:86px}
@@ -150,6 +185,9 @@ h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
 .recorder .stop{border:0;background:var(--red);color:#fff;border-radius:99px;padding:12px 18px;font-weight:700}
 .sent{display:none;align-items:center;gap:12px;background:var(--green-t);color:#1f6f48;border-radius:16px;padding:14px 16px;font-weight:700}
 .sent.on{display:flex}
+.cancelbox{display:none;flex-direction:column;gap:8px;background:var(--red-t);border-radius:16px;padding:14px 16px}
+.cancelbox.on{display:flex}
+.cancelbox label{font-size:13px;color:#8a2c20;font-weight:700}
 
 /* toast + celebration */
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,80px);background:#111;color:#fff;padding:12px 18px;border-radius:99px;font-size:14px;z-index:30;transition:transform .3s;display:flex;gap:10px;align-items:center;white-space:nowrap}
@@ -171,30 +209,31 @@ canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:50}
   .hero h1{font-size:28px}
   .done-btn{position:static;margin-top:16px;width:100%;justify-content:center}
   .grid{grid-template-columns:repeat(2,1fr);gap:9px}
-  .tile{min-height:150px;padding:13px 12px 11px;border-radius:16px}
+  .tile{min-height:160px;padding:13px 12px 11px;border-radius:16px}
   .tile h3{font-size:17px}
   .f{grid-template-columns:1fr;gap:2px 0}
   .f .k{margin-top:8px}
   .stat .n{font-size:36px}
   .bar .m i{display:none}
   .badges{margin-top:16px}
+  .top{flex-wrap:wrap}
 }
 </style>
 
 <div class="wrap">
   <div class="top">
     <div class="logo"><img src="data:image/png;base64,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" alt="top100"><span>Продюсерский центр</span></div>
-    <div class="dl">Записать до <b>чт 3 сент, 18:00</b></div>
+    <div class="dl" id="topDl"></div>
   </div>
 
   <section class="hero">
     <h1>Катя, неделя <em>7 – 13 сентября</em></h1>
-    <p>Тут всё, что нужно наговорить на неделю. Нажмите плитку, прочитайте задание и запишите голосовое. Записанное зеленеет само.</p>
+    <p>Тут всё, что нужно наговорить на неделю. Нажмите плитку, прочитайте, что должно быть в голосовом, и запишите его здесь или в боте. Записанное зеленеет само.</p>
     <button class="done-btn" id="doneBtn"><span>Готово, всё записала</span></button>
     <div class="stats">
       <div class="stat"><div class="n" id="stDone">0<small>из 0</small></div><div class="k">записано</div></div>
       <div class="stat"><div class="n" id="stMin">0<small>мин</small></div><div class="k">осталось голосом</div></div>
-      <div class="stat"><div class="n" id="stPct">0<small>%</small></div><div class="k">недели готово</div></div>
+      <div class="stat"><div class="n" id="stLate">0</div><div class="k">срок вышел</div></div>
     </div>
     <div class="bar"><div class="fill" id="fill"></div><div class="m" style="left:25%"><i>разогрев</i></div><div class="m" style="left:50%"><i>половина</i></div><div class="m" style="left:75%"><i>финишная прямая</i></div></div>
     <div class="badges" id="badges"></div>
@@ -204,8 +243,10 @@ canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:50}
     <span class="lg"><i style="background:var(--orange)"></i>Reels</span>
     <span class="lg"><i style="background:var(--blue)"></i>Пост в Instagram</span>
     <span class="lg"><i style="background:var(--beige)"></i>Сторис</span>
-    <span class="lg"><i style="background:var(--green)"></i>Пост в Telegram</span>
+    <span class="lg"><i style="background:var(--lilac)"></i>Пост в Telegram</span>
     <span class="lg"><i style="background:var(--green);border-radius:50%"></i>записано</span>
+    <span class="lg"><i class="o"></i>срок вышел</span>
+    <span class="lg"><i style="background:var(--red-t);border:1px solid var(--red)"></i>отменено</span>
     <span class="sp"></span>
     <button class="reset" id="reset">сбросить демо</button>
   </div>
@@ -215,10 +256,11 @@ canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:50}
   <section class="tips">
     <h2>Как записывать, чтобы получилось с первого раза</h2>
     <ol>
-      <li><b>Одна плитка — одно голосовое.</b> Не склеивайте несколько заданий в одну запись, нам потом не разделить.</li>
+      <li><b>Одна плитка — одно голосовое.</b> Не склеивайте несколько заданий в одну запись, нам потом не разделить. Можно прислать несколько голосовых на одну плитку.</li>
       <li><b>Говорите как клиентке на приёме,</b> а не как диктору. Оговорки и паузы — это хорошо, мы их вырежем сами.</li>
       <li><b>Не надо ничего разыгрывать.</b> Если в задании стоит фраза клиентки, просто произнесите её так, как её говорят.</li>
-      <li><b>Если не хватило чего-то в записи,</b> плитка станет оранжевой и мы напишем, что дозаписать. Это нормально.</li>
+      <li><b>Удобнее в Telegram?</b> Отправьте голосовое боту под нужной темой и нажмите там «готово» — плитка здесь позеленеет сама. Туда же можно приложить фото и файлы.</li>
+      <li><b>Если чего-то не хватило в записи,</b> плитка станет оранжевой и мы напишем, что дозаписать. Это нормально.</li>
     </ol>
   </section>
 </div>
@@ -231,15 +273,20 @@ canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:50}
 
 <script>
 const DATA = {"briefs": {"Цитата клиента с разбором": "Играть никого не надо. Фраза клиента стоит прямо в задании — её взяли из вашей же распаковки; произнесите её так, как её говорят, разговорными словами, а если у вас она звучит иначе — своими. Дальше от себя: что расходится между тем, что человек сказал, и тем, что на самом деле происходит. Одно расхождение, не список. И чем это обычно кончается — без обещания, что так будет у всех.", "Переписка с комментарием": "Играть никого не надо и сочинять диалог тоже. Вы наговариваете живые реплики по отдельности, короткими строчками, как их пишут в мессенджере; экран из них соберём мы. Дальше называете ОДНУ реплику, к которой у вас есть комментарий, и говорите про неё: что в этой строчке происходит и как на неё можно ответить иначе. Не про переписку вообще, а про эту строчку. В кадре только вы, реплики читаются с экрана. Переписка собранная, не чья-то настоящая.", "Реакция на чужое": "Здесь нужен ЧУЖОЙ тезис и ваш ответ на него. Сначала произнесите чужую фразу так, как её говорят на самом деле, не смягчая, — иначе спорить будет не с чем. Дальше ваш ответ: на что вы опираетесь, названное по имени, и ваш вывод одной фразой, которую можно проверить. Заканчивать выводом не надо, лучше открытым вопросом.", "Причина не там, где ищут": "Ролик от себя. Сначала расхожее объяснение целиком — как вопрос. Потом «Нет» — одним словом, отдельно, чтобы его было слышно. Потом где причина на самом деле, перечислением, и почему в первую версию удобно верить. В финале — возврат к той же фразе, с которой начали.", "Провокация": "Говорите от себя и резко по мысли, а не по словам. Отрицание — одной фразой, отдельно, чтобы его было слышно. Дальше объяснение и возврат к той же фразе в финале.", "Чувство как маркер": "Ролик от себя. Берёте чувство, за которое принято стыдиться, и говорите одной фразой: это не проблема, а указатель. Потом два-три варианта, на что оно может указывать, — через «может быть», не утверждением. В конце вопрос, который человек задаёт себе, дословно, чтобы зритель ушёл с ним.", "Откуда это взялось": "Ролик от себя. Сначала жёстко и просто — как взрослый ведёт себя сейчас. Потом кем он был в детстве, почему чувство тогда нельзя было показать и на кого оно выходит теперь — адресат назван прямо. В конце одна фраза: это объясняет, но не извиняет.", "Правило с ценой": "Ролик от себя. У кого получается и на каком шаге срываются остальные; почему срываются — это механизм, а не слабость. Правило одной фразой, которое можно повторить дословно, и что делать, если его нарушил.", "Карусель": "Пост из нескольких карточек, который читают глазами и сохраняют. Снимать ничего не надо, нужен связный рассказ голосом — из него соберём карточки.", "Лонгрид Telegram": "Текст, который читают целиком. Снимать не надо, наговорите свободно и длиннее, чем для ролика: в тексте живут оговорки и отступления, которые в 40 секунд не влезают.", "Сторис-серия": "Несколько кадров подряд, которые смотрят один раз. Чаще всего записывать под них ничего не нужно — кадры собираем из ваших записей к роликам или вы снимаете сами телефоном. Где нужен отдельный кусок, он в задании и короткий."}, "slots": [{"id": "R-01", "ch": "ig_reels", "fmt": "Цитата клиента с разбором", "topic": "Повторяющиеся измены", "angle": "Начинаем с фразы клиентки «мне все партнёры изменяют, почему это повторяется». Вместо ответа «попадаются такие» смотрим на обе стороны и не с позиции истины. Находим, что повторяется не партнёр, а место, которое она занимает в этих историях. Финал: чем это обычно кончается, без обещания.", "ask": "Ролик 45 секунд · голосовое 1,5 минуты\nПро повторяющийся сценарий у вас уже записано — нужна только сама история с изменами.\n\n1. Начните с фразы клиентки, как её приносят на приём: «Мне все партнёры изменяют — почему это повторяется?».\nЕсли у вас она звучит иначе — скажите своими, но именно как её ГОВОРЯТ, а не как вы бы её описали.\n2. Скажите, что вы слышите за этой фразой: не «попадаются такие», а что повторяется у неё самой — от партнёра к партнёру. Одной мыслью.\n3. Назовите одно расхождение: вслух она говорит «все мужики одинаковые», а на самом деле — дальше ваша формулировка. Вы говорили, что на измену надо смотреть на обе стороны и не с позиции истины — если это про то, скажите так, своими словами.\n4. Чем это обычно кончается. Без обещания, что так будет у всех.\n\nНе надо: пересказывать «десять партнёров, десять работ — та же точка», это уже вышло в карусели; играть клиентку и искать виноватого в паре. В кадре только вы.\n", "voice_ref": "корпус «катя распаковка · 33» — про измены: смотреть надо на обе стороны и не с позиции истины, «Какая собака там может быть зарыта?». Закрыт частично: есть её позиция, нет самой истории с фразой клиентки и расхождения. ⚠️ Из той же секции строка «10 людей поменял, 10 работ» уже ушла в карусель W36 P-02 — в W37 не берётся.", "len": 45, "date": "2026-09-07", "wd": "пн"}, {"id": "R-02", "ch": "ig_reels", "fmt": "Чувство как маркер", "topic": "Стыд за своё тело: книга Татьяны Столяр", "angle": "Повод недели: книга Татьяны Столяр о стыде. Открываем фразой клиентки «мне не нравится, как я выгляжу и как звучит мой голос» и одним ходом переопределяем стыд: не проблема, а указатель. Два-три варианта, на что он может указывать. В конце вопрос, который зритель уносит и задаёт себе.", "ask": "Ролик 45 секунд · голосовое 2 минуты\nПовод недели: в сети обсуждают отрывок из книги Татьяны Столяр «Я есть жир» о стыде за тело. Ролик не про книгу — про то, на что этот стыд указывает.\n\n1. Начните с фразы клиентки, как её приносят на приём: «Мне не нравится, как я выгляжу и как звучит мой голос». Если у вас она звучит иначе — скажите своими, но именно как её ГОВОРЯТ.\n2. Переопределите стыд одной фразой, отдельно: это не проблема, а указатель. Одна фраза, чтобы её было слышно.\n3. Назовите два-три варианта, на что этот стыд может указывать, — каждый через «может быть», не утверждением: «может быть, это…». Своими словами, как объясняете на приёме.\n4. Дайте вопрос, который человек задаёт СЕБЕ, — дословно, одной фразой, чтобы зритель ушёл с ним. Вопрос к себе, не к партнёру и не к маме.\n\nНе надо: обсуждать саму книгу и её автора, говорить про еду и вес, обещать, что стыд пройдёт. «Идеальный — это всегда мёртвый» уже прозвучало в ролике про знакомства — здесь нужна другая опора.\n", "voice_ref": null, "len": 45, "date": "2026-09-08", "wd": "вт"}, {"id": "R-03", "ch": "ig_reels", "fmt": "Откуда это взялось", "topic": "Отношения с родителями", "angle": "Взрослая дочь отвечает маме так, как отвечала в двенадцать. Идём назад: кем она была рядом с этой мамой, почему тогда чувство нельзя было показать, и на кого оно выходит теперь: на маму в переписке, на партнёра, на себя. Финал: это объясняет, но не извиняет.", "ask": "Ролик 45 секунд · голосовое 2 минуты\n\n1. Начните с фразы клиентки, как её приносят на приём: «Я не могу выстроить отношения с родителями». Скажите жёстко и просто, как это выглядит сейчас: взрослая дочь отвечает маме так, как отвечала в двенадцать. Если у вас это звучит иначе — своими словами.\n2. Скажите, кем эта взрослая была в детстве рядом с этой мамой — одним примером, без «а всё из детства».\n3. Назовите, ПОЧЕМУ тогда это чувство (злость, обида — какое у вас) нельзя было выразить: что случилось бы, если бы ребёнок его показал.\n4. Скажите прямо, на кого это чувство выходит теперь — на маму в переписке, на партнёра, на себя. Адресат назван по имени роли, не «на окружающих».\n5. Закончите одной фразой: механизм объясняет, но не извиняет.\n\nНе надо: играть маму и дочь; слово «сепарация» — оно уже вышло в ролике про переезд и ссору, здесь про чувство и его адресата. В кадре только вы.\n", "voice_ref": null, "len": 45, "date": "2026-09-08", "wd": "вт"}, {"id": "R-04", "ch": "ig_reels", "fmt": "Переписка с комментарием", "topic": "Стирание границ в паре", "angle": "На экране переписка: она пришла с претензией, а к концу извиняется первой. Катя останавливает одну реплику, на которой предмет разговора переворачивают, объясняет, что в этой строчке происходит, и показывает, как ответить иначе. Заканчиваем вопросом зрителю про его переписки.", "ask": "Ролик 50 секунд · голосовое 2 минуты\nПереписку соберём мы — от вас нужны отдельные реплики и один комментарий.\n\n1. Ситуация: женщина пришла к партнёру с претензией, а к концу разговора уже не понимает, кто прав, и извиняется первой. Наговорите 5–7 отдельных реплик ЕГО стороны — как он это пишет в мессенджере, коротко, вперемешку, как пишут на самом деле. Свои формулировки: те, что вы слышите на приёме.\n2. Наговорите 2–3 её ответа — те, после которых она уже оправдывается.\n3. Назовите ОДНУ его реплику, на которой всё переворачивается, и скажите, что в этой строчке происходит: как её претензия становится её виной. Не про переписку вообще, а про эту строчку.\n4. Скажите, как на эту реплику можно ответить иначе — двумя-тремя словами, которые она могла бы написать вместо извинения.\n5. Вывод не проговаривайте — закончите вопросом зрителю про его переписки.\n\nНе надо: играть двоих и ставить ему диагноз — «нарцисс», «абьюзер» как ярлык. Реплики соберём в экран мы, в кадре только вы.\n", "voice_ref": null, "len": 50, "date": "2026-09-09", "wd": "ср"}, {"id": "R-05", "ch": "ig_reels", "fmt": "Причина не там, где ищут", "topic": "Страх проявляться", "angle": "«Проявляться значит сразу стать Филиппом Киркоровым?» Нет. Страх держится не на том, что заметят, а на том, что могут не заметить вовсе. Перечисляем, что на самом деле стоит за нежеланием показываться, и чем удобно верить в «сразу звезда». Возврат к тезису в финале.", "ask": "Ролик 30 секунд · голосовое 1 минута · только добор, основное записано\n\nПро «проявляться — значит стать Филиппом Киркоровым» и что вам самой страшно — у вас записано, пересказывать не надо.\n\n1. Назовите перечислением две-три настоящие причины, почему человек не проявляется: не «сложно» и не «страх», а что именно за этим стоит у тех, кто к вам приходит. Коротко, по одной фразе на причину.\n2. Скажите одной фразой, чем удобно верить, что «надо сразу стать звездой»: что это позволяет не делать.\n\nНе надо: пересказывать историю про Киркорова и объяснять, что такое проявленность.\n", "voice_ref": "корпус «катя распаковка · 169» — заблуждение целиком (проявляться = стать Киркоровым), её признание, что страх и её тоже, и обратная сторона — тяжелее, когда никто не обратил внимания; «катя распаковка · 165» — big idea: все трудности от того, что человек закрывается и идёт вовнутрь; «катя распаковка · 121», «· 305», «· 431» — её собственный страх публичности и потребность в структуре. Слот закрыт целиком: вопрос-заблуждение, причина и выгода заблуждения (не быть замеченным — безопаснее) есть; «Нет.» отдельной фразой ставит сценарист.", "len": 30, "date": "2026-09-10", "wd": "чт"}, {"id": "R-06", "ch": "ig_reels", "fmt": "Цитата клиента с разбором", "topic": "Женственность и ощущение себя", "angle": "Фраза «я не чувствую себя женщиной», и речь не про секс. Разводим, что говорят вслух и что происходит на самом деле: пропадает не внешность, а свобода и ощущение себя на своём месте, и пропадает раньше, чем человек это замечает. Финал: чем это обычно кончается.", "ask": "Ролик 50 секунд · голосовое 1,5 минуты\nПро потенцию как потенциал и «смело знакомиться» у вас записано — нужна женская сторона той же фразы.\n\n1. Начните с фразы клиентки, как её приносят на приём: «Я не чувствую себя женщиной».\nЕсли у вас она звучит иначе — скажите своими, но именно как её ГОВОРЯТ.\n2. Скажите, что вы слышите за этой фразой: что для вас значит «чувствовать себя женщиной» — вы говорили про свободу и про ощущение себя, скажите это своими словами ещё раз, коротко.\n3. Назовите одно расхождение: вслух — «я не женщина», а на самом деле — дальше ваша формулировка. Одно, не список.\n4. Чем это обычно кончается. Без обещания, что так будет у всех.\n\nНе надо: про секс, технику и постель — это ваша стоп-тема; про либидо как топливо жизни — это уже вышло в отдельном ролике. Играть клиентку не надо.\n", "voice_ref": "корпус «катя созвон · 348-453» — мужская сторона той же темы: потенция как потенциал, «вот потенциал свой почувствовать в целом», «смело знакомиться»; отстройка от сексологии. Закрыт частично: механизм есть, женской стороны фразы и расхождения нет. ⚠️ «катя созвон · 268-289» и «катя созвон · 291-347» (проснулась либидо, соблазнительный спикер, свобода) потрачены W36 R-10 — не брать.", "len": 50, "date": "2026-09-10", "wd": "чт"}, {"id": "R-07", "ch": "ig_reels", "fmt": "Реакция на чужое", "topic": "Ожидания от терапии", "angle": "Чужой тезис дословно: «дайте мне точный ответ, что делать». Ответ на одном бытовом примере: если КПТ про действие, то в психоанализе обретаем понимание — точный ответ снимает симптом до следующего раза, понимание меняет то, откуда он берётся. Опора названа по имени, вывод одной проверяемой фразой, финал — открытый вопрос.", "ask": "Ролик 60 секунд · голосовое 2 минуты\nЗдесь нужен ЧУЖОЙ тезис и ваш ответ на него.\n\n1. Начните с фразы, которую вам приносят на приём: «Дайте мне точный ответ, что делать». Произнесите её так, как её говорят, не смягчая. Если рядом с ней у вас звучит и «КПТ работает быстро и по науке, а у вас годами лежат на кушетке» — скажите и это, как слышите; если так не говорят — не выдумывайте.\n2. Скажите, почему точного ответа «что делать» психоаналитик не даёт — и что даёт вместо него. Ваша формулировка есть: «если КПТ — про действие, то в психоанализе мы обретаем понимание»; разверните её на одном бытовом примере, как объясняете на приёме.\n3. Назовите опору по имени — автора, книгу или школу, на которую здесь опираетесь, чтобы это можно было проверить.\n4. Сформулируйте свой вывод одной фразой, которую можно проверить, — не «всё сложнее».\n5. Закончите открытым вопросом зрителю, не выводом.\n\nНе надо: ругать КПТ и коллег, которые в нём работают, — спор с упрощением, а не с методом; обещать результат и сроки.\n", "voice_ref": null, "len": 60, "date": "2026-09-11", "wd": "пт"}, {"id": "R-08", "ch": "ig_reels", "fmt": "Провокация", "topic": "Деньги в паре", "angle": "«Хочу мужчину, который платит, а попадаются те, кто просит делить счёт». Отдельной фразой — дело не в деньгах. Спор о том, кем каждый соглашается быть в этой паре, и что этот спор позволяет обоим не делать. Возврат к фразе в финале.", "ask": "Ролик 60 секунд · голосовое 2 минуты\n\n1. Начните с фразы клиентки: «Я хочу мужчину, который будет за меня платить, а попадаются те, кто просит делить счёт».\n2. Одной фразой, отдельно, скажите, что дело не в деньгах. Чтобы её было слышно.\n3. Объясните, о чём спор на самом деле: кем каждый в этой паре соглашается быть. Назовите это перечислением — две-три вещи, а не одна общая мысль.\n4. Скажите, что этот спор ПОЗВОЛЯЕТ не делать — обоим. Это важнее самого разоблачения: без этого получается «вы просто неправы».\n5. В финале вернитесь к той же фразе, с которой начали.\n\nНе надо: иронии над женщинами и слова «тарелочница». Резкой должна быть мысль, а не слова.\n", "voice_ref": null, "len": 60, "date": "2026-09-12", "wd": "сб"}, {"id": "R-09", "ch": "ig_reels", "fmt": "Переписка с комментарием", "topic": "Незавершённое расставание", "angle": "На экране переписка с бывшим: кот, быт, «как ты». Одна реплика, на которой видно, что развод по документам состоялся, а внутри — нет; что ежедневная переписка позволяет обоим не заканчивать, и как на неё ответить иначе. Финал — вопросом зрителю.", "ask": "Ролик 50 секунд · голосовое 2 минуты\nПереписку с бывшим соберём мы — от вас нужны отдельные реплики и один комментарий.\n\n1. Ситуация: развод оформлен, а переписка с бывшим идёт каждый день — про быт, про кота, про «как ты». Наговорите 5–7 отдельных реплик этой переписки — с обеих сторон вперемешку, короткими строчками, как их пишут на самом деле. Собранная переписка, не чья-то настоящая.\n2. Назовите ОДНУ реплику, на которой видно, что развод по документам состоялся, а внутри — нет. Скажите, что в этой строчке происходит.\n3. Скажите, что эта ежедневная переписка позволяет не делать — обоим. Это важнее самого разоблачения.\n4. Скажите, как на эту реплику можно ответить иначе — не «перестать общаться», а по-другому.\n5. Вывод не проговаривайте — закончите вопросом зрителю.\n\nНе надо: играть двоих, осуждать тех, кто общается с бывшими, и разбирать чужие истории из новостей. Реплики соберём в экран мы, в кадре только вы.\n", "voice_ref": null, "len": 50, "date": "2026-09-12", "wd": "сб"}, {"id": "R-10", "ch": "ig_reels", "fmt": "Правило с ценой", "topic": "Первые недели после расставания", "angle": "«Я не могу пережить расставание». У кого первые недели проходят легче; на каком шаге срывается: написать, проверить страницу, «просто спросить, как дела»; почему срыв устроен как механизм, а не слабость. Правило одной фразой, и что делать, если его нарушил.", "ask": "Ролик 60 секунд · голосовое 2 минуты\nРамка: только первые недели после расставания — что делать, без хождения в само переживание.\n\n1. Начните с фразы клиентки, как её приносят на приём: «Я не могу пережить расставание». Скажите, у кого первые недели проходят легче: что делают те, кто продержался.\n2. Назовите, на каком шаге в первые недели обычно всё срывается — конкретное действие: написать, проверить страницу, «просто спросить, как дела» или своё.\n3. Объясните, почему срывается — механизмом, не слабостью: что в этот момент происходит с человеком.\n4. Дайте правило одной фразой — так, чтобы его можно было повторить дословно и выполнить без ролика.\n5. Скажите, что делать, если правило нарушил: написал, проверил — что дальше, чтобы не начинать с нуля.\n\nНе надо: играть клиентку, вести в переживание вглубь, давать сроки «через месяц отпустит» и цифры «у девяти из десяти».\n", "voice_ref": null, "len": 60, "date": "2026-09-13", "wd": "вс"}, {"id": "P-01", "ch": "ig_posts", "fmt": "Карусель", "topic": "Ночная тревога", "angle": "Карусель. Фраза «долго засыпаю и всю ночь гоняю тревожные мысли»; разводим тревогу и обдумывание с одним признаком для самопроверки; почему это включается ночью, а не днём; два-три действия на вечер.", "ask": "Наговорите голосовое 2–3 минуты про ночную тревогу, для карусели без лица. 1) Начните с фразы клиента: «Я долго засыпаю и всю ночь гоняю тревожные мысли». 2) Разведите тревогу и обдумывание (или тревогу и страх, как вам точнее) и дайте\n   один признак, по которому человек проверит у себя, что из двух с ним происходит.\n3) Скажите своими словами, почему это включается ночью, а не днём. Если вы\n   думаете об этом как «днём не было места это подумать», скажите так; если иначе,\n   скажите иначе, карусель пойдёт за вами.\n4) Два-три действия на вечер, которые вы даёте в кабинете, теми же словами. 🔴 Блок сна из вашей записи 06.08 (трудное засыпание, раннее пробуждение) уже идёт в пост про звоночки, повторять его не надо.\n", "voice_ref": null, "len": 30, "date": "2026-09-09", "wd": "ср"}, {"id": "P-02", "ch": "ig_posts", "fmt": "Карусель", "topic": "Поиск своих желаний", "angle": "Карусель. «Я не понимаю, кто я и чего хочу» — человек садится писать список целей. Отдельной фразой, почему так не работает; где на самом деле лежит ответ; чем список притягателен и что позволяет не делать. Возврат к фразе.", "ask": "Наговорите голосовое 2–3 минуты, для карусели без лица. 1) Начните с фразы клиента: «Я не понимаю, кто я и чего хочу». Скажите, что\n   человек обычно делает дальше: садится писать список целей, или что-то другое,\n   если у вас приходят иначе.\n2) Одной фразой, отдельно: почему так это не работает. 3) Своими словами: где на самом деле лежит ответ на «чего я хочу», как вы это\n   объясняете в кабинете. Если для вас это про желание и Другого, как в вашем\n   тексте к ролику про чувства, скажите так, но другими словами: тот текст уже\n   занят роликом.\n4) Чем список притягателен и что он позволяет не делать. Без этого карусель\n   выйдет «вы неправильно ищете».\n5) Вернитесь к фразе, с которой начали.\n", "voice_ref": null, "len": 30, "date": "2026-09-11", "wd": "пт"}, {"id": "P-03", "ch": "ig_posts", "fmt": "Карусель", "topic": "Первая сессия", "angle": "Карусель по порядку встречи: зачем знать заранее, с чего начинается, что спрашивает она и что спрашивают у неё, что человек чувствует в первые десять минут и к концу. Спорные случаи в конце: без запроса, «написала в аффекте», «два раза в месяц». Одной фразой — что дальше.", "ask": "Карточки соберём из голосового, снимать не надо.\nГолосовое 3 минуты\n\n1. Скажите в начале, зачем человеку знать, как проходит первая встреча: что он сможет, когда будет понимать, что там будет. Одной фразой.\n2. Пройдите по порядку, как идёт первая сессия: с чего начинается, что вы спрашиваете первым, что обычно спрашивают у вас, что человек чувствует в первые десять минут и к концу. Направление одно — от начала встречи к концу, не прыгайте.\n3. Термины, если появятся («запрос», «сеттинг»), расшифровывайте сразу, при первом появлении.\n4. В конце разберите спорные случаи: человек пришёл без запроса; написал в аффекте и уже успокоился; хочет ходить два раза в месяц — что с этим происходит на первой встрече. Про «два раза в месяц» у вас уже записано, повторять не надо.\n5. Скажите одной фразой, что будет дальше — про вторую встречу.\n\nНе надо: обещать результат и сроки; описывать конкретного человека. Всё обезличено.\n", "voice_ref": "корпус «катя созвон · 950-1049» — спорный случай к финалу: «я была в каком-то аффекте», просьба ходить два раза в месяц и её ответ, что с такой частотой работать невозможно. Закрыт частично и только этим случаем (обезличить сильнее обычного). Самой первой сессии в корпусе нет — 🔴 самая дорогая дыра индекса.", "len": 30, "date": "2026-09-13", "wd": "вс"}, {"id": "S-01", "ch": "ig_stories", "fmt": "Сторис-серия", "topic": "Бестактные вопросы родни", "angle": "Повод — Ирина Мягкова попросила перестать спрашивать её про детей. Три-четыре кадра: что в вопросе «когда дети?» слышится на самом деле и как на него отвечать за столом.", "ask": "Сторис из 3–4 кадров · голосовое 30–60 секунд\n\n1. Ситуация: родня на застолье спрашивает «ну когда дети?». Наговорите 2–3 ответа, которые вы правда предложили бы женщине под таким давлением, — короткими фразами, как их можно сказать за столом.\n2. Скажите одной фразой, почему этот вопрос вообще давит: что в нём слышится, кроме самого вопроса.\n\nНе надо: советовать «просто не отвечать» и обсуждать саму Мягкову — повод только в первом кадре.\n", "voice_ref": null, "len": 45, "date": "2026-09-08", "wd": "вт"}, {"id": "S-02", "ch": "ig_stories", "fmt": "Сторис-серия", "topic": "Лайф: готовка", "angle": "Лайф из её рутины, названной ею самой; дом — да, партнёра и близких в кадре нет", "ask": null, "voice_ref": null, "len": 45, "date": "2026-09-10", "wd": "чт"}, {"id": "S-03", "ch": "ig_stories", "fmt": "Сторис-серия", "topic": "Ответы на вопросы подписчиков", "angle": "Продолжение S-03 прошлой недели: отвечаем на присланное коротко, по одному вопросу на кадр; вопросы покажут, чего в корпусе нет", "ask": null, "voice_ref": null, "len": 45, "date": "2026-09-11", "wd": "пт"}, {"id": "S-04", "ch": "ig_stories", "fmt": "Сторис-серия", "topic": "Лайф: спорт в прошлом", "angle": "Ротация лайфа: не баня, прогулка и готовка, как неделей раньше, а спорт в прошлом — мастер спорта международного класса, которая «встанет на руки, если надо»", "ask": null, "voice_ref": null, "len": 45, "date": "2026-09-13", "wd": "вс"}, {"id": "TG-01", "ch": "tg", "fmt": "Лонгрид Telegram", "topic": "Признаки абьюза на старте отношений", "angle": "Лонгрид. Четыре-пять признаков — что человек делает в первые недели знакомства, а не какой он; один против ожидания, из тех, что принимают за хорошее. В конце общий принцип поверх списка, а не пересказ.", "ask": "Текст, снимать не надо.\nГолосовое 2–3 минуты\n\n1. Скажите в начале, сколько признаков назовёте и зачем они: что женщина сможет увидеть на старте отношений, до того как «воздух перекрыли».\n2. Назовите 4–5 признаков. Каждый — что человек ДЕЛАЕТ в первые недели знакомства, а не какой он: не «он манипулятор», а что именно он делает. По одному-двум признакам скажите, почему это важно.\n3. Хотя бы один признак — против ожидания: то, что обычно принимают за хорошее.\n4. В конце — общий принцип одной фразой, который не повторяет ни один из пунктов.\n\nНе надо: ставить диагнозы («нарцисс», «абьюзер») и пересказывать список из вашей пробной записи 22.08 (побои, еда, друзья) — он не пойдёт. Говорите про начало отношений, а не про то, как уйти.\n", "voice_ref": null, "len": 30, "date": "2026-09-08", "wd": "вт"}, {"id": "TG-02", "ch": "tg", "fmt": "Лонгрид Telegram", "topic": "Ожидание результата в терапии", "angle": "Лонгрид. «Хожу к вам уже сколько-то, а ничего не происходит» — на каком месяце это звучит. Это нормально, и вот почему: через устройство процесса, а не утешение. Переворот: почему это может быть признаком, что человек сделал что-то правильно. И граница, где ждать уже не надо.", "ask": "Текст, снимать не надо.\nГолосовое 2–3 минуты\n\n1. Начните с фразы, как её приносят на приём: «Я хожу к вам уже сколько-то, а ничего не происходит». Скажите, на каком месяце это обычно звучит и как человек это говорит.\n2. Скажите прямо: это нормально, так и должно быть — если вы так думаете. Если думаете иначе, скажите как думаете, текст пойдёт за вами.\n3. Объясните через устройство, а не через утешение: что в этот момент происходит в терапии на самом деле — сопротивление, темп, что-то ещё вашими словами. Если опираетесь на автора — назовите.\n4. Переворот в конце: почему «ничего не происходит» может быть признаком того, что человек сделал что-то правильно, а не провала.\n5. Оговорите границу: когда «ничего не происходит» — уже повод что-то менять, а не ждать.\n\nНе надо: делить людей на две группы «кто пришёл рано, кто поздно» — это уже вышло в посте; говорить «просто потерпите».\n", "voice_ref": null, "len": 30, "date": "2026-09-10", "wd": "чт"}, {"id": "TG-03", "ch": "tg", "fmt": "Лонгрид Telegram", "topic": "Следующий шаг начинающего психолога", "angle": "Лонгрид для коллег. «Не понимаю, какой мой следующий шаг»: два-три шага и проверяемый критерий, по которому отличить «мне нужно учиться» от «мне нужно начать». Её ступени — первое обучение про себя, второе про свой почерк.", "ask": "Текст для коллег, снимать не надо.\nГолосовое 2 минуты\nВаш путь — первое обучение, где говоришь о себе, второе, где ищешь свой почерк, и «когда не понимаю — иду учиться» — у вас записан, пересказывать не надо. Нужны сами шаги.\n\n1. Начните с того, как это звучит от начинающих: «Я только начинаю практику и не понимаю, какой мой следующий шаг».\n2. Назовите первый шаг — и зачем он, одной фразой. Потом второй. Шагов не больше трёх.\n3. Внутри разведите два понятия, которые начинающие путают: «учиться дальше» и «начать практиковать» — или другую пару, если у вас она звучит иначе.\n4. Дайте проверяемый критерий, по которому коллега сам поймёт, что ему сейчас нужно: не ощущением, а по признаку.\n\nГоворите профессионально, без перевода на простой язык: это читают коллеги. Не надо: перечислять свои дипломы.\n", "voice_ref": "корпус «катя распаковка · 41» — её ступени: на первом обучении «приходишь туда чтобы решить свои вопросы», на втором — «внутреннюю работу, где ты уже ищешь, например, свой почерк»; «катя распаковка · 45» — миксовать знания, «какую-то вот свою краску»; «катя распаковка · 49» — поддержка начинающих как её сильная сторона; «катя распаковка · 383» — «Я привыкла, что если я чего-то не понимаю, я иду учиться» и её же вывод, что сейчас нужно не учиться. Закрыт частично: путь и пара понятий есть, самих шагов и критерия нет. ⚠️ «катя созвон · 79-108» и «катя созвон · 715-739» потрачены W36 TG-03 — не брать.", "len": 30, "date": "2026-09-12", "wd": "сб"}]};
+const NOW = new Date('2026-09-03T10:00:00');            // демо-дата: ср 3 сент, 10:00
 const TYPE={ig_reels:['Reels','reels'],ig_posts:['Пост в Instagram','posts'],ig_stories:['Сторис','stories'],tg:['Пост в Telegram','tg']};
+const DEADLINE={ig_reels:'2026-09-02T18:00',ig_posts:'2026-09-03T18:00',tg:'2026-09-03T18:00',ig_stories:'2026-09-04T12:00'};
+const REDL={ig_reels:'вт 2 сент, 18:00',ig_posts:'ср 3 сент, 18:00',tg:'ср 3 сент, 18:00',ig_stories:'чт 4 сент, 12:00'};
+const REDL_S={ig_reels:'вт 2.09 18:00',ig_posts:'ср 3.09 18:00',tg:'ср 3.09 18:00',ig_stories:'чт 4.09 12:00'};
 const ICO={reels:'<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 9h18M8 3l3 6M14 3l3 6M10 13l5 3-5 3z"/></svg>',
  posts:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg>',
  stories:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/></svg>',
  tg:'<svg viewBox="0 0 24 24"><path d="M21 5L3 12l6 2 2 6 3-4 5 3z"/></svg>',
- mic:'<svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>'};
+ mic:'<svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>',
+ clock:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'};
 const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-// minutes of voice from the first line of the ask
+// минуты голосового — из первой строки задания
 function minutes(ask){
   if(!ask) return 0;
   const l=ask.split('\n')[0].toLowerCase();
@@ -247,105 +294,169 @@ function minutes(ask){
   if(!m) m=ask.toLowerCase().match(/голосовое\s*([\d,–\-]+)\s*(минут|мин|секунд)/);
   if(!m) return 2;
   const nums=m[1].replace(',','.').split(/[–-]/).map(Number);
-  let v=nums[nums.length-1];
-  if(m[2].startsWith('с')) v=v/60;
+  let v=nums[nums.length-1]; if(m[2].startsWith('с')) v=v/60;
   return Math.round(v*2)/2;
 }
-// demo initial states: done | partial | corpus | life | todo
-const INIT={'R-01':'done','R-02':'done','R-05':'done','R-06':'done','R-08':'done','R-03':'partial','R-10':'corpus','S-02':'life','S-04':'life'};
+// демо-состояния: done | partial | corpus | life | todo
+const INIT={'R-01':'done','R-02':'done','R-05':'done','R-06':'done','R-08':'done','R-03':'partial','R-10':'corpus','S-02':'life','S-03':'life','S-04':'life'};
+const FILES={'R-01':[['1:42','пн 1.09 21:14'],['0:35','вт 2.09 09:02']],'R-02':[['2:08','вт 2.09 10:40']],'R-05':[['0:58','вт 2.09 12:20']],'R-06':[['1:31','вт 2.09 12:31']],'R-08':[['2:20','вт 2.09 14:05']],'R-03':[['1:05','вт 2.09 17:50']]};
 const PARTIAL_NOTE={'R-03':'Пункт 2 — кем она была рядом с этой мамой и почему чувство тогда нельзя было показать. 30–40 секунд достаточно, остальное не пересказывайте.'};
+const LIFE={ideas:['готовка: борщ, пироги или тарт','баня и массаж по средам','прогулки в парке, собаки','синхронное плавание и стойка на руках','книга или фильм, которые зацепили','репост чужого поста с одной фразой от себя'],
+ limits:['не показывать партнёра и близких (лайфстайл без лиц — можно)','не эзотерическое считывание','без действующих клиентов, даже обезличенно','без темы зависимостей и игромании']};
+const FORMATS={ig_reels:['Цитата клиента с разбором','Чувство как маркер','Откуда это взялось','Переписка с комментарием','Причина не там, где ищут','Реакция на чужое','Провокация','Правило с ценой'],ig_posts:['Карусель'],ig_stories:['Сторис-серия','Лайфстайл'],tg:['Лонгрид Telegram']};
 const order={ig_reels:0,ig_posts:1,ig_stories:2,tg:3};
-const SLOTS=DATA.slots.map(s=>({...s,min:minutes(s.ask),cls:TYPE[s.ch][1],tname:TYPE[s.ch][0]})).sort((a,b)=>order[a.ch]-order[b.ch]||a.id.localeCompare(b.id));
-SLOTS.forEach(s=>{ if(INIT[s.id]) s.st=INIT[s.id]; else if(!s.ask) s.st='life'; else s.st='todo'; });
 
-let state={}; try{state=JSON.parse(localStorage.getItem('voice-w37')||'{}')}catch(e){state={}}
-const st=s=>state[s.id]||s.st;
-const required=()=>SLOTS.filter(s=>!['life'].includes(st(s))&&st(s)!=='cancel');
+let state={}; try{state=JSON.parse(localStorage.getItem('voice-w37-v2')||'{}')}catch(e){state={}}
+state.st=state.st||{}; state.files=state.files||{}; state.topics=state.topics||{}; state.why=state.why||{}; state.custom=state.custom||[];
+function save(){try{localStorage.setItem('voice-w37-v2',JSON.stringify(state))}catch(e){}}
+
+function allSlots(){
+  const base=DATA.slots.map(s=>({...s,min:minutes(s.ask),cls:TYPE[s.ch][1],tname:TYPE[s.ch][0],st0:INIT[s.id]||(s.ask?'todo':'life')}));
+  const custom=state.custom.map(c=>({...c,min:1.5,cls:TYPE[c.ch][1],tname:TYPE[c.ch][0],st0:'todo',custom:true}));
+  return base.concat(custom).sort((a,b)=>order[a.ch]-order[b.ch]||a.id.localeCompare(b.id));
+}
+const st=s=>state.st[s.id]||s.st0;
+const topic=s=>state.topics[s.id]||s.topic;
+const files=s=>(state.files[s.id]||[]).concat(FILES[s.id]||[]);
+const isLate=s=>!['done','corpus','life','cancel','partial'].includes(st(s))&&!s.custom&&new Date(DEADLINE[s.ch])<NOW;
+const required=()=>allSlots().filter(s=>!['life','cancel'].includes(st(s)));
 const doneList=()=>required().filter(s=>['done','corpus'].includes(st(s)));
-function save(){try{localStorage.setItem('voice-w37',JSON.stringify(state))}catch(e){}}
+const plural=(n,a,b,c)=>{const m=n%10,h=n%100;return (h>10&&h<20)?c:(m===1?a:(m>1&&m<5?b:c))};
 
 const BADGES=[[1,'Первая запись','1'],[50,'Половина','½'],[75,'Финишная прямая','¾'],[100,'Неделя записана','✓']];
 let lastPct=null;
 function renderHero(){
-  const req=required(), done=doneList();
+  const req=required(), done=doneList(), late=allSlots().filter(isLate);
   const pct=req.length?Math.round(done.length/req.length*100):0;
   const left=req.filter(s=>!['done','corpus'].includes(st(s))).reduce((a,s)=>a+(st(s)==='partial'?0.5:s.min),0);
   document.getElementById('stDone').innerHTML=`${done.length}<small>из ${req.length}</small>`;
   document.getElementById('stMin').innerHTML=`${left%1?left.toFixed(1).replace('.',','):left}<small>мин</small>`;
-  document.getElementById('stPct').innerHTML=`${pct}<small>%</small>`;
+  const sl=document.getElementById('stLate'); sl.textContent=late.length; sl.classList.toggle('bad',late.length>0);
   document.getElementById('fill').style.width=pct+'%';
   document.getElementById('badges').innerHTML=BADGES.map(b=>`<span class="badge ${pct>=b[0]?'on':''}"><i>${b[2]}</i>${b[1]}</span>`).join('');
-  const btn=document.getElementById('doneBtn');
-  const todo=req.length-done.length;
+  const btn=document.getElementById('doneBtn'); const todo=req.length-done.length;
   btn.classList.toggle('ready',todo===0&&req.length>0);
   btn.innerHTML=todo===0?`<span>Готово, всё записала</span> →`:`<span>Готово</span><small>ещё ${todo} ${plural(todo,'запись','записи','записей')}</small>`;
   btn.disabled=todo!==0;
-  if(lastPct!==null&&pct>lastPct){
-    const hit=BADGES.find(b=>lastPct<b[0]&&pct>=b[0]);
-    if(hit&&hit[0]<100) toast(`${hit[2]} ${hit[1]}!`);
-  }
+  document.getElementById('topDl').innerHTML=late.length?`<span class="late">Срок вышел у ${late.length} ${plural(late.length,'записи','записей','записей')}</span><span>·</span><span>ближайший срок сегодня <b>18:00</b></span>`:`Ближайший срок: <b>сегодня 18:00</b>`;
+  if(lastPct!==null&&pct>lastPct){const hit=BADGES.find(b=>lastPct<b[0]&&pct>=b[0]); if(hit&&hit[0]<100) toast(`${hit[2]} ${hit[1]}!`);}
   lastPct=pct;
 }
-const plural=(n,a,b,c)=>{const m=n%10,h=n%100;return (h>10&&h<20)?c:(m===1?a:(m>1&&m<5?b:c))};
 
+function tileHTML(s){
+  const t=st(s), late=isLate(s);
+  const cls=[s.cls,t==='done'?'done':'',t==='partial'?'partial':'',late?'late':'',t==='corpus'?'corpus':'',t==='life'?'off':'',t==='cancel'?'cancel':''].join(' ');
+  const cta=t==='done'?'Записано':t==='partial'?'Дозаписать ›':t==='corpus'?'Уже есть':t==='life'?'Свободный формат':t==='cancel'?'Отменено':'Записать ›';
+  const ft=t==='life'?'снимаете сами':t==='corpus'?'из ваших записей':t==='cancel'?'':`${ICO.mic}≈ ${String(s.min).replace('.',',')} мин`;
+  let dl='';
+  if(t==='done') dl=`<span class="dl">✓ ${files(s).length} ${plural(files(s).length,'голосовое','голосовых','голосовых')}</span>`;
+  else if(t==='cancel') dl=`<span class="why">${esc(state.why[s.id]||'')}</span>`;
+  else if(t==='corpus') dl=`<span class="dl">записывать не нужно</span>`;
+  else if(t==='life') dl=`<span class="dl">в день выхода, ${s.wd} ${s.date.slice(8)}.${s.date.slice(5,7)}</span>`;
+  else if(s.custom) dl=`<span class="dl">ваша идея · когда удобно</span>`;
+  else if(t==='partial') dl=`<span class="dl" style="color:#b8461f;font-weight:700">${ICO.clock}дозапись до ср 3.09 18:00</span>`;
+  else dl=`<span class="dl ${late?'late':''}">${ICO.clock}${late?'срок вышел · был '+REDL_S[s.ch]:'до '+REDL_S[s.ch]}</span>`;
+  return `<button class="tile ${cls}" data-id="${s.id}"><span class="stamp">✓</span>
+    <span class="ty"><span style="display:inline-flex;gap:6px;align-items:center">${ICO[s.cls]}${s.tname}</span></span>
+    <h3>${esc(topic(s))}</h3>${dl}
+    <span class="ft"><span class="min">${ft}</span><span class="cta">${cta}</span></span></button>`;
+}
 function renderGrid(){
-  let h='',last='';
-  SLOTS.forEach(s=>{
-    if(s.ch!==last){h+=`<div class="sect">${s.tname} · ${SLOTS.filter(x=>x.ch===s.ch).length}</div>`;last=s.ch}
-    const t=st(s);
-    const cls=[s.cls,t==='done'?'done':'',t==='partial'?'partial':'',t==='corpus'?'corpus':'',t==='life'?'off':'',t==='cancel'?'cancel':''].join(' ');
-    const cta=t==='done'?'Записано':t==='partial'?'Дозаписать ›':t==='corpus'?'Уже есть':t==='life'?'Без записи':t==='cancel'?'Отменено':'Записать ›';
-    const ft=t==='life'?'снимаете сами':t==='corpus'?'из ваших записей':t==='cancel'?'':`${ICO.mic}≈ ${String(s.min).replace('.',',')} мин`;
-    h+=`<button class="tile ${cls}" data-id="${s.id}" style="--tt:${t==='done'?'#fff':''}"><span class="stamp">✓</span>
-      <span class="ty"><span style="display:inline-flex;gap:6px;align-items:center">${ICO[s.cls]}${s.tname}</span></span>
-      <h3>${esc(s.topic)}</h3>
-      <span class="ft"><span class="min">${ft}</span><span class="cta">${cta}</span></span></button>`;
+  const all=allSlots(); let h='';
+  ['ig_reels','ig_posts','ig_stories','tg'].forEach(ch=>{
+    const list=all.filter(s=>s.ch===ch&&st(s)!=='cancel');
+    h+=`<div class="sect">${TYPE[ch][0]} · ${list.length} <span class="sd">· срок ${REDL[ch]}</span></div>`;
+    h+=list.map(tileHTML).join('');
+    h+=`<button class="tile add" data-add="${ch}"><span class="plus">+</span><span>Своя идея${ch==='ig_reels'?' ролика':ch==='ig_stories'?' сторис':' поста'}</span></button>`;
   });
+  const canc=all.filter(s=>st(s)==='cancel');
+  if(canc.length) h+=`<div class="sect red">Отменено · ${canc.length}</div>`+canc.map(tileHTML).join('');
   document.getElementById('grid').innerHTML=h;
 }
 
-// ── sheet ──
+// ── шторка ──
 let cur=null, timer=null, secs=0;
 function askHTML(s){
-  const lines=(s.ask||'').split('\n');
-  const lead=lines[0]; const rest=lines.slice(1);
+  const lines=(s.ask||'').split('\n'); const lead=lines[0]; const rest=lines.slice(1);
   const steps=[], paras=[]; let no='';
   rest.forEach(l=>{l=l.trim(); if(!l) return; const m=l.match(/^(\d+)[.)]\s*(.*)/); if(m) steps.push(m[2]); else if(/^не надо/i.test(l)) no=l.replace(/^не надо:?\s*/i,''); else if(steps.length) steps[steps.length-1]+=' '+l; else paras.push(l);});
-  return `<div class="ask" style="--ac:${{reels:'var(--orange)',posts:'var(--blue)',stories:'var(--beige)',tg:'var(--green)'}[s.cls]}">
-    <div class="lead">${ICO.mic}<b>${esc(lead)}</b></div>
-    ${paras.map(p=>`<p>${esc(p)}</p>`).join('')}
+  return `<div class="ask" style="--ac:${{reels:'var(--orange)',posts:'var(--blue)',stories:'var(--beige)',tg:'var(--lilac)'}[s.cls]}">
+    <div class="lead">${ICO.mic}<b>${esc(lead)}</b></div>${paras.map(p=>`<p>${esc(p)}</p>`).join('')}
     ${steps.length?`<ol>${steps.map((x,i)=>`<li><i>${i+1}</i><span>${esc(x)}</span></li>`).join('')}</ol>`:''}
     ${no?`<div class="no"><b>Не надо:</b> ${esc(no)}</div>`:''}</div>`;
 }
+function filesHTML(s){
+  const f=files(s); if(!f.length) return '';
+  return `<div class="f"><span class="k">Ваш материал<small>из бота и отсюда</small></span><div class="v"><div class="files">${f.map(x=>`<div class="file"><span class="play">▶</span>${ICO.mic}<span class="len">${x[0]}</span><span class="w">${x[1]}</span></div>`).join('')}</div></div></div>`;
+}
+const col=s=>({reels:['var(--orange-t)','#b8461f'],posts:['var(--blue-t)','#3350bd'],stories:['var(--beige-t)','#7c6238'],tg:['var(--lilac-t)','#5b47a8']}[s.cls]);
+
 function openSheet(id){
-  cur=SLOTS.find(x=>x.id===id); const s=cur, t=st(s);
-  const col={reels:['var(--orange-t)','#b8461f'],posts:['var(--blue-t)','#3350bd'],stories:['var(--beige-t)','#7c6238'],tg:['var(--green-t)','#1e7048']}[s.cls];
-  let h=`<div class="hd"><span class="tyb" style="background:${col[0]};color:${col[1]}">${ICO[s.cls]}${s.tname}</span>
-    <span style="font-size:13px;color:var(--muted);padding-top:6px">выходит ${s.wd} ${s.date.slice(8)}.${s.date.slice(5,7)}</span>
-    <button class="x" id="closeS" aria-label="Закрыть">✕</button></div><div class="bd">`;
+  cur=allSlots().find(x=>x.id===id); const s=cur, t=st(s), late=isLate(s), c=col(s);
+  let h=`<div class="hd"><span class="tyb" style="background:${c[0]};color:${c[1]}">${ICO[s.cls]}${s.tname}</span>`;
+  if(s.custom) h+=`<span class="meta">ваша идея · срока нет</span>`;
+  else if(t==='partial') h+=`<span class="meta">дозапись до <b>ср 3 сент, 18:00</b></span>`;
+  else if(!['life','corpus','cancel','done'].includes(t)) h+=`<span class="meta ${late?'late':''}">${late?'срок вышел · был':'срок'} <b>${REDL[s.ch]}</b></span>`;
+  h+=`<span class="meta">выходит ${s.wd} ${s.date.slice(8)}.${s.date.slice(5,7)}</span><button class="x" id="closeS" aria-label="Закрыть">✕</button></div><div class="bd">`;
   h+=`<div class="f">
-    <span class="k">Тема</span><div class="v"><h2>${esc(s.topic)}</h2></div>
+    <span class="k">Тема<small>можно поправить</small></span><div class="v" id="topicV"><h2><span>${esc(topic(s))}</span>${t!=='cancel'?'<button class="pen" id="editT">изменить</button>':''}</h2></div>
     <span class="k">Формат</span><div class="v">${esc(s.fmt)}${DATA.briefs[s.fmt]?`<details class="brief"><summary>Что важно в этом формате</summary><p>${esc(DATA.briefs[s.fmt])}</p></details>`:''}</div>
-    <span class="k">Фокус</span><div class="v"><p>${esc(s.angle)}</p></div>
+    ${s.angle?`<span class="k">Фокус</span><div class="v"><p>${esc(s.angle)}</p></div>`:''}
   </div>`;
-  if(t==='life') h+=`<div class="okbox"><b>Записывать ничего не нужно.</b> Это лайф-сторис: снимаете сами телефоном в день выхода, бот напомнит утром.</div>`;
-  else if(t==='corpus') h+=`<div class="okbox"><b>Уже есть в ваших записях.</b> ${esc(s.voice_ref||'')}</div>`;
-  else if(t==='cancel') h+=`<div class="warn"><b>Вы отменили эту запись.</b> Мы уберём слот из недели. Передумали — верните.</div><div class="actions"><button class="btn ghost sm" id="undo">Вернуть в неделю</button></div>`;
-  else{
-    h+=`<div class="f"><span class="k">Что наговорить</span><div class="v">${askHTML(s)}</div></div>`;
+  if(late&&t!=='partial') h+=`<div class="warn red"><b>Срок вышел ${REDL[s.ch]}.</b> Бот напомнил в чате вчера в 18:30. Запишите, когда сможете, — мы ждём именно этот кусок, чтобы двигаться дальше.</div>`;
+  if(t==='life'){
+    h+=`<div class="ask" style="--ac:var(--beige)"><div class="lead">${ICO.mic}<b>Свободный формат, записывать заранее не нужно</b></div><p>Снимаете сами телефоном в день выхода. Утром бот напомнит.</p>
+      <p style="margin-top:8px"><b>Идеи на эту неделю:</b></p><ul>${[s.angle].concat(LIFE.ideas).filter(Boolean).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+      <div class="no"><b>Не надо:</b> ${LIFE.limits.join('; ')}.</div></div>`;
+  } else if(t==='corpus'){
+    h+=`<div class="okbox"><b>Уже есть в ваших записях.</b> ${esc(s.voice_ref||'')}</div>`;
+  } else if(t==='cancel'){
+    h+=`<div class="warn red"><b>Вы отменили эту запись.</b> Причина: «${esc(state.why[s.id]||'')}». Мы увидим это у себя и заменим слот.</div><div class="actions"><button class="btn ghost sm" id="undo">Вернуть в неделю</button></div>`;
+  } else {
+    h+=`<div class="f"><span class="k">Что должно быть в голосовом<small>чек-лист по пунктам</small></span><div class="v">${s.ask?askHTML(s):`<div class="ask"><div class="lead">${ICO.mic}<b>Ваша идея</b></div><p>Наговорите свободно: с чего начинается, что главное, чем закончить. Мы соберём каркас сами.</p></div>`}</div></div>`;
     if(t==='partial') h+=`<div class="warn"><b>Нужно дозаписать</b>${esc(PARTIAL_NOTE[s.id]||'Одного пункта в записи не хватило.')}</div>`;
-    if(t==='done') h+=`<div class="sent on">✓ Голосовое получено. Спасибо! <span style="font-weight:400;color:var(--ink2)">Если хотите добавить — запишите ещё одно.</span></div>`;
+    h+=filesHTML(s);
+    if(t==='done') h+=`<div class="sent on">✓ Голосовое получено. Спасибо! <span style="font-weight:400;color:var(--ink2)">Хотите добавить — запишите ещё одно.</span></div>`;
     h+=`<div class="recorder" id="rec"><div class="t" id="rt">0:00</div><div class="w">${'<i style="animation-delay:'+[0,.1,.2,.3,.15,.05,.25,.35,.1,.2,.3,.05,.15,.25,.35,.2,.1,.3].join('s"></i><i style="animation-delay:')+'s"></i>'}</div><button class="stop" id="stop">Стоп · отправить</button></div>`;
     h+=`<div class="sent" id="sent">✓ Отправлено. Плитка станет зелёной.</div>`;
-    h+=`<div class="actions" id="acts"><button class="btn rec" id="recBtn"><i></i>${t==='partial'?'Дозаписать голосовое':t==='done'?'Записать ещё одно':'Записать голосовое'}</button><button class="btn ghost" id="tgBtn">${ICO.tg}В Telegram-боте</button>${t!=='done'?`<button class="lnk" id="cancelBtn">Не буду записывать это</button>`:''}</div>`;
+    h+=`<div class="cancelbox" id="cbox"><label>Почему отменяете? Это обязательно — так мы поймём, что не подошло.</label><textarea class="inp" id="why" placeholder="Например: не хочу говорить про это публично / тема не моя / формат не подходит"></textarea><div class="actions"><button class="btn sm" id="cancelGo" disabled style="background:var(--red)">Отменить слот</button><button class="lnk" id="cancelNo">передумала</button></div></div>`;
+    h+=`<div class="actions" id="acts"><button class="btn rec" id="recBtn"><i></i>${t==='partial'?'Дозаписать голосовое':t==='done'?'Записать ещё одно':'Записать голосовое'}</button><button class="btn ghost" id="tgBtn">${ICO.tg}В Telegram-боте</button>${t!=='done'?`<button class="lnk" id="cancelBtn">Не буду записывать это</button>`:''}</div>
+      <div class="hint">В боте: выберите неделю и эту тему, отправьте голосовое (можно несколько, плюс фото или файлы) и нажмите «готово». Плитка здесь позеленеет сама.</div>`;
   }
   h+=`</div>`;
   const sh=document.getElementById('sheet'); sh.innerHTML=h; sh.classList.add('on'); document.getElementById('dim').classList.add('on');
   document.getElementById('closeS').onclick=closeSheet;
+  const et=document.getElementById('editT'); if(et) et.onclick=()=>{
+    const v=document.getElementById('topicV'); v.innerHTML=`<input class="inp" id="topicI" value="${esc(topic(s))}"><div class="actions" style="margin-top:8px"><button class="btn sm" id="topicOk">Сохранить</button><button class="lnk" id="topicNo">отмена</button></div><div class="hint" style="margin-top:6px">Мы увидим правку и подстроим задание.</div>`;
+    document.getElementById('topicI').focus();
+    document.getElementById('topicOk').onclick=()=>{const val=document.getElementById('topicI').value.trim(); if(val){state.topics[s.id]=val;save();} openSheet(s.id); renderGrid();};
+    document.getElementById('topicNo').onclick=()=>openSheet(s.id);
+  };
   const rb=document.getElementById('recBtn'); if(rb) rb.onclick=startRec;
-  const tb=document.getElementById('tgBtn'); if(tb) tb.onclick=()=>toast('В продукте: откроется чат с ботом, задание уже там');
-  const cb=document.getElementById('cancelBtn'); if(cb) cb.onclick=()=>{ if(cb.dataset.c){state[s.id]='cancel';save();closeSheet();renderAll();toast('Слот убран из недели. Мы увидим это у себя');} else {cb.dataset.c=1;cb.textContent='Точно? Нажмите ещё раз, чтобы убрать слот';cb.style.color='var(--red)';} };
-  const un=document.getElementById('undo'); if(un) un.onclick=()=>{state[s.id]='todo';save();closeSheet();renderAll();};
+  const tb=document.getElementById('tgBtn'); if(tb) tb.onclick=()=>toast('В продукте: откроется чат с ботом, эта тема уже выбрана');
+  const cb=document.getElementById('cancelBtn'); if(cb) cb.onclick=()=>{document.getElementById('cbox').classList.add('on');document.getElementById('acts').style.display='none';document.getElementById('why').focus();
+    document.getElementById('why').oninput=e=>{document.getElementById('cancelGo').disabled=e.target.value.trim().length<3};
+    document.getElementById('cancelNo').onclick=()=>{document.getElementById('cbox').classList.remove('on');document.getElementById('acts').style.display='flex'};
+    document.getElementById('cancelGo').onclick=()=>{state.why[s.id]=document.getElementById('why').value.trim();state.st[s.id]='cancel';save();closeSheet();renderAll();toast('Слот отменён и ушёл вниз. Мы это увидим');};
+  };
+  const un=document.getElementById('undo'); if(un) un.onclick=()=>{state.st[s.id]='todo';delete state.why[s.id];save();closeSheet();renderAll();};
+}
+function openAdd(ch){
+  const tn=TYPE[ch][0], c={reels:['var(--orange-t)','#b8461f'],posts:['var(--blue-t)','#3350bd'],stories:['var(--beige-t)','#7c6238'],tg:['var(--lilac-t)','#5b47a8']}[TYPE[ch][1]];
+  let h=`<div class="hd"><span class="tyb" style="background:${c[0]};color:${c[1]}">${ICO[TYPE[ch][1]]}${tn}</span><span class="meta">своя идея</span><button class="x" id="closeS" aria-label="Закрыть">✕</button></div><div class="bd">
+    <div class="f"><span class="k">Тема</span><div class="v"><input class="inp" id="nTopic" placeholder="О чём хотите сказать — двумя-пятью словами"></div>
+    <span class="k">Формат</span><div class="v"><select class="inp" id="nFmt">${FORMATS[ch].map(f=>`<option>${f}</option>`).join('')}</select><div class="hint" style="margin-top:6px">Не уверены — оставьте первый, мы подберём.</div></div>
+    <span class="k">Фокус<small>по желанию</small></span><div class="v"><textarea class="inp" id="nAngle" placeholder="С чего начинается, куда поворачивает, чем заканчивается"></textarea></div></div>
+    <div class="actions"><button class="btn" id="nOk" disabled>Добавить и записать</button><button class="lnk" id="nNo">отмена</button></div></div>`;
+  const sh=document.getElementById('sheet'); sh.innerHTML=h; sh.classList.add('on'); document.getElementById('dim').classList.add('on');
+  document.getElementById('closeS').onclick=closeSheet; document.getElementById('nNo').onclick=closeSheet;
+  document.getElementById('nTopic').oninput=e=>{document.getElementById('nOk').disabled=e.target.value.trim().length<3};
+  document.getElementById('nOk').onclick=()=>{
+    const n=state.custom.filter(x=>x.ch===ch).length+1; const pre={ig_reels:'R',ig_posts:'P',ig_stories:'S',tg:'TG'}[ch];
+    const id=`${pre}-К${n}`;
+    state.custom.push({id,ch,topic:document.getElementById('nTopic').value.trim(),fmt:document.getElementById('nFmt').value,angle:document.getElementById('nAngle').value.trim(),ask:null,date:'2026-09-13',wd:'вс'});
+    save(); renderGrid(); openSheet(id); toast('Плитка добавлена. Мы увидим её у себя');
+  };
 }
 function startRec(){
   document.getElementById('acts').style.display='none';
@@ -355,43 +466,42 @@ function startRec(){
 }
 function stopRec(){
   clearInterval(timer); document.getElementById('rec').classList.remove('on'); document.getElementById('sent').classList.add('on');
-  state[cur.id]='done'; save();
+  state.st[cur.id]='done'; (state.files[cur.id]=state.files[cur.id]||[]).unshift([`${Math.floor(secs/60)}:${String(secs%60).padStart(2,'0')}`,'только что']); save();
   setTimeout(()=>{closeSheet();renderAll();const el=document.querySelector(`.tile[data-id="${cur.id}"]`);if(el){el.classList.add('pop');const r=el.getBoundingClientRect();confetti(r.left+r.width/2,r.top+r.height/2)}},700);
 }
 function closeSheet(){clearInterval(timer);document.getElementById('sheet').classList.remove('on');document.getElementById('dim').classList.remove('on')}
 document.getElementById('dim').onclick=closeSheet;
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
-document.getElementById('grid').addEventListener('click',e=>{const b=e.target.closest('.tile');if(b)openSheet(b.dataset.id)});
-document.getElementById('reset').onclick=()=>{state={};save();lastPct=null;renderAll();document.getElementById('fin').classList.remove('on')};
+document.getElementById('grid').addEventListener('click',e=>{const a=e.target.closest('.tile.add');if(a){openAdd(a.dataset.add);return}const b=e.target.closest('.tile');if(b)openSheet(b.dataset.id)});
+document.getElementById('reset').onclick=()=>{state={st:{},files:{},topics:{},why:{},custom:[]};save();lastPct=null;renderAll();document.getElementById('fin').classList.remove('on')};
 
-// ── done ──
+// ── готово ──
 document.getElementById('doneBtn').onclick=()=>{
   const req=required(), done=doneList(); if(req.length!==done.length) return;
   const mins=req.reduce((a,s)=>a+(st(s)==='corpus'?0:s.min),0);
   document.getElementById('fin').innerHTML=`<div class="in"><h1>Неделя <em>записана</em>.<br>Спасибо, Катя!</h1>
-    <div class="row"><div><div class="n">${done.length}</div><div class="k">голосовых</div></div><div><div class="n">≈${Math.round(mins)}</div><div class="k">минут</div></div><div><div class="n">${SLOTS.filter(s=>st(s)==='cancel').length}</div><div class="k">отменено</div></div></div>
+    <div class="row"><div><div class="n">${done.length}</div><div class="k">тем записано</div></div><div><div class="n">≈${Math.round(mins)}</div><div class="k">минут</div></div><div><div class="n">${allSlots().filter(s=>st(s)==='cancel').length}</div><div class="k">отменено</div></div></div>
     <p>Дальше наша работа: из записей соберём сценарии и тексты.</p>
-    <div class="next"><b>Что дальше</b><br>· пт 4 сент — сценарии роликов придут сюда же, можно поправить хук<br>· сб 5 сент — съёмочный день, 10 роликов по сценариям<br>· вс 6 сент до 12:00 — загрузить исходники в бота</div>
+    <div class="next"><b>Что дальше</b><br>· пт 4 сент — сценарии роликов придут сюда же, можно поправить хук<br>· сб 5 сент — съёмочный день, ролики по сценариям<br>· вс 6 сент до 12:00 — загрузить исходники в бота</div>
     <div class="actions" style="justify-content:center;margin-top:22px"><button class="btn" id="finClose">К плану недели</button></div></div>`;
   document.getElementById('fin').classList.add('on');
   document.getElementById('finClose').onclick=()=>document.getElementById('fin').classList.remove('on');
   setTimeout(()=>{for(let i=0;i<5;i++)setTimeout(()=>confetti(innerWidth*(0.2+0.15*i),innerHeight*0.3,90),i*180)},200);
 };
 
-// ── toast + confetti ──
+// ── тост и конфетти ──
 let tt;
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2200)}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2400)}
 const cv=document.getElementById('cf'),cx=cv.getContext('2d');let parts=[],raf;
 function confetti(x,y,n=46){
   if(matchMedia('(prefers-reduced-motion:reduce)').matches) return;
   cv.width=innerWidth;cv.height=innerHeight;
-  const cols=['#f4794f','#7691e6','#33a16e','#b09777','#ffffff'];
+  const cols=['#f4794f','#7691e6','#33a16e','#b09777','#9a86d8','#ffffff'];
   for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,v=4+Math.random()*7;parts.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-4,g:.28,r:3+Math.random()*4,c:cols[i%cols.length],l:60+Math.random()*30,rot:Math.random()*6})}
   if(!raf) tick();
 }
 function tick(){
-  cx.clearRect(0,0,cv.width,cv.height);
-  parts=parts.filter(p=>p.l>0);
+  cx.clearRect(0,0,cv.width,cv.height); parts=parts.filter(p=>p.l>0);
   parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.vx*=.98;p.l--;p.rot+=.1;cx.save();cx.translate(p.x,p.y);cx.rotate(p.rot);cx.globalAlpha=Math.min(1,p.l/25);cx.fillStyle=p.c;cx.fillRect(-p.r,-p.r/2,p.r*2,p.r);cx.restore()});
   raf=parts.length?requestAnimationFrame(tick):(cx.clearRect(0,0,cv.width,cv.height),null);
 }
