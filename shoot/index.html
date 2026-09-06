@@ -354,6 +354,13 @@ canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:50}
   .mbar .btn:disabled{opacity:1;background:var(--gray-t);color:var(--muted)}
   .mbar .btn.ready{background:var(--green);animation:pulse 1.6s infinite}
 }
+.file .fx{margin-left:8px;flex:0 0 auto;width:28px;height:28px;border-radius:50%;border:1px solid var(--line, #ddd);background:#fff;color:var(--muted);font-size:13px;line-height:1;display:grid;place-items:center;cursor:pointer}
+.file .fx:hover{color:var(--ink);border-color:var(--ink)}
+.file.ask{background:var(--beige-t, #f3efe6);flex-wrap:wrap;gap:8px}
+.file.ask .q{flex:1 1 100%;font-size:13.5px}
+.file.ask .acts{display:flex;gap:8px}
+.btn.danger{background:#b8461f;color:#fff}
+@media(max-width:600px){.file .fx{width:34px;height:34px}}
 </style>
 
 <div class="wrap">
@@ -425,12 +432,12 @@ document.getElementById('h1').innerHTML=`${esc(META.name)}, <em>съёмочны
  document.getElementById('heroP').textContent=`Сценарии готовы и согласованы. ${pts}, ${rd} ${plural(rd,'ролик','ролика','роликов')} к съёмке${wt?`, ещё ${wt} ${plural(wt,'ждёт','ждут','ждут')} ваших голосовых`:''}, всё с телефона. Открывайте карточку, читайте, снимайте и загружайте видео. Снятое зеленеет само.`;}
 
 let state={}; try{state=JSON.parse(localStorage.getItem(META.key)||'{}')}catch(e){state={}}
-state.st=state.st||{}; state.files=state.files||{}; state.takes=state.takes||{}; state.edits=state.edits||{}; state.stop=state.stop||'dom'; state.why=state.why||{}; state.custom=state.custom||[];
+state.st=state.st||{}; state.files=state.files||{}; state.takes=state.takes||{}; state.edits=state.edits||{}; state.stop=state.stop||'dom'; state.why=state.why||{}; state.custom=state.custom||[]; state.noDemo=state.noDemo||{};
 function save(){try{localStorage.setItem(META.key,JSON.stringify(state))}catch(e){}}
 
 const ALL=()=>REELS.concat(state.custom.map(c=>({...c,custom:true,takes:[],beats:[],overlay:[],setup:null,fmt:'Ваш ролик',len:c.len||60,difficulty:null})));
 const st=r=>state.st[r.id]||INIT[r.id]||'todo';
-const files=r=>(state.files[r.id]||[]).concat(FILES[r.id]||[]);
+const files=r=>(state.files[r.id]||[]).concat((state.noDemo||{})[r.id]?[]:(FILES[r.id]||[]));
 const takesDone=r=>r.takes.map((_,i)=>(state.takes[r.id]||TAKES_INIT[r.id]||[])[i]===true);
 const hook=r=>(state.edits[r.id]&&state.edits[r.id].hook)||r.hook;
 const line=(r,i)=>(state.edits[r.id]&&state.edits[r.id].beats&&state.edits[r.id].beats[i])||r.beats[i].line;
@@ -485,6 +492,18 @@ function renderGrid(){
 
 // ── карточка ──
 let cur=null;
+const filesHTML=r=>{const f=files(r);return f.length?`<div class="sec" id="filesSec"><h3>Ваши файлы <small>${f.length} ${plural(f.length,'файл','файла','файлов')}</small></h3><div class="files">${f.map((x,i)=>`<div class="file" data-fi="${i}"><span class="th">${x[0]}</span><span>${esc(x[1])}</span><span class="w">${x[2]}</span><button class="fx" data-del="${i}" aria-label="Удалить файл" title="Удалить файл">✕</button></div>`).join('')}</div></div>`:''};
+function wireFiles(r){
+  document.querySelectorAll('[data-del]').forEach(b=>b.onclick=e=>{e.stopPropagation();const i=+b.dataset.del;const row=b.closest('.file');const f=files(r)[i];
+    row.classList.add('ask');row.innerHTML=`<span class="q">Удалить <b>${esc(f[1])}</b>? Файл пропадёт и у нас.</span><span class="acts"><button class="btn sm danger" data-delok="${i}">Удалить</button><button class="btn ghost sm" data-delno="${i}">Отмена</button></span>`;
+    row.querySelector('[data-delno]').onclick=ev=>{ev.stopPropagation();openSheet(r.id)};
+    row.querySelector('[data-delok]').onclick=ev=>{ev.stopPropagation();
+      const all=files(r).slice(); all.splice(i,1); state.files[r.id]=all; state.noDemo[r.id]=true;
+      if(!all.length && st(r)==='done'){ state.st[r.id]='todo'; toast('Файлов не осталось — ролик снова к съёмке'); } else toast('Файл удалён');
+      save(); renderAll(); openSheet(r.id);
+    };
+  });
+}
 function openSheet(id){
   cur=ALL().find(r=>r.id===id); const r=cur, t=st(r), td=takesDone(r), ed=state.edits[r.id]||{};
   let h=`<div class="hd"><span class="no">${r.id.replace('R-','')}</span><span class="meta">${esc(r.fmt)} · <b>${r.len} с</b> · точка ${LOC[r.loc].n}, ${LOC[r.loc].short}${r.difficulty?' · '+r.difficulty:''}</span><button class="x" id="closeS" aria-label="Закрыть">✕</button></div><div class="bd">
@@ -503,8 +522,7 @@ function openSheet(id){
   h+=`<div class="sec"><h3>Сценарий · ${r.beats.length} ${plural(r.beats.length,'реплика','реплики','реплик')} <small>нажмите на реплику, чтобы поправить</small></h3><div class="beats">${r.beats.map((b,i)=>`<div class="beat ${b.turn?'turn':''} ${b.cta?'cta':''} ${b.hook?'bhook':''}" data-i="${i}"><span class="t">${b.t} с</span><span>${b.turn?'<span class="tag">поворот</span>':b.cta?'<span class="tag">призыв</span>':b.hook?'<span class="tag">хук</span>':''}${esc(line(r,i))}${ed.beats&&ed.beats[i]?'<span class="mine">ваша правка</span>':''}${b.turn?`<span class="note">${esc(b.note||'Пауза после, не торопить.')}</span>`:''}</span><button class="pen" data-edit="${i}">✎</button></div>`).join('')}</div></div>`;
   if(r.overlay.length) h+=`<div class="sec"><h3>На экране появится <small>говорить это не нужно</small></h3><div class="overlay">${r.overlay.map(o=>`<div><span>${o.t} с</span><b>${esc(o.text)}</b></div>`).join('')}</div></div>`;
   if(r.takes.length) h+=`<div class="sec"><h3>Хук-дубли · ${r.takes.length} <small>та же точка и свет, 10–15 секунд каждый, сразу после ролика</small></h3><div class="takes">${r.takes.map((tk,i)=>`<div class="take ${td[i]?'on':''}" data-take="${i}"><span class="cb">${td[i]?'✓':''}</span><span><i>${esc(tk)}</i><small>${td[i]?'снят':'отметьте, когда сняли'}</small></span></div>`).join('')}</div></div>`;
-  const f=files(r);
-  if(f.length) h+=`<div class="sec"><h3>Ваши файлы</h3><div class="files">${f.map(x=>`<div class="file"><span class="th">${x[0]}</span><span>${esc(x[1])}</span><span class="w">${x[2]}</span></div>`).join('')}</div></div>`;
+  h+=filesHTML(r);
   h+=`<div class="uploading" id="upl">Загружаем 2 видео… <div class="pb"><i id="upb"></i></div></div>`;
   h+=`<div class="actions" id="acts"><button class="btn ghost" id="prBtn">${ICO.play}Режим суфлёра</button><button class="btn up" id="upBtn">${ICO.up}${t==='done'?'Загрузить ещё':'Загрузить видео'}</button><button class="btn ghost" id="tgBtn">${ICO.tg}Через бота</button></div>
     <div class="hint">Видео можно отправить и боту в Telegram под этой темой — здесь карточка позеленеет сама. Загружайте все дубли, выберем лучший мы.</div></div>`;
@@ -517,6 +535,7 @@ function openSheet(id){
     document.getElementById('bNo').onclick=()=>openSheet(r.id);
     const br=document.getElementById('bReset'); if(br) br.onclick=()=>{delete state.edits[r.id].beats[i];save();openSheet(r.id)};});
   document.querySelectorAll('[data-take]').forEach(el=>el.onclick=()=>{const i=+el.dataset.take;const arr=state.takes[r.id]||td.slice();arr[i]=!arr[i];state.takes[r.id]=arr;save();openSheet(r.id);renderAll();});
+  wireFiles(r);
   document.getElementById('prBtn').onclick=()=>openPrompter(r);
   document.getElementById('upBtn').onclick=()=>upload(r);
   document.getElementById('tgBtn').onclick=()=>toast('В продукте: откроется бот, тема уже выбрана');
@@ -556,15 +575,14 @@ function openAdd(loc){
   };
 }
 function customSheet(r,t){
-  const f=files(r);
   return `${t==='done'?'<div class="okbox"><b>Снято, файлы у нас.</b> Смонтируем по вашему описанию.</div>':''}
     <div class="sec"><h3>Хук · первые 3 секунды</h3><div class="hook"><span>${esc(r.hook||'—')}</span></div></div>
     <div class="sec"><h3>Как вы видите ролик</h3><div class="setup"><div class="wide">${esc(r.desc||'—')}</div></div></div>
-    ${f.length?`<div class="sec"><h3>Ваши файлы</h3><div class="files">${f.map(x=>`<div class="file"><span class="th">${x[0]}</span><span>${esc(x[1])}</span><span class="w">${x[2]}</span></div>`).join('')}</div></div>`:''}
+    ${filesHTML(r)}
     <div class="uploading" id="upl">Загружаем 2 видео… <div class="pb"><i id="upb"></i></div></div>
     <div class="actions" id="acts"><button class="btn up" id="upBtn">${ICO.up}${t==='done'?'Загрузить ещё':'Загрузить видео'}</button><button class="btn ghost" id="tgBtn">${ICO.tg}Через бота</button></div></div>`;
 }
-function wireCustom(r){document.getElementById('upBtn').onclick=()=>upload(r);document.getElementById('tgBtn').onclick=()=>toast('В продукте: откроется бот, ролик уже выбран');}
+function wireCustom(r){wireFiles(r);document.getElementById('upBtn').onclick=()=>upload(r);document.getElementById('tgBtn').onclick=()=>toast('В продукте: откроется бот, ролик уже выбран');}
 
 function upload(r){
   document.getElementById('acts').style.display='none'; const u=document.getElementById('upl'); u.classList.add('on'); const pb=document.getElementById('upb'); let p=0;
