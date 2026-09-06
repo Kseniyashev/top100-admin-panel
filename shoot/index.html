@@ -64,10 +64,12 @@ h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
 
 /* tiles */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
-.tile{position:relative;border:0;border-radius:20px;padding:14px 16px 14px;min-height:190px;text-align:left;display:flex;flex-direction:column;gap:6px;background:var(--orange-t);color:var(--ink);transition:transform .15s,box-shadow .15s;overflow:hidden}
+.tile{position:relative;border:0;border-radius:20px;padding:14px 16px 14px;min-height:190px;text-align:left;display:flex;flex-direction:column;gap:6px;background:#fff;color:var(--ink);transition:transform .15s,box-shadow .15s;overflow:hidden}
 .tile:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(0,0,0,.12)}
-.tile .hd{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#b8461f}
-.tile .hd .no{font-family:var(--serif);font-size:22px;letter-spacing:0;text-transform:none;font-weight:400;color:var(--ink)}
+.tile .hd{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.tile .hd .no{font-family:var(--serif);font-size:22px;letter-spacing:0;text-transform:none;font-weight:400;color:var(--ink);position:relative;padding-left:14px}
+.tile .hd .no::before{content:"";position:absolute;left:0;top:9px;width:8px;height:8px;border-radius:50%;background:var(--orange)}
+.tile.done .hd .no::before,.tile.wait .hd .no::before{background:currentColor;opacity:.5}
 .tile .hd .len{margin-left:auto;font-weight:700;color:var(--ink2);text-transform:none;letter-spacing:0;white-space:nowrap}
 .tile .hd .fm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px}
 .tile h3{font-family:var(--serif);font-size:18px;line-height:1.15;flex:1;font-weight:400}
@@ -75,14 +77,14 @@ h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
 .tile .meta span{display:inline-flex;align-items:center;gap:4px}
 .tile .meta svg,.tile .ft svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-2px}
 .tile .ft{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--ink2);margin-top:2px}
-.tile .cta{font-weight:700;color:#b8461f}
+.tile .cta{font-weight:700;color:var(--ink)}
 .tile.done{background:var(--green);color:#fff}
 .tile.done .hd,.tile.done .hd .no,.tile.done .hd .len,.tile.done .meta,.tile.done .ft,.tile.done .cta{color:#fff}
 .tile .stamp{position:absolute;right:12px;top:12px;width:34px;height:34px;border-radius:50%;background:#fff;color:var(--green);display:grid;place-items:center;font-weight:700;font-size:18px;transform:scale(0);transition:transform .35s cubic-bezier(.2,1.6,.4,1)}
 .tile.done .stamp{transform:scale(1)}
 .tile.done .hd .len{margin-right:36px}
-.tile.redo{outline:3px solid var(--orange);outline-offset:-3px;background:#fff}
-.tile.redo .cta{color:#b8461f}
+.tile.redo{outline:3px solid var(--orange);outline-offset:-3px}
+.tile.redo .cta{color:#c4522a}
 .tile.wait{background:#f1f0ec;color:var(--muted)}
 .tile.wait .hd,.tile.wait .cta,.tile.wait .meta,.tile.wait .ft,.tile.wait .hd .no,.tile.wait .hd .len{color:var(--muted)}
 .tile.wait h3{color:var(--ink2)}
@@ -123,7 +125,7 @@ h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
 .setup div b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:3px}
 .setup div.wide{grid-column:1/-1}
 .setup ul{margin:0;padding-left:16px}
-.hook{background:var(--orange-t);border-radius:16px;padding:14px 16px;font-family:var(--serif);font-size:22px;line-height:1.2;display:flex;gap:10px;align-items:flex-start}
+.hook{background:var(--beige-t);border-radius:16px;padding:14px 16px;font-family:var(--serif);font-size:22px;line-height:1.2;display:flex;gap:10px;align-items:flex-start;border-left:5px solid var(--orange)}
 .hook .pen{margin-top:2px}
 .pen{border:0;background:rgba(255,255,255,.7);border-radius:99px;font-size:12px;padding:4px 10px;color:var(--ink2);flex:none;font-family:var(--sans)}
 .pen:hover{background:#fff}
@@ -135,11 +137,11 @@ textarea.inp{min-height:70px;resize:vertical}
 .beat:first-child{border-top:0}
 .beat .t{font-variant-numeric:tabular-nums;color:var(--muted);font-size:12.5px;padding-top:3px}
 .beat .tag{display:inline-block;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;padding:1px 7px;border-radius:99px;margin-right:6px;vertical-align:middle}
-.beat.turn{background:#fff7f3}
-.beat.turn .tag{background:var(--orange-t);color:#b8461f}
+.beat.turn{background:#faf9f6}
+.beat.turn .tag{background:var(--orange);color:#fff}
 .beat.cta .tag{background:var(--blue-t);color:#3350bd}
-.beat.hook .tag{background:var(--gray-t);color:var(--ink2)}
-.beat .note{display:block;font-size:12.5px;color:#b8461f;margin-top:3px}
+.beat.bhook .tag{background:var(--gray-t);color:var(--ink2)}
+.beat .note{display:block;font-size:12.5px;color:var(--muted);margin-top:3px}
 .beat .pen{background:var(--gray-t);opacity:.6}
 .beat:hover .pen{opacity:1}
 .overlay{display:flex;flex-direction:column;gap:6px}
@@ -153,8 +155,8 @@ textarea.inp{min-height:70px;resize:vertical}
 .take.on .cb{background:var(--green);border-color:var(--green)}
 .take i{font-style:normal;font-family:var(--serif);font-size:16px}
 .take small{display:block;color:var(--muted);font-size:12px}
-.warn{background:var(--orange-t);border-radius:14px;padding:12px 14px;font-size:14px;color:#8a3a1c}
-.warn b{display:block;margin-bottom:2px;color:#b8461f}
+.warn{background:var(--beige-t);border-left:5px solid var(--orange);border-radius:14px;padding:12px 14px;font-size:14px;color:var(--ink2)}
+.warn b{display:block;margin-bottom:2px;color:var(--ink)}
 .okbox{background:var(--green-t);border-radius:14px;padding:12px 14px;font-size:14px;color:#1f6f48}
 .okbox b{display:block}
 .files{display:flex;flex-direction:column;gap:6px}
@@ -351,7 +353,7 @@ function openSheet(id){
     <div class="wide"><b>Фон</b>${esc((s.background||'').split(' — ')[0])}</div>
     ${(s.movement||[]).length?`<div class="wide"><b>Движение и темп</b><ul>${s.movement.map(m=>`<li>${esc(m)}</li>`).join('')}</ul></div>`:''}</div></div>`;
   h+=`<div class="sec"><h3>Хук · первые 3 секунды <small>можно поправить</small></h3><div class="hook" id="hookV"><span>${esc(hook(r))}${ed.hook?'<span class="mine">ваша правка</span>':''}</span><button class="pen" id="editH">изменить</button></div></div>`;
-  h+=`<div class="sec"><h3>Сценарий · ${r.beats.length} ${plural(r.beats.length,'реплика','реплики','реплик')} <small>нажмите на реплику, чтобы поправить</small></h3><div class="beats">${r.beats.map((b,i)=>`<div class="beat ${b.turn?'turn':''} ${b.cta?'cta':''} ${b.hook?'hook':''}" data-i="${i}"><span class="t">${b.t} с</span><span>${b.turn?'<span class="tag">поворот</span>':b.cta?'<span class="tag">призыв</span>':b.hook?'<span class="tag">хук</span>':''}${esc(line(r,i))}${ed.beats&&ed.beats[i]?'<span class="mine">ваша правка</span>':''}${b.turn?`<span class="note">${esc(b.note||'Пауза после, не торопить.')}</span>`:''}</span><button class="pen" data-edit="${i}">✎</button></div>`).join('')}</div></div>`;
+  h+=`<div class="sec"><h3>Сценарий · ${r.beats.length} ${plural(r.beats.length,'реплика','реплики','реплик')} <small>нажмите на реплику, чтобы поправить</small></h3><div class="beats">${r.beats.map((b,i)=>`<div class="beat ${b.turn?'turn':''} ${b.cta?'cta':''} ${b.hook?'bhook':''}" data-i="${i}"><span class="t">${b.t} с</span><span>${b.turn?'<span class="tag">поворот</span>':b.cta?'<span class="tag">призыв</span>':b.hook?'<span class="tag">хук</span>':''}${esc(line(r,i))}${ed.beats&&ed.beats[i]?'<span class="mine">ваша правка</span>':''}${b.turn?`<span class="note">${esc(b.note||'Пауза после, не торопить.')}</span>`:''}</span><button class="pen" data-edit="${i}">✎</button></div>`).join('')}</div></div>`;
   if(r.overlay.length) h+=`<div class="sec"><h3>На экране появится <small>говорить это не нужно</small></h3><div class="overlay">${r.overlay.map(o=>`<div><span>${o.t} с</span><b>${esc(o.text)}</b></div>`).join('')}</div></div>`;
   if(r.takes.length) h+=`<div class="sec"><h3>Хук-дубли · ${r.takes.length} <small>та же точка и свет, 10–15 секунд каждый, сразу после ролика</small></h3><div class="takes">${r.takes.map((tk,i)=>`<div class="take ${td[i]?'on':''}" data-take="${i}"><span class="cb">${td[i]?'✓':''}</span><span><i>${esc(tk)}</i><small>${td[i]?'снят':'отметьте, когда сняли'}</small></span></div>`).join('')}</div></div>`;
   const f=files(r);
