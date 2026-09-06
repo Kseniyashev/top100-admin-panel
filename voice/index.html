@@ -130,7 +130,8 @@ h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
 .dim{position:fixed;inset:0;background:rgba(25,22,18,.4);display:none;z-index:10}
 .dim.on{display:block}
 .sheet{position:fixed;left:50%;bottom:0;transform:translate(-50%,105%);width:min(680px,100%);max-height:92vh;background:#fff;border-radius:26px 26px 0 0;z-index:11;display:flex;flex-direction:column;transition:transform .28s cubic-bezier(.2,.8,.2,1);box-shadow:0 -20px 60px rgba(0,0,0,.2)}
-.sheet.on{transform:translate(-50%,0)}
+.sheet{visibility:hidden;transition:transform .28s cubic-bezier(.2,.8,.2,1),visibility 0s .28s}
+.sheet.on{transform:translate(-50%,0);visibility:visible;transition-delay:0s}
 @media (min-width:760px){.sheet{bottom:auto;top:50%;transform:translate(-50%,60%);border-radius:26px;max-height:88vh}.sheet.on{transform:translate(-50%,-50%)}}
 @media (prefers-reduced-motion:reduce){.sheet,.bar .fill,.tile,.badge{transition:none}.done-btn.ready,.tile.pop{animation:none}}
 .sheet .hd{padding:18px 24px 12px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);flex-wrap:wrap}

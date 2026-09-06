@@ -88,6 +88,39 @@ h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
 .tile.wait{background:#f1f0ec;color:var(--muted)}
 .tile.wait .hd,.tile.wait .cta,.tile.wait .meta,.tile.wait .ft,.tile.wait .hd .no,.tile.wait .hd .len{color:var(--muted)}
 .tile.wait h3{color:var(--ink2)}
+.tile .x{position:absolute;right:10px;top:10px;width:28px;height:28px;border-radius:50%;border:0;background:var(--gray-t);color:var(--ink2);font-size:15px;line-height:1;display:grid;place-items:center;opacity:.5;transition:opacity .15s;z-index:2}
+.tile:hover .x,.tile:focus-within .x{opacity:1}
+.tile .x:hover{background:#e6e4de;color:var(--ink)}
+.tile.done .x{background:rgba(255,255,255,.3);color:#fff}
+.tile.done .stamp{right:44px}
+.tile.done .hd .len{display:none}
+.tile.done .hd .fm{margin-right:70px}
+.tile .hd .len{margin-right:34px}
+.tile.cancel{background:var(--gray-t);color:var(--muted)}
+.tile.cancel h3{text-decoration:line-through;color:var(--muted)}
+.tile.cancel .hd,.tile.cancel .hd .no,.tile.cancel .cta,.tile.cancel .ft,.tile.cancel .meta{color:var(--muted)}
+.tile.cancel .why{font-size:12px;font-style:italic;color:var(--ink2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tile.add{background:transparent;border:2px dashed #cfcdc7;color:var(--muted);align-items:center;justify-content:center;gap:6px}
+.tile.add:hover{border-color:var(--ink2);color:var(--ink2);box-shadow:none}
+.tile.add .plus{font-family:var(--serif);font-size:44px;line-height:1}
+.tile.add span{font-size:13px}
+.tile.custom .hd .fm{color:#3350bd}
+.confirm{position:fixed;inset:0;z-index:25;display:none;place-items:center;padding:20px;background:rgba(25,22,18,.4)}
+.confirm.on{display:grid}
+.confirm .in{width:min(460px,100%);background:#fff;border-radius:22px;padding:22px 22px 18px;display:flex;flex-direction:column;gap:12px;box-shadow:0 30px 80px rgba(0,0,0,.25)}
+.confirm h2{font-family:var(--serif);font-size:22px;line-height:1.15}
+.confirm .sub{font-size:13px;color:var(--muted)}
+.f{display:grid;grid-template-columns:110px 1fr;gap:8px 14px}
+.f .k{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;padding-top:9px}
+.f .k small{display:block;font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:#b3b2ad}
+.drop{border:2px dashed #cfcdc7;border-radius:14px;padding:14px;text-align:center;color:var(--muted);font-size:13.5px;cursor:pointer}
+.drop:hover{border-color:var(--ink2);color:var(--ink2)}
+.drop svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--gray-t);border-radius:99px;padding:5px 10px;font-size:12.5px}
+.chip svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}
+.chip b{font-weight:700}
+.sect.gray{color:var(--muted)}
 .tile.pop{animation:pop .5s cubic-bezier(.2,1.4,.4,1)}
 @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.06)}100%{transform:scale(1)}}
 .sect{grid-column:1/-1;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:700;margin-top:10px;display:flex;align-items:center;gap:10px}
@@ -108,7 +141,8 @@ h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
 .dim{position:fixed;inset:0;background:rgba(25,22,18,.4);display:none;z-index:10}
 .dim.on{display:block}
 .sheet{position:fixed;left:50%;bottom:0;transform:translate(-50%,105%);width:min(720px,100%);max-height:94vh;background:#fff;border-radius:26px 26px 0 0;z-index:11;display:flex;flex-direction:column;transition:transform .28s cubic-bezier(.2,.8,.2,1);box-shadow:0 -20px 60px rgba(0,0,0,.2)}
-.sheet.on{transform:translate(-50%,0)}
+.sheet{visibility:hidden;transition:transform .28s cubic-bezier(.2,.8,.2,1),visibility 0s .28s}
+.sheet.on{transform:translate(-50%,0);visibility:visible;transition-delay:0s}
 @media (min-width:780px){.sheet{bottom:auto;top:50%;transform:translate(-50%,60%);border-radius:26px;max-height:90vh}.sheet.on{transform:translate(-50%,-50%)}}
 @media (prefers-reduced-motion:reduce){.sheet,.bar .fill,.tile,.badge{transition:none}.done-btn.ready,.tile.pop{animation:none}}
 .sheet .hd{padding:18px 24px 12px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);flex-wrap:wrap}
@@ -223,6 +257,8 @@ canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:50}
   .setup{grid-template-columns:1fr}
   .stat .n{font-size:36px}
   .beat{grid-template-columns:44px 1fr auto;padding:10px 10px;font-size:14px}
+  .f{grid-template-columns:1fr;gap:2px 0}
+  .f .k{padding-top:6px;margin-top:6px}
 }
 </style>
 
@@ -265,6 +301,7 @@ canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:50}
 <div class="sheet" id="sheet" role="dialog" aria-modal="true"></div>
 <div class="prompter" id="prompter"></div>
 <div class="clap" id="clap"><div>Снято!</div></div>
+<div class="confirm" id="confirm"></div>
 <div class="toast" id="toast"></div>
 <div class="fin" id="fin"></div>
 <canvas id="cf"></canvas>
@@ -284,24 +321,25 @@ const REDO_NOTE={'R-03':'В записи эхо от пустого кабине
 const TAKES_INIT={'R-01':[true,true]};
 
 let state={}; try{state=JSON.parse(localStorage.getItem('shoot-w36')||'{}')}catch(e){state={}}
-state.st=state.st||{}; state.files=state.files||{}; state.takes=state.takes||{}; state.edits=state.edits||{}; state.stop=state.stop||'dom';
+state.st=state.st||{}; state.files=state.files||{}; state.takes=state.takes||{}; state.edits=state.edits||{}; state.stop=state.stop||'dom'; state.why=state.why||{}; state.custom=state.custom||[];
 function save(){try{localStorage.setItem('shoot-w36',JSON.stringify(state))}catch(e){}}
 
+const ALL=()=>REELS.concat(state.custom.map(c=>({...c,custom:true,takes:[],beats:[],overlay:[],setup:null,fmt:'Ваш ролик',len:c.len||60,difficulty:null})));
 const st=r=>state.st[r.id]||INIT[r.id]||'todo';
 const files=r=>(state.files[r.id]||[]).concat(FILES[r.id]||[]);
 const takesDone=r=>r.takes.map((_,i)=>(state.takes[r.id]||TAKES_INIT[r.id]||[])[i]===true);
 const hook=r=>(state.edits[r.id]&&state.edits[r.id].hook)||r.hook;
 const line=(r,i)=>(state.edits[r.id]&&state.edits[r.id].beats&&state.edits[r.id].beats[i])||r.beats[i].line;
-const shootable=()=>REELS.filter(r=>st(r)!=='wait');
+const shootable=()=>ALL().filter(r=>!['wait','cancel'].includes(st(r)));
 const doneList=()=>shootable().filter(r=>st(r)==='done');
-const byLoc=l=>REELS.filter(r=>r.loc===l);
+const byLoc=l=>ALL().filter(r=>r.loc===l&&st(r)!=='cancel');
 
 const BADGES=[[1,'Первый дубль','1'],[50,'Половина','½'],['loc','Точка закрыта','⌂'],[100,'Съёмочный день закрыт','✓']];
 let lastPct=null;
 function renderHero(){
   const sh=shootable(), dn=doneList(); const pct=sh.length?Math.round(dn.length/sh.length*100):0;
   const left=sh.filter(r=>st(r)!=='done').reduce((a,r)=>a+r.len,0);
-  const tk=REELS.reduce((a,r)=>a+r.takes.length,0), tkd=REELS.reduce((a,r)=>a+takesDone(r).filter(Boolean).length,0);
+  const tk=ALL().reduce((a,r)=>a+r.takes.length,0), tkd=ALL().reduce((a,r)=>a+takesDone(r).filter(Boolean).length,0);
   document.getElementById('stDone').innerHTML=`${dn.length}<small>из ${sh.length}</small>`;
   document.getElementById('stMin').innerHTML=`${Math.round(left/60*10)/10}<small>мин</small>`.replace('.',',');
   document.getElementById('stTakes').innerHTML=`${tkd}<small>из ${tk}</small>`;
@@ -323,27 +361,30 @@ function renderRoute(){
 }
 function tileHTML(r){
   const t=st(r), td=takesDone(r);
-  const cls=t==='done'?'done':t==='redo'?'redo':t==='wait'?'wait':'';
-  const cta=t==='done'?'Снято':t==='redo'?'Переснять ›':t==='wait'?'Сценарий готовится':'Открыть сценарий ›';
+  const cls=(t==='done'?'done':t==='redo'?'redo':t==='wait'?'wait':t==='cancel'?'cancel':'')+(r.custom?' custom':'');
+  const cta=t==='done'?'Снято':t==='redo'?'Переснять ›':t==='wait'?'Сценарий готовится':t==='cancel'?'Удалено':r.custom?'Открыть ›':'Открыть сценарий ›';
   const d=DIFF[r.difficulty]||0;
-  return `<button class="tile ${cls}" data-id="${r.id}"><span class="stamp">✓</span>
-    <span class="hd"><span class="no">${r.id.replace('R-','')}</span><span class="fm" title="${esc(r.fmt)}">${esc(r.fmt)}</span><span class="len">${r.len} с</span></span>
+  return `<button class="tile ${cls}" data-id="${r.id}">${t!=='cancel'?`<span class="x" data-x="${r.id}" role="button" aria-label="Удалить" title="Удалить этот ролик">✕</span>`:''}<span class="stamp">✓</span>
+    <span class="hd"><span class="no">${r.custom?'+':r.id.replace('R-','')}</span><span class="fm" title="${esc(r.fmt)}">${esc(r.fmt)}</span><span class="len">${r.len} с</span></span>
     <h3>${esc(r.topic)}</h3>
     <span class="meta">${d?`<span title="сложность">${'<span class="diff">'+[1,2,3].map(i=>`<i class="${i<=d?'on':''}"></i>`).join('')+'</span>'} ${r.difficulty}</span>`:''}${r.takes.length?`<span>${ICO.takes}хук-дубли ${td.filter(Boolean).length}/${r.takes.length}</span>`:''}</span>
-    <span class="ft"><span>${t==='done'?`${ICO.cam} ${files(r).length} ${plural(files(r).length,'файл','файла','файлов')}`:t==='wait'?'ждём голосовое':t==='redo'?'нужен второй дубль':`${r.beats.length} реплик`}</span><span class="cta">${cta}</span></span></button>`;
+    ${t==='cancel'?`<span class="why">${esc(state.why[r.id]||'')}</span>`:''}<span class="ft"><span>${t==='cancel'?'':t==='done'?`${ICO.cam} ${files(r).length} ${plural(files(r).length,'файл','файла','файлов')}`:t==='wait'?'ждём голосовое':t==='redo'?'нужен второй дубль':r.custom?'ваш ролик':`${r.beats.length} реплик`}</span><span class="cta">${cta}</span></span></button>`;
 }
 function renderGrid(){
   let h='';
-  ['dom','kab'].forEach(l=>{const list=byLoc(l);h+=`<div class="sect" data-loc="${l}">Точка ${LOC[l].n} · ${LOC[l].short} · ${list.length} <span class="sd">· ${LOC[l].setup}</span></div>`+list.map(tileHTML).join('')});
+  ['dom','kab'].forEach(l=>{const list=byLoc(l);h+=`<div class="sect" data-loc="${l}">Точка ${LOC[l].n} · ${LOC[l].short} · ${list.length} <span class="sd">· ${LOC[l].setup}</span></div>`+list.map(tileHTML).join('')+`<button class="tile add" data-add="${l}"><span class="plus">+</span><span>Свой ролик</span></button>`});
+  const canc=ALL().filter(r=>st(r)==='cancel'); if(canc.length) h+=`<div class="sect gray">Удалено · ${canc.length}</div>`+canc.map(tileHTML).join('');
   document.getElementById('grid').innerHTML=h;
 }
 
 // ── карточка ──
 let cur=null;
 function openSheet(id){
-  cur=REELS.find(r=>r.id===id); const r=cur, t=st(r), td=takesDone(r), ed=state.edits[r.id]||{};
+  cur=ALL().find(r=>r.id===id); const r=cur, t=st(r), td=takesDone(r), ed=state.edits[r.id]||{};
   let h=`<div class="hd"><span class="no">${r.id.replace('R-','')}</span><span class="meta">${esc(r.fmt)} · <b>${r.len} с</b> · точка ${LOC[r.loc].n}, ${LOC[r.loc].short}${r.difficulty?' · '+r.difficulty:''}</span><button class="x" id="closeS" aria-label="Закрыть">✕</button></div><div class="bd">
     <h2 class="topic">${esc(r.topic)}</h2>`;
+  if(t==='cancel'){h+=`<div class="warn"><b>Вы удалили этот ролик.</b> Причина: «${esc(state.why[r.id]||'')}». Мы увидим это у себя.</div><div class="actions"><button class="btn ghost sm" id="undo">Вернуть</button></div></div>`;show(h);document.getElementById('undo').onclick=()=>{state.st[r.id]='todo';delete state.why[r.id];save();closeSheet();renderAll()};return;}
+  if(r.custom){h+=customSheet(r,t);show(h);wireCustom(r);return;}
   if(t==='wait'){h+=`<div class="warn"><b>Сценарий ещё готовится.</b> Голосовое на эту тему не записано, поэтому сценария пока нет. Запишите его в «Записях недели», и карточка появится здесь сама.</div></div>`;show(h);return;}
   if(t==='redo') h+=`<div class="warn"><b>Нужен второй дубль.</b> ${esc(REDO_NOTE[r.id]||'')}</div>`;
   if(t==='done') h+=`<div class="okbox"><b>Снято, файлы у нас.</b> Хотите добавить дубль — загрузите ещё.</div>`;
@@ -377,8 +418,47 @@ function openSheet(id){
 function show(h){const sh=document.getElementById('sheet'); sh.innerHTML=h; sh.classList.add('on'); document.getElementById('dim').classList.add('on'); document.getElementById('closeS').onclick=closeSheet;}
 function closeSheet(){document.getElementById('sheet').classList.remove('on');document.getElementById('dim').classList.remove('on')}
 document.getElementById('dim').onclick=closeSheet;
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSheet();closePrompter()}});
-document.getElementById('grid').addEventListener('click',e=>{const b=e.target.closest('.tile');if(b)openSheet(b.dataset.id)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSheet();closePrompter();document.getElementById('confirm').classList.remove('on')}});
+document.getElementById('grid').addEventListener('click',e=>{const x=e.target.closest('.x');if(x){e.stopPropagation();openDelete(x.dataset.x);return}const a=e.target.closest('.tile.add');if(a){openAdd(a.dataset.add);return}const b=e.target.closest('.tile');if(b)openSheet(b.dataset.id)});
+function openDelete(id){
+  const r=ALL().find(x=>x.id===id); if(!r) return; const c=document.getElementById('confirm');
+  c.innerHTML=`<div class="in"><h2>Расскажите, почему хотите удалить этот ролик?</h2><div class="sub">${esc(r.topic)}</div>
+    <textarea class="inp" id="dWhy" placeholder="Например: не хочу это снимать / тема уже не актуальна / хук не мой"></textarea>
+    <div class="actions"><button class="btn sm" id="dGo" disabled>Удалить</button><button class="btn ghost sm" id="dNo">Отменить</button></div></div>`;
+  c.classList.add('on'); const ta=document.getElementById('dWhy'); ta.focus();
+  ta.oninput=()=>{document.getElementById('dGo').disabled=ta.value.trim().length<3};
+  document.getElementById('dNo').onclick=()=>c.classList.remove('on'); c.onclick=e=>{if(e.target===c)c.classList.remove('on')};
+  document.getElementById('dGo').onclick=()=>{state.why[r.id]=ta.value.trim();state.st[r.id]='cancel';save();c.classList.remove('on');renderAll();toast('Ролик удалён и ушёл вниз. Мы это увидим у себя')};
+}
+let pendingFiles=[];
+function openAdd(loc){
+  pendingFiles=[];
+  const h=`<div class="hd"><span class="no">+</span><span class="meta">свой ролик · точка ${LOC[loc].n}, ${LOC[loc].short}</span><button class="x" id="closeS" aria-label="Закрыть">✕</button></div><div class="bd">
+    <div class="f"><span class="k">Название</span><div><input class="inp" id="nTitle" placeholder="О чём ролик — двумя-пятью словами"></div>
+    <span class="k">Хук<small>первая фраза</small></span><div><input class="inp" id="nHook" placeholder="С чего начинается — как скажете в камеру"></div>
+    <span class="k">Описание</span><div><textarea class="inp" id="nDesc" style="min-height:110px" placeholder="Опишите, как видите ролик, чтобы мы правильно его смонтировали: что происходит в кадре, где поворот, чем заканчивается, что показать текстом"></textarea></div>
+    <span class="k">Файлы<small>видео, фото</small></span><div><div class="drop" id="nDrop">${ICO.up} Нажмите, чтобы приложить видео или фото<br><span style="font-size:12px">можно несколько · или отправьте боту после</span></div><div class="chips" id="nChips"></div></div></div>
+    <div class="actions"><button class="btn" id="nOk" disabled>Добавить ролик</button><button class="btn ghost" id="nNo">Отмена</button></div><div class="hint">Ролик появится у нас в плане недели. Сценарий под него не нужен — монтируем по вашему описанию.</div></div>`;
+  show(h); document.getElementById('nNo').onclick=closeSheet;
+  document.getElementById('nTitle').oninput=e=>{document.getElementById('nOk').disabled=e.target.value.trim().length<3};
+  document.getElementById('nDrop').onclick=()=>{const n=pendingFiles.length+1;const now=new Date();pendingFiles.push([`0:${40+Math.floor(Math.random()*20)}`,`IMG_45${20+n}.MOV`,`${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`]);document.getElementById('nChips').innerHTML=pendingFiles.map(f=>`<span class="chip">${ICO.cam}<b>${f[1]}</b> ${f[0]}</span>`).join('');};
+  document.getElementById('nOk').onclick=()=>{
+    const n=state.custom.length+1, id=`K-${n}`;
+    state.custom.push({id,loc,topic:document.getElementById('nTitle').value.trim(),hook:document.getElementById('nHook').value.trim(),desc:document.getElementById('nDesc').value.trim(),date:'2026-09-06',wd:'вс'});
+    if(pendingFiles.length){state.files[id]=pendingFiles.slice();state.st[id]='done';}
+    save(); closeSheet(); renderAll(); toast(pendingFiles.length?'Ролик добавлен и уже снят. Мы это увидим':'Ролик добавлен. Загрузите видео, когда снимете');
+  };
+}
+function customSheet(r,t){
+  const f=files(r);
+  return `${t==='done'?'<div class="okbox"><b>Снято, файлы у нас.</b> Смонтируем по вашему описанию.</div>':''}
+    <div class="sec"><h3>Хук · первые 3 секунды</h3><div class="hook"><span>${esc(r.hook||'—')}</span></div></div>
+    <div class="sec"><h3>Как вы видите ролик</h3><div class="setup"><div class="wide">${esc(r.desc||'—')}</div></div></div>
+    ${f.length?`<div class="sec"><h3>Ваши файлы</h3><div class="files">${f.map(x=>`<div class="file"><span class="th">${x[0]}</span><span>${esc(x[1])}</span><span class="w">${x[2]}</span></div>`).join('')}</div></div>`:''}
+    <div class="uploading" id="upl">Загружаем 2 видео… <div class="pb"><i id="upb"></i></div></div>
+    <div class="actions" id="acts"><button class="btn up" id="upBtn">${ICO.up}${t==='done'?'Загрузить ещё':'Загрузить видео'}</button><button class="btn ghost" id="tgBtn">${ICO.tg}Через бота</button></div></div>`;
+}
+function wireCustom(r){document.getElementById('upBtn').onclick=()=>upload(r);document.getElementById('tgBtn').onclick=()=>toast('В продукте: откроется бот, ролик уже выбран');}
 
 function upload(r){
   document.getElementById('acts').style.display='none'; const u=document.getElementById('upl'); u.classList.add('on'); const pb=document.getElementById('upb'); let p=0;
@@ -421,7 +501,7 @@ function closePrompter(){pr.on=false;cancelAnimationFrame(pr.raf);document.getEl
 // ── готово ──
 document.getElementById('doneBtn').onclick=()=>{
   const sh=shootable(), dn=doneList(); if(sh.length!==dn.length) return;
-  const nf=REELS.reduce((a,r)=>a+files(r).length,0);
+  const nf=ALL().reduce((a,r)=>a+files(r).length,0);
   document.getElementById('fin').innerHTML=`<div class="in"><h1>Съёмочный день <em>закрыт</em>.<br>Спасибо, Катя!</h1>
     <div class="row"><div><div class="n">${dn.length}</div><div class="k">роликов</div></div><div><div class="n">${nf}</div><div class="k">файлов</div></div><div><div class="n">${Object.keys(state.edits).filter(k=>state.edits[k].hook||(state.edits[k].beats&&Object.keys(state.edits[k].beats).length)).length}</div><div class="k">ваших правок</div></div></div>
     <p>Дальше наша работа: монтаж, субтитры, обложки. Ваши правки в хуках и репликах команда увидит рядом с файлами.</p>
