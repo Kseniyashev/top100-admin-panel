@@ -1,3 +1,4 @@
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Записи недели</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,500;1,400&display=swap">
@@ -217,18 +218,80 @@ select.inp{appearance:none;background:#fff}
 .fin .next b{color:var(--ink)}
 canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:50}
 :focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* ── mobile bar ── */
+.mbar{display:none}
 @media (max-width:600px){
-  .hero h1{font-size:28px}
-  .done-btn{position:static;margin-top:16px;width:100%;justify-content:center}
-  .grid{grid-template-columns:repeat(2,1fr);gap:9px}
-  .tile{min-height:160px;padding:13px 12px 11px;border-radius:16px}
-  .tile h3{font-size:17px}
-  .f{grid-template-columns:1fr;gap:2px 0}
-  .f .k{margin-top:8px}
-  .stat .n{font-size:36px}
-  .bar .m i{display:none}
-  .badges{margin-top:16px}
   .top{flex-wrap:wrap}
+  body{padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+  .wrap{padding:12px 12px 20px}
+  .top{margin-bottom:10px}
+  .top .dl{width:100%;justify-content:center;font-size:12.5px;padding:7px 10px;flex-wrap:wrap}
+  .logo span{display:none}
+  .hero{padding:18px 16px 16px;border-radius:20px}
+  .hero h1{font-size:26px}
+  .hero p{font-size:13.5px;margin-top:6px}
+  .done-btn{display:none}
+  .stats{gap:14px;margin-top:14px}
+  .stat .n{font-size:30px}
+  .stat .n small{font-size:12px}
+  .stat .k{font-size:10.5px}
+  .bar{height:14px;margin-top:14px}
+  .bar .fill::after{width:22px;height:22px;top:-4px;border-width:3px}
+  .bar .m i{display:none}
+  .badges{margin-top:14px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-left:-16px;margin-right:-16px;padding:0 16px}
+  .badges::-webkit-scrollbar{display:none}
+  .badge{white-space:nowrap;font-size:12px;flex:none}
+  .legend{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:12px -12px 8px;padding:0 12px;gap:5px}
+  .legend::-webkit-scrollbar{display:none}
+  .lg{white-space:nowrap;flex:none;font-size:12px}
+  .legend .sp{display:none}
+  .legend .reset{flex:none;white-space:nowrap}
+  .grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .tile{min-height:150px;padding:12px 12px 10px;border-radius:16px;gap:5px}
+  .tile h3{font-size:16px;line-height:1.15}
+  .tile .x{width:32px;height:32px;right:6px;top:6px;opacity:.7}
+  .tile .stamp{width:30px;height:30px;right:8px;top:8px;font-size:15px}
+  .tile.done .stamp{right:44px}
+  .sect{font-size:11px;margin-top:8px}
+  .sect .sd{display:none}
+  .tips{padding:16px 16px;border-radius:16px;margin-top:16px}
+  .tips h2{font-size:18px}
+  .tips ol{font-size:13.5px;padding-left:18px}
+  /* sheet */
+  .sheet{width:100%;max-height:calc(100dvh - 24px);border-radius:22px 22px 0 0;left:0;transform:translate(0,105%)}
+  .sheet.on{transform:translate(0,0)}
+  .sheet::before{content:"";display:block;width:40px;height:4px;border-radius:99px;background:#d9d7d1;margin:10px auto 0}
+  .sheet .hd{padding:10px 16px 10px;gap:8px}
+  .sheet .hd .x{width:36px;height:36px}
+  .sheet .bd{padding:4px 16px 0;gap:14px;-webkit-overflow-scrolling:touch}
+  .sheet .bd > .actions:last-of-type, .sheet .bd > #acts{position:sticky;bottom:0;background:#fff;margin:0 -16px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);z-index:3}
+  .sheet .bd > .hint:last-child{display:none}
+  .actions .btn{flex:1 1 auto;justify-content:center;padding:14px 16px}
+  .actions .lnk{width:100%;text-align:center}
+  .inp{font-size:16px}
+  .f{grid-template-columns:1fr;gap:2px 0}
+  .f .k{padding-top:8px;margin-top:4px}
+  .f .v h2{font-size:21px}
+  .confirm{place-items:end center;padding:0}
+  .confirm .in{border-radius:22px 22px 0 0;padding-bottom:calc(18px + env(safe-area-inset-bottom));width:100%}
+  .confirm .actions .btn{flex:1;justify-content:center}
+  .toast{bottom:calc(96px + env(safe-area-inset-bottom));max-width:92vw;white-space:normal;text-align:center;border-radius:16px}
+  .sheet .hd{position:relative;padding-right:60px}
+  .sheet .hd .x{position:absolute;right:12px;top:12px;margin:0}
+  .hero h1 em{white-space:nowrap}
+  .top .dl > span:nth-child(2){display:none}
+  .hero h1{font-size:24px}
+  /* bottom bar */
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:9;background:#fff;border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom));align-items:center;gap:12px;box-shadow:0 -10px 30px rgba(0,0,0,.08)}
+  .mbar .mb-txt{flex:1;min-width:0;line-height:1.2}
+  .mbar .mb-txt b{display:block;font-family:var(--serif);font-size:20px;font-weight:400}
+  .mbar .mb-txt span{font-size:12px;color:var(--muted);display:block}
+  .mbar .mb-bar{height:4px;border-radius:99px;background:var(--gray-t);margin-top:6px;overflow:hidden}
+  .mbar .mb-bar i{display:block;height:100%;background:var(--green);width:0;transition:width .5s}
+  .mbar .btn{padding:13px 18px;font-size:14px;flex:none}
+  .mbar .btn:disabled{opacity:1;background:var(--gray-t);color:var(--muted)}
+  .mbar .btn.ready{background:var(--green);animation:pulse 1.6s infinite}
 }
 </style>
 
@@ -277,6 +340,7 @@ canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:50}
   </section>
 </div>
 
+<div class="mbar" id="mbar"><div class="mb-txt"><b id="mbDone"></b><span id="mbSub"></span><div class="mb-bar"><i id="mbFill"></i></div></div><button class="btn" id="mbBtn"></button></div>
 <div class="dim" id="dim"></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true"></div>
 <div class="confirm" id="confirm"></div>
@@ -351,6 +415,8 @@ function renderHero(){
   btn.classList.toggle('ready',todo===0&&req.length>0);
   btn.innerHTML=todo===0?`<span>Готово, всё записала</span> →`:`<span>Готово</span><small>ещё ${todo} ${plural(todo,'запись','записи','записей')}</small>`;
   btn.disabled=todo!==0;
+  const mb=document.getElementById('mbBtn'); mb.disabled=btn.disabled; mb.classList.toggle('ready',!btn.disabled); mb.textContent=todo===0?'Готово →':'Готово';
+  document.getElementById('mbDone').textContent=`${done.length} из ${req.length} записано`; document.getElementById('mbSub').textContent=todo===0?'всё записано, жмите «Готово»':`ещё ${todo} ${plural(todo,'запись','записи','записей')} · ≈ ${left%1?left.toFixed(1).replace('.',','):left} мин`; document.getElementById('mbFill').style.width=pct+'%';
   document.getElementById('topDl').innerHTML=late.length?`<span class="late">Срок вышел у ${late.length} ${plural(late.length,'записи','записей','записей')}</span><span>·</span><span>ближайший срок сегодня <b>18:00</b></span>`:`Ближайший срок: <b>сегодня 18:00</b>`;
   if(lastPct!==null&&pct>lastPct){const hit=BADGES.find(b=>lastPct<b[0]&&pct>=b[0]); if(hit&&hit[0]<100) toast(`${hit[2]} ${hit[1]}!`);}
   lastPct=pct;
@@ -491,6 +557,7 @@ function openDelete(id){
   c.onclick=e=>{if(e.target===c)c.classList.remove('on')};
   document.getElementById('dGo').onclick=()=>{state.why[s.id]=ta.value.trim();state.st[s.id]='cancel';save();c.classList.remove('on');renderAll();toast('Удалено и ушло вниз. Мы это увидим у себя');};
 }
+document.getElementById('mbBtn').onclick=()=>document.getElementById('doneBtn').click();
 document.getElementById('reset').onclick=()=>{state={st:{},files:{},topics:{},why:{},custom:[]};save();lastPct=null;renderAll();document.getElementById('fin').classList.remove('on')};
 
 // ── готово ──

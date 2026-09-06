@@ -1,3 +1,4 @@
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Съёмочный день</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,500;1,400&display=swap">
@@ -247,18 +248,111 @@ textarea.inp{min-height:70px;resize:vertical}
 @keyframes clap{0%{transform:scale(.6) rotate(-4deg);opacity:0}25%{transform:scale(1.05) rotate(-4deg);opacity:1}75%{opacity:1}100%{transform:scale(1) rotate(-4deg);opacity:0}}
 canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:50}
 :focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* ── mobile bar ── */
+.mbar{display:none}
 @media (max-width:600px){
-  .hero h1{font-size:28px}
-  .done-btn{position:static;margin-top:16px;width:100%;justify-content:center}
-  .grid{grid-template-columns:repeat(2,1fr);gap:9px}
-  .tile{min-height:170px;padding:12px 12px 11px;border-radius:16px}
-  .tile h3{font-size:16px}
-  .route{flex-direction:column}
+  .route{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 8px}
+  .stop{padding:10px 10px;gap:8px;border-radius:14px}
+  .stop .no{width:30px;height:30px;font-size:16px}
+  .stop .nm{font-size:12.5px;line-height:1.2}
+  .stop .sub{display:none}
+  .stop .cnt{font-size:20px}
+  .tile .hd .fm{display:none}
+  .tile .hd .len{margin-left:auto;margin-right:34px}
+  .tile.done .hd .len{display:inline;margin-right:70px}
+  .tile .meta{font-size:11px;gap:6px}
+  .tile .ft{font-size:12px}
+  .sheet h2.topic{font-size:20px}
   .setup{grid-template-columns:1fr}
-  .stat .n{font-size:36px}
-  .beat{grid-template-columns:44px 1fr auto;padding:10px 10px;font-size:14px}
+  .setup div{font-size:13px}
+  .hook{font-size:19px;padding:12px 14px}
+  .beat{grid-template-columns:40px 1fr auto;padding:10px 10px;font-size:14.5px;gap:8px}
+  .beat .pen{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;padding:0}
+  .take{padding:10px}
+  .prompter{padding:12px 14px calc(12px + env(safe-area-inset-bottom))}
+  .prompter .ph{font-size:12px}
+  .prompter .ph span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:55%}
+  .prompter .cur{font-size:clamp(26px,7.4vw,40px)}
+  .prompter .prev,.prompter .next{font-size:16px}
+  .prompter .ctl{gap:8px}
+  .prompter .ctl button{padding:14px 14px;flex:1;text-align:center}
+  .prompter .ctl button.play{flex:1.4}
+  .prompter .tm{font-size:22px;min-width:64px}
+  .drop{padding:12px}
+
+  body{padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+  .wrap{padding:12px 12px 20px}
+  .top{margin-bottom:10px}
+  .top .dl{width:100%;justify-content:center;font-size:12.5px;padding:7px 10px;flex-wrap:wrap}
+  .logo span{display:none}
+  .hero{padding:18px 16px 16px;border-radius:20px}
+  .hero h1{font-size:26px}
+  .hero p{font-size:13.5px;margin-top:6px}
+  .done-btn{display:none}
+  .stats{gap:14px;margin-top:14px}
+  .stat .n{font-size:30px}
+  .stat .n small{font-size:12px}
+  .stat .k{font-size:10.5px}
+  .bar{height:14px;margin-top:14px}
+  .bar .fill::after{width:22px;height:22px;top:-4px;border-width:3px}
+  .bar .m i{display:none}
+  .badges{margin-top:14px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-left:-16px;margin-right:-16px;padding:0 16px}
+  .badges::-webkit-scrollbar{display:none}
+  .badge{white-space:nowrap;font-size:12px;flex:none}
+  .legend{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:12px -12px 8px;padding:0 12px;gap:5px}
+  .legend::-webkit-scrollbar{display:none}
+  .lg{white-space:nowrap;flex:none;font-size:12px}
+  .legend .sp{display:none}
+  .legend .reset{flex:none;white-space:nowrap}
+  .grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .tile{min-height:150px;padding:12px 12px 10px;border-radius:16px;gap:5px}
+  .tile h3{font-size:16px;line-height:1.15}
+  .tile .x{width:32px;height:32px;right:6px;top:6px;opacity:.7}
+  .tile .stamp{width:30px;height:30px;right:8px;top:8px;font-size:15px}
+  .tile.done .stamp{right:44px}
+  .sect{font-size:11px;margin-top:8px}
+  .sect .sd{display:none}
+  .tips{padding:16px 16px;border-radius:16px;margin-top:16px}
+  .tips h2{font-size:18px}
+  .tips ol{font-size:13.5px;padding-left:18px}
+  /* sheet */
+  .sheet{width:100%;max-height:calc(100dvh - 24px);border-radius:22px 22px 0 0;left:0;transform:translate(0,105%)}
+  .sheet.on{transform:translate(0,0)}
+  .sheet::before{content:"";display:block;width:40px;height:4px;border-radius:99px;background:#d9d7d1;margin:10px auto 0}
+  .sheet .hd{padding:10px 16px 10px;gap:8px}
+  .sheet .hd .x{width:36px;height:36px}
+  .sheet .bd{padding:4px 16px 0;gap:14px;-webkit-overflow-scrolling:touch}
+  .sheet .bd > .actions:last-of-type, .sheet .bd > #acts{position:sticky;bottom:0;background:#fff;margin:0 -16px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);z-index:3}
+  .sheet .bd > .hint:last-child{display:none}
+  .actions .btn{flex:1 1 auto;justify-content:center;padding:14px 16px}
+  .actions .lnk{width:100%;text-align:center}
+  .inp{font-size:16px}
   .f{grid-template-columns:1fr;gap:2px 0}
-  .f .k{padding-top:6px;margin-top:6px}
+  .f .k{padding-top:8px;margin-top:4px}
+  .f .v h2{font-size:21px}
+  .confirm{place-items:end center;padding:0}
+  .confirm .in{border-radius:22px 22px 0 0;padding-bottom:calc(18px + env(safe-area-inset-bottom));width:100%}
+  .confirm .actions .btn{flex:1;justify-content:center}
+  .toast{bottom:calc(96px + env(safe-area-inset-bottom));max-width:92vw;white-space:normal;text-align:center;border-radius:16px}
+  .sheet .hd{position:relative;padding-right:60px}
+  .sheet .hd .x{position:absolute;right:12px;top:12px;margin:0}
+  .hero h1 em{white-space:nowrap}
+  .top .dl > span:nth-child(2){display:none}
+  .sheet .hd .no{font-size:22px}
+  .prompter .ctl button{padding:12px 10px;white-space:nowrap;font-size:14px}
+  .prompter .ctl button.play{flex:1.3}
+  .prompter .tm{font-size:20px;min-width:52px}
+  /* bottom bar */
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:9;background:#fff;border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom));align-items:center;gap:12px;box-shadow:0 -10px 30px rgba(0,0,0,.08)}
+  .mbar .mb-txt{flex:1;min-width:0;line-height:1.2}
+  .mbar .mb-txt b{display:block;font-family:var(--serif);font-size:20px;font-weight:400}
+  .mbar .mb-txt span{font-size:12px;color:var(--muted);display:block}
+  .mbar .mb-bar{height:4px;border-radius:99px;background:var(--gray-t);margin-top:6px;overflow:hidden}
+  .mbar .mb-bar i{display:block;height:100%;background:var(--green);width:0;transition:width .5s}
+  .mbar .btn{padding:13px 18px;font-size:14px;flex:none}
+  .mbar .btn:disabled{opacity:1;background:var(--gray-t);color:var(--muted)}
+  .mbar .btn.ready{background:var(--green);animation:pulse 1.6s infinite}
 }
 </style>
 
@@ -297,6 +391,7 @@ canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:50}
   </section>
 </div>
 
+<div class="mbar" id="mbar"><div class="mb-txt"><b id="mbDone"></b><span id="mbSub"></span><div class="mb-bar"><i id="mbFill"></i></div></div><button class="btn" id="mbBtn"></button></div>
 <div class="dim" id="dim"></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true"></div>
 <div class="prompter" id="prompter"></div>
@@ -349,6 +444,8 @@ function renderHero(){
   const btn=document.getElementById('doneBtn'); const todo=sh.length-dn.length;
   btn.classList.toggle('ready',todo===0); btn.disabled=todo!==0;
   btn.innerHTML=todo===0?`<span>Готово, всё сняла</span> →`:`<span>Готово</span><small>ещё ${todo} ${plural(todo,'ролик','ролика','роликов')}</small>`;
+  const mb=document.getElementById('mbBtn'); mb.disabled=btn.disabled; mb.classList.toggle('ready',!btn.disabled); mb.textContent=todo===0?'Готово →':'Готово';
+  document.getElementById('mbDone').textContent=`${dn.length} из ${sh.length} снято`; document.getElementById('mbSub').textContent=todo===0?'всё снято, жмите «Готово»':`ещё ${todo} ${plural(todo,'ролик','ролика','роликов')} · ≈ ${Math.round(left/60*10)/10} мин в кадре`.replace('.',','); document.getElementById('mbFill').style.width=pct+'%';
   if(lastPct!==null&&pct>lastPct){const hit=BADGES.find(b=>b[0]!=='loc'&&lastPct<b[0]&&pct>=b[0]); if(hit&&hit[0]<100) toast(`${hit[2]} ${hit[1]}!`);}
   lastPct=pct;
 }
@@ -499,6 +596,7 @@ function tickPr(){
 function closePrompter(){pr.on=false;cancelAnimationFrame(pr.raf);document.getElementById('prompter').classList.remove('on')}
 
 // ── готово ──
+document.getElementById('mbBtn').onclick=()=>document.getElementById('doneBtn').click();
 document.getElementById('doneBtn').onclick=()=>{
   const sh=shootable(), dn=doneList(); if(sh.length!==dn.length) return;
   const nf=ALL().reduce((a,r)=>a+files(r).length,0);
