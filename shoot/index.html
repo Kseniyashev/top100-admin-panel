@@ -177,8 +177,19 @@ textarea.inp{min-height:70px;resize:vertical}
 .beat.cta .tag{background:var(--blue-t);color:#3350bd}
 .beat.bhook .tag{background:var(--gray-t);color:var(--ink2)}
 .beat .note{display:block;font-size:12.5px;color:var(--muted);margin-top:3px}
-.beat .pen{background:var(--gray-t);opacity:.6}
+.beat .acts{display:flex;gap:4px;align-items:flex-start}
+.beat .pen{background:var(--gray-t);opacity:.6;width:30px;height:30px;border-radius:50%;padding:0;display:grid;place-items:center;font-size:13px}
 .beat:hover .pen{opacity:1}
+.beat .pen.del:hover{background:var(--red-t);color:#b03b2c}
+.beat .pen.ins:hover{background:var(--green-t);color:#1f6f48}
+.beat.removed{background:var(--gray-t);color:var(--muted)}
+.beat.removed .txt{text-decoration:line-through}
+.beat.removed .mine{background:var(--gray-t);color:var(--muted)}
+.beat.added{background:#f7f9ff}
+.beat.added .mine{background:var(--blue-t);color:#3350bd}
+.beat .undo{border:0;background:transparent;color:#3350bd;text-decoration:underline;text-underline-offset:2px;font-size:12.5px;padding:0;white-space:nowrap;margin-top:3px}
+.addline{width:100%;border:1.5px dashed #cfcdc7;background:transparent;border-radius:12px;padding:10px;color:var(--muted);font-size:13.5px;margin-top:8px}
+.addline:hover{border-color:var(--ink2);color:var(--ink2)}
 .overlay{display:flex;flex-direction:column;gap:6px}
 .overlay div{display:grid;grid-template-columns:56px 1fr;gap:10px;font-size:13.5px;color:var(--ink2)}
 .overlay div span:first-child{color:var(--muted);font-variant-numeric:tabular-nums;font-size:12.5px}
@@ -441,6 +452,17 @@ const files=r=>(state.files[r.id]||[]).concat((state.noDemo||{})[r.id]?[]:(FILES
 const takesDone=r=>r.takes.map((_,i)=>(state.takes[r.id]||TAKES_INIT[r.id]||[])[i]===true);
 const hook=r=>(state.edits[r.id]&&state.edits[r.id].hook)||r.hook;
 const line=(r,i)=>(state.edits[r.id]&&state.edits[r.id].beats&&state.edits[r.id].beats[i])||r.beats[i].line;
+const ED=r=>{const e=state.edits[r.id]=Object.assign({beats:{},removed:[],added:[]},state.edits[r.id]);e.beats=e.beats||{};e.removed=e.removed||[];e.added=e.added||[];return e};
+// эффективный сценарий: исходные биты (с пометкой удалённых) + строки эксперта после нужного индекса
+function effBeats(r){
+  const e=state.edits[r.id]||{}, rem=new Set(e.removed||[]), add=e.added||[], out=[];
+  r.beats.forEach((b,i)=>{out.push({...b,i,line:line(r,i),removed:rem.has(i),edited:!!(e.beats&&e.beats[i])});
+    add.forEach((a,ai)=>{if(a.after===i)out.push({t:b.t,line:a.line,added:true,ai})});});
+  add.forEach((a,ai)=>{if(a.after===-1)out.unshift({t:r.beats[0]?r.beats[0].t:'',line:a.line,added:true,ai})});
+  return out;
+}
+const liveBeats=r=>effBeats(r).filter(b=>!b.removed);
+const editCount=()=>Object.keys(state.edits).filter(k=>{const e=state.edits[k];return e.hook||(e.beats&&Object.keys(e.beats).length)||(e.removed&&e.removed.length)||(e.added&&e.added.length)}).length;
 const shootable=()=>ALL().filter(r=>!['wait','cancel'].includes(st(r)));
 const doneList=()=>shootable().filter(r=>st(r)==='done');
 const byLoc=l=>ALL().filter(r=>r.loc===l&&st(r)!=='cancel');
@@ -481,7 +503,7 @@ function tileHTML(r){
     <span class="hd"><span class="no">${r.custom?'+':r.id.replace('R-','')}</span><span class="fm" title="${esc(r.fmt)}">${esc(r.fmt)}</span><span class="len">${r.len} с</span></span>
     <h3>${esc(r.topic)}</h3>
     <span class="meta">${d?`<span title="сложность">${'<span class="diff">'+[1,2,3].map(i=>`<i class="${i<=d?'on':''}"></i>`).join('')+'</span>'} ${r.difficulty}</span>`:''}${r.takes.length?`<span>${ICO.takes}хук-дубли ${td.filter(Boolean).length}/${r.takes.length}</span>`:''}</span>
-    ${t==='cancel'?`<span class="why">${esc(state.why[r.id]||'')}</span>`:''}<span class="ft"><span>${t==='cancel'?'':t==='done'?`${ICO.cam} ${files(r).length} ${plural(files(r).length,'файл','файла','файлов')}`:t==='wait'?'ждём голосовое':t==='redo'?'нужен второй дубль':r.custom?'ваш ролик':`${r.beats.length} реплик`}</span><span class="cta">${cta}</span></span></button>`;
+    ${t==='cancel'?`<span class="why">${esc(state.why[r.id]||'')}</span>`:''}<span class="ft"><span>${t==='cancel'?'':t==='done'?`${ICO.cam} ${files(r).length} ${plural(files(r).length,'файл','файла','файлов')}`:t==='wait'?'ждём голосовое':t==='redo'?'нужен второй дубль':r.custom?'ваш ролик':`${liveBeats(r).length} реплик`}</span><span class="cta">${cta}</span></span></button>`;
 }
 function renderGrid(){
   let h='';
@@ -519,7 +541,12 @@ function openSheet(id){
     <div class="wide"><b>Фон</b>${esc((s.background||'').split(' — ')[0])}</div>
     ${(s.movement||[]).length?`<div class="wide"><b>Движение и темп</b><ul>${s.movement.map(m=>`<li>${esc(m)}</li>`).join('')}</ul></div>`:''}</div></div>`;
   h+=`<div class="sec"><h3>Хук · первые 3 секунды <small>можно поправить</small></h3><div class="hook" id="hookV"><span>${esc(hook(r))}${ed.hook?'<span class="mine">ваша правка</span>':''}</span><button class="pen" id="editH">изменить</button></div></div>`;
-  h+=`<div class="sec"><h3>Сценарий · ${r.beats.length} ${plural(r.beats.length,'реплика','реплики','реплик')} <small>нажмите на реплику, чтобы поправить</small></h3><div class="beats">${r.beats.map((b,i)=>`<div class="beat ${b.turn?'turn':''} ${b.cta?'cta':''} ${b.hook?'bhook':''}" data-i="${i}"><span class="t">${b.t} с</span><span>${b.turn?'<span class="tag">поворот</span>':b.cta?'<span class="tag">призыв</span>':b.hook?'<span class="tag">хук</span>':''}${esc(line(r,i))}${ed.beats&&ed.beats[i]?'<span class="mine">ваша правка</span>':''}${b.turn?`<span class="note">${esc(b.note||'Пауза после, не торопить.')}</span>`:''}</span><button class="pen" data-edit="${i}">✎</button></div>`).join('')}</div></div>`;
+  const eb=effBeats(r), nLive=eb.filter(b=>!b.removed).length;
+  h+=`<div class="sec"><h3>Сценарий · ${nLive} ${plural(nLive,'реплика','реплики','реплик')} <small>✎ поправить · ✕ убрать · + вставить строку после</small></h3><div class="beats">${eb.map(b=>{
+    if(b.added) return `<div class="beat added" data-ai="${b.ai}"><span class="t">—</span><span class="txt">${esc(b.line)}<span class="mine">ваша строка</span></span><span class="acts"><button class="pen" data-aedit="${b.ai}" title="Поправить">✎</button><button class="pen del" data-adel="${b.ai}" title="Убрать">✕</button></span></div>`;
+    if(b.removed) return `<div class="beat removed" data-i="${b.i}"><span class="t">${b.t} с</span><span><span class="txt">${esc(b.line)}</span><span class="mine">убрано</span></span><button class="undo" data-undo="${b.i}">вернуть</button></div>`;
+    return `<div class="beat ${b.turn?'turn':''} ${b.cta?'cta':''} ${b.hook?'bhook':''}" data-i="${b.i}"><span class="t">${b.t} с</span><span>${b.turn?'<span class="tag">поворот</span>':b.cta?'<span class="tag">призыв</span>':b.hook?'<span class="tag">хук</span>':''}${esc(b.line)}${b.edited?'<span class="mine">ваша правка</span>':''}${b.turn?`<span class="note">${esc(b.note||'Пауза после, не торопить.')}</span>`:''}</span><span class="acts"><button class="pen" data-edit="${b.i}" title="Поправить">✎</button><button class="pen del" data-bdel="${b.i}" title="Убрать строку">✕</button><button class="pen ins" data-ins="${b.i}" title="Вставить строку после">+</button></span></div>`;
+  }).join('')}</div><button class="addline" data-ins="${r.beats.length-1}">+ Добавить строку в конец</button></div>`;
   if(r.overlay.length) h+=`<div class="sec"><h3>На экране появится <small>говорить это не нужно</small></h3><div class="overlay">${r.overlay.map(o=>`<div><span>${o.t} с</span><b>${esc(o.text)}</b></div>`).join('')}</div></div>`;
   if(r.takes.length) h+=`<div class="sec"><h3>Хук-дубли · ${r.takes.length} <small>та же точка и свет, 10–15 секунд каждый, сразу после ролика</small></h3><div class="takes">${r.takes.map((tk,i)=>`<div class="take ${td[i]?'on':''}" data-take="${i}"><span class="cb">${td[i]?'✓':''}</span><span><i>${esc(tk)}</i><small>${td[i]?'снят':'отметьте, когда сняли'}</small></span></div>`).join('')}</div></div>`;
   h+=filesHTML(r);
@@ -530,6 +557,17 @@ function openSheet(id){
   document.getElementById('editH').onclick=()=>{const v=document.getElementById('hookV');v.innerHTML=`<div style="flex:1"><textarea class="inp" id="hookI" style="font-family:var(--sans);font-size:15px">${esc(hook(r))}</textarea><div class="actions" style="margin-top:8px"><button class="btn sm" id="hookOk">Сохранить</button><button class="btn ghost sm" id="hookNo">Отмена</button></div><div class="hint" style="font-family:var(--sans);font-size:12.5px;margin-top:6px">Команда увидит правку. Смысл и длина фразы — на ваш вкус, это ваши слова.</div></div>`;
     document.getElementById('hookOk').onclick=()=>{const v=document.getElementById('hookI').value.trim();state.edits[r.id]=Object.assign({},state.edits[r.id],{hook:v&&v!==r.hook?v:undefined});save();openSheet(r.id)};
     document.getElementById('hookNo').onclick=()=>openSheet(r.id);};
+  document.querySelectorAll('[data-bdel]').forEach(b=>b.onclick=()=>{const i=+b.dataset.bdel;const e=ED(r);if(!e.removed.includes(i))e.removed.push(i);save();openSheet(r.id);toast('Строка убрана. Команда увидит')});
+  document.querySelectorAll('[data-undo]').forEach(b=>b.onclick=()=>{const i=+b.dataset.undo;const e=ED(r);e.removed=e.removed.filter(x=>x!==i);save();openSheet(r.id)});
+  document.querySelectorAll('[data-adel]').forEach(b=>b.onclick=()=>{const ai=+b.dataset.adel;const e=ED(r);e.added.splice(ai,1);save();openSheet(r.id)});
+  document.querySelectorAll('[data-aedit]').forEach(b=>b.onclick=()=>{const ai=+b.dataset.aedit;const e=ED(r);const row=b.closest('.beat');row.innerHTML=`<span class="t">—</span><div><textarea class="inp" id="aI">${esc(e.added[ai].line)}</textarea><div class="actions" style="margin-top:8px"><button class="btn sm" id="aOk">Сохранить</button><button class="btn ghost sm" id="aNo">Отмена</button></div></div><span></span>`;
+    document.getElementById('aOk').onclick=()=>{const v=document.getElementById('aI').value.trim();if(v)e.added[ai].line=v;save();openSheet(r.id)};document.getElementById('aNo').onclick=()=>openSheet(r.id);});
+  document.querySelectorAll('[data-ins]').forEach(b=>b.onclick=()=>{const i=+b.dataset.ins;const host=b.classList.contains('addline')?b:b.closest('.beat');
+    const box=document.createElement('div');box.className='beat added';box.innerHTML=`<span class="t">—</span><div><textarea class="inp" id="nI" placeholder="Что скажете здесь — своими словами"></textarea><div class="actions" style="margin-top:8px"><button class="btn sm" id="nOk">Добавить</button><button class="btn ghost sm" id="nNo">Отмена</button></div></div><span></span>`;
+    if(b.classList.contains('addline')){host.parentNode.insertBefore(box,host);host.style.display='none'} else host.after(box);
+    box.querySelector('#nI').focus();
+    box.querySelector('#nOk').onclick=()=>{const v=box.querySelector('#nI').value.trim();if(v){ED(r).added.push({after:i,line:v});save();openSheet(r.id);toast('Строка добавлена. Команда увидит')}else openSheet(r.id)};
+    box.querySelector('#nNo').onclick=()=>openSheet(r.id);});
   document.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>{const i=+b.dataset.edit; const row=b.closest('.beat'); row.innerHTML=`<span class="t">${r.beats[i].t} с</span><div><textarea class="inp" id="bI">${esc(line(r,i))}</textarea><div class="actions" style="margin-top:8px"><button class="btn sm" id="bOk">Сохранить</button><button class="btn ghost sm" id="bNo">Отмена</button>${(state.edits[r.id]&&state.edits[r.id].beats&&state.edits[r.id].beats[i])?'<button class="btn ghost sm" id="bReset">Вернуть исходную</button>':''}</div></div><span></span>`;
     document.getElementById('bOk').onclick=()=>{const v=document.getElementById('bI').value.trim();const e=state.edits[r.id]=Object.assign({beats:{}},state.edits[r.id]);e.beats=e.beats||{};if(v&&v!==r.beats[i].line)e.beats[i]=v;else delete e.beats[i];save();openSheet(r.id)};
     document.getElementById('bNo').onclick=()=>openSheet(r.id);
@@ -600,24 +638,24 @@ let pr={r:null,i:0,on:false,t0:0,raf:null,el:0};
 function beatRange(b){const m=String(b.t).match(/(\d+)\s*[-–]\s*(\d+)/);return m?[+m[1],+m[2]]:[0,0]}
 function openPrompter(r){pr.r=r;pr.i=0;pr.on=false;pr.el=0;const p=document.getElementById('prompter');p.classList.add('on');closeSheet();drawPr();}
 function drawPr(){
-  const r=pr.r,b=r.beats[pr.i],prev=r.beats[pr.i-1],next=r.beats[pr.i+1];
-  const total=beatRange(r.beats[r.beats.length-1])[1]||r.len;
-  document.getElementById('prompter').innerHTML=`<div class="ph"><span>${r.id.replace('R-','')} · ${esc(r.topic)}</span><span>реплика ${pr.i+1} из ${r.beats.length}</span><button class="x" id="prX" aria-label="Закрыть">✕</button></div>
+  const r=pr.r,L=liveBeats(r),b=L[pr.i],prev=L[pr.i-1],next=L[pr.i+1];
+  const total=beatRange(L[L.length-1])[1]||r.len;
+  document.getElementById('prompter').innerHTML=`<div class="ph"><span>${r.id.replace('R-','')} · ${esc(r.topic)}</span><span>реплика ${pr.i+1} из ${L.length}</span><button class="x" id="prX" aria-label="Закрыть">✕</button></div>
     <div class="pb"><i style="width:${Math.min(100,pr.el/total*100)}%"></i></div>
-    <div class="body"><div class="prev">${prev?esc(line(r,pr.i-1)):''}</div>
-      <div class="cur"><span class="tg">${b.turn?'поворот · пауза после':b.cta?'призыв':b.hook?'хук · крупно, в камеру':b.t+' с'}</span>${esc(line(r,pr.i))}</div>
-      <div class="next">${next?esc(line(r,pr.i+1)):'<span style="color:var(--orange)">конец · улыбка, стоп</span>'}</div></div>
+    <div class="body"><div class="prev">${prev?esc(prev.line):''}</div>
+      <div class="cur"><span class="tg">${b.added?'ваша строка':b.turn?'поворот · пауза после':b.cta?'призыв':b.hook?'хук · крупно, в камеру':b.t+' с'}</span>${esc(b.line)}</div>
+      <div class="next">${next?esc(next.line):'<span style="color:var(--orange)">конец · улыбка, стоп</span>'}</div></div>
     <div class="ctl"><button id="prPrev">‹ назад</button><button class="play" id="prPlay">${pr.on?'⏸ пауза':'▶ старт'}</button><span class="tm" id="prTm">${fmtT(pr.el)}</span><button id="prNext">дальше ›</button></div>`;
   document.getElementById('prX').onclick=closePrompter;
-  document.getElementById('prPrev').onclick=()=>{pr.i=Math.max(0,pr.i-1);pr.el=beatRange(r.beats[pr.i])[0];drawPr()};
-  document.getElementById('prNext').onclick=()=>{if(pr.i<r.beats.length-1){pr.i++;pr.el=beatRange(r.beats[pr.i])[0];drawPr()}};
+  document.getElementById('prPrev').onclick=()=>{pr.i=Math.max(0,pr.i-1);pr.el=beatRange(L[pr.i])[0];drawPr()};
+  document.getElementById('prNext').onclick=()=>{if(pr.i<L.length-1){pr.i++;pr.el=beatRange(L[pr.i])[0];drawPr()}};
   document.getElementById('prPlay').onclick=()=>{pr.on=!pr.on;if(pr.on){pr.t0=performance.now()-pr.el*1000;tickPr()}else cancelAnimationFrame(pr.raf);drawPr()};
 }
 const fmtT=s=>`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
 function tickPr(){
   if(!pr.on) return; pr.el=(performance.now()-pr.t0)/1000; const r=pr.r;
-  const idx=r.beats.findIndex(b=>{const [a,z]=beatRange(b);return pr.el>=a&&pr.el<z});
-  if(idx>=0&&idx!==pr.i){pr.i=idx;drawPr()} else {const tm=document.getElementById('prTm'); if(tm) tm.textContent=fmtT(pr.el); const total=beatRange(r.beats[r.beats.length-1])[1]||r.len; const bar=document.querySelector('.prompter .pb i'); if(bar) bar.style.width=Math.min(100,pr.el/total*100)+'%'; if(pr.el>=total){pr.on=false;drawPr();return}}
+  const L=liveBeats(r); const idx=L.findIndex(b=>{if(b.added)return false;const [a,z]=beatRange(b);return pr.el>=a&&pr.el<z});
+  if(idx>=0&&idx!==pr.i&&!(L[pr.i]&&L[pr.i].added&&idx<pr.i)){pr.i=idx;drawPr()} else {const tm=document.getElementById('prTm'); if(tm) tm.textContent=fmtT(pr.el); const total=beatRange(L[L.length-1])[1]||r.len; const bar=document.querySelector('.prompter .pb i'); if(bar) bar.style.width=Math.min(100,pr.el/total*100)+'%'; if(pr.el>=total){pr.on=false;drawPr();return}}
   pr.raf=requestAnimationFrame(tickPr);
 }
 function closePrompter(){pr.on=false;cancelAnimationFrame(pr.raf);document.getElementById('prompter').classList.remove('on')}
@@ -628,7 +666,7 @@ document.getElementById('doneBtn').onclick=()=>{
   const sh=shootable(), dn=doneList(); if(sh.length!==dn.length) return;
   const nf=ALL().reduce((a,r)=>a+files(r).length,0);
   document.getElementById('fin').innerHTML=`<div class="in"><h1>Съёмочный день <em>закрыт</em>.<br>Спасибо, Катя!</h1>
-    <div class="row"><div><div class="n">${dn.length}</div><div class="k">роликов</div></div><div><div class="n">${nf}</div><div class="k">файлов</div></div><div><div class="n">${Object.keys(state.edits).filter(k=>state.edits[k].hook||(state.edits[k].beats&&Object.keys(state.edits[k].beats).length)).length}</div><div class="k">ваших правок</div></div></div>
+    <div class="row"><div><div class="n">${dn.length}</div><div class="k">роликов</div></div><div><div class="n">${nf}</div><div class="k">файлов</div></div><div><div class="n">${editCount()}</div><div class="k">ваших правок</div></div></div>
     <p>Дальше наша работа: монтаж, субтитры, обложки. Ваши правки в хуках и репликах команда увидит рядом с файлами.</p>
     <div class="next"><b>Что дальше</b><br>· пн 31 авг 08:30 — выходит первый ролик недели<br>· до среды — покажем готовые ролики, можно посмотреть до публикации<br>· в среду — заказ голосовых на следующую неделю</div>
     <div class="actions" style="justify-content:center;margin-top:22px"><button class="btn" id="finClose">К съёмочному дню</button></div></div>`;
