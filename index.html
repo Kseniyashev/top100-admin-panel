@@ -1033,3 +1033,24 @@ document.getElementById('plan').addEventListener('click',e=>{if(e.target.closest
 document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#tabs button').forEach(x=>x.classList.remove('on'));b.classList.add('on');document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+b.dataset.v))});
 renderPipeline();renderTable();renderCal();renderNotes();renderSpec();
 </script>
+<style>
+.soon{opacity:.42!important;pointer-events:none!important;cursor:default!important;filter:grayscale(1)}
+.soon-bar{opacity:.35;filter:grayscale(1);pointer-events:none}
+.soon-note{font:500 11px/1 GSans,system-ui;letter-spacing:.04em;text-transform:uppercase;color:#8a8580;margin-left:6px}
+.dl,#topDl,.sd{display:none!important}
+</style><script>
+(function(){
+  function apply(){
+    document.querySelectorAll('button').forEach(b=>{
+      if(b.hasAttribute('data-v')||b.hasAttribute('data-f')||b.id==='onlyAct'||b.id==='closeD'||b.classList.contains('soon')) return;
+      b.classList.add('soon'); b.title='скоро — прототип';
+      if(!b.querySelector('.soon-note') && b.innerText.trim().length>2) b.insertAdjacentHTML('beforeend','<span class="soon-note">скоро</span>');
+    });
+    document.querySelectorAll('span,div,small,b').forEach(e=>{
+      if(e.children.length===0 && /дедлайн|Голосовые до:|аппрув до|до \d{2}\.\d{2}/i.test(e.textContent)) e.style.display='none';
+    });
+    document.querySelectorAll('aside .tag, aside .c, aside .badge').forEach(e=>{ if(/^\d+$/.test(e.textContent.trim())) e.style.display='none'; });
+  }
+  apply(); new MutationObserver(()=>apply()).observe(document.body,{childList:true,subtree:true});
+})();
+</script>

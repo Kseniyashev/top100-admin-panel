@@ -593,3 +593,27 @@ function tick(){
 function renderAll(){renderGrid();renderHero()}
 renderAll();
 </script>
+<style>
+.soon{opacity:.42!important;pointer-events:none!important;cursor:default!important;filter:grayscale(1)}
+.soon-bar{opacity:.35;filter:grayscale(1);pointer-events:none}
+.soon-note{font:500 11px/1 GSans,system-ui;letter-spacing:.04em;text-transform:uppercase;color:#8a8580;margin-left:6px}
+.dl,#topDl,.sd{display:none!important}
+</style><script>
+(function(){
+  const KEEP=new Set(['closeS']);
+  function apply(){
+    document.querySelectorAll('button').forEach(b=>{
+      if(b.classList.contains('tile')&&!b.classList.contains('add')) return;   // плитку открыть можно — там задание
+      if(KEEP.has(b.id)||b.classList.contains('soon')) return;
+      b.classList.add('soon'); b.title='скоро — прототип';
+      if(!b.querySelector('.soon-note') && b.innerText.trim().length>1 && !b.classList.contains('x') && !b.classList.contains('pen') && !b.classList.contains('stop')) b.insertAdjacentHTML('beforeend','<span class="soon-note">скоро</span>');
+    });
+    document.querySelectorAll('.tile .x, .tile .cta, .tile [class*=cta]').forEach(e=>e.classList.add('soon'));
+    document.querySelectorAll('.bar,.badges,.stats').forEach(e=>e.classList.add('soon-bar'));
+    document.querySelectorAll('.meta,.warn,.dl,.stat,.chip,.k,button').forEach(e=>{ if(/срок вышел|дедлайн|напомнил|срок вт|срок сб/i.test(e.textContent) && !e.closest('#grid')) e.style.display='none'; });
+    document.querySelectorAll('.stat').forEach(e=>{ if(/срок вышел/i.test(e.textContent)) e.style.display='none'; });
+    document.querySelectorAll('span,div,p').forEach(e=>{ if(e.children.length===0 && /^(Записать|Дозаписать)\s*›?$/.test(e.textContent.trim())) { e.textContent='запись — скоро'; e.classList.add('soon'); } });
+  }
+  apply(); new MutationObserver(()=>apply()).observe(document.body,{childList:true,subtree:true});
+})();
+</script>

@@ -694,3 +694,42 @@ function tick(){
 function renderAll(){renderGrid();renderRoute();renderHero()}
 renderAll();
 </script>
+<style>
+.soon{opacity:.42!important;pointer-events:none!important;cursor:default!important;filter:grayscale(1)}
+.soon-bar{opacity:.35;filter:grayscale(1);pointer-events:none}
+.soon-note{font:500 11px/1 GSans,system-ui;letter-spacing:.04em;text-transform:uppercase;color:#8a8580;margin-left:6px}
+.dl,#topDl,.sd{display:none!important}
+</style><script>
+/* Режим прототипа для «Съёмочного дня» (11.09.2026, правка Ксении «все кнопки, которые пока не работают,
+   сделать неактивными»). Бэкенда нет: загрузка видео, бот, правки сценария и отметка «готово» никуда не уходят,
+   хотя интерфейс обещает «мы увидим это у себя». Оставлены рабочими только те действия, которые честно
+   работают в браузере: открыть карточку, переключить точку съёмки, суфлёр, закрыть. */
+(function(){
+  const KEEP=new Set(['closeS','prBtn','prX','prPrev','prPlay','prNext','finClose']);
+  function apply(){
+    document.querySelectorAll('button').forEach(b=>{
+      if(b.classList.contains('soon')) return;
+      if(KEEP.has(b.id)) return;
+      if(b.hasAttribute('data-stop')) return;                                  // точки съёмки — переключение вкладок
+      if(b.classList.contains('tile')&&!b.classList.contains('add')) return;   // карточку ролика открыть можно
+      if(b.closest('#prompter')) return;                                       // суфлёр работает офлайн
+      b.classList.add('soon'); b.title='скоро — прототип';
+      const t=(b.innerText||'').trim();
+      if(!b.querySelector('.soon-note') && t.length>2 && !b.classList.contains('x') && !b.classList.contains('pen')
+         && !b.classList.contains('fx') && !b.classList.contains('undo'))
+        b.insertAdjacentHTML('beforeend','<span class="soon-note">скоро</span>');
+    });
+    document.querySelectorAll('.tile .x, .tile .stamp').forEach(e=>e.classList.add('soon'));
+    document.querySelectorAll('.mbar,.mb-bar').forEach(e=>e.classList.add('soon-bar'));
+    // обещания передачи данных центру, за которыми пока ничего не стоит
+    document.querySelectorAll('.hint,.note,.q,.warn,small,span,div').forEach(e=>{
+      if(e.children.length===0 && /Команда увидит правку|Мы увидим это у себя|Файл пропадёт и у нас|появится у нас в плане/i.test(e.textContent))
+        e.textContent = e.textContent.replace(/Команда увидит правку\.?/i,'Правки пока сохраняются только у вас в браузере.')
+                                     .replace(/Мы увидим это у себя\.?/i,'Пока видно только вам.')
+                                     .replace(/Файл пропадёт и у нас\.?/i,'Файл пропадёт у вас в браузере.')
+                                     .replace(/Ролик появится у нас в плане недели\.?/i,'Пока сохранится только у вас.');
+    });
+  }
+  apply(); new MutationObserver(()=>apply()).observe(document.body,{childList:true,subtree:true});
+})();
+</script>
