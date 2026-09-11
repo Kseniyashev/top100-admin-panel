@@ -1,5 +1,5 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Съёмочный день</title>
+<title>Записи недели</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,500;1,400&display=swap">
 <style>
@@ -10,22 +10,23 @@
 :root{
   --ground:#e9e8e4; --card:#fff; --ink:#111; --ink2:#3b3a37; --muted:#8f8e8a; --line:#e2e0da;
   --orange:#f4794f; --beige:#b09777; --blue:#7691e6; --green:#33a16e; --red:#d9513f; --lilac:#9a86d8;
-  --orange-t:#fbe1d6; --beige-t:#eee4d6; --blue-t:#dfe6fa; --green-t:#d6efe2; --gray-t:#efeeea; --red-t:#f9dcd7;
+  --orange-t:#fbe1d6; --beige-t:#eee4d6; --blue-t:#dfe6fa; --green-t:#d6efe2; --gray-t:#efeeea; --lilac-t:#e9e4f7; --red-t:#f9dcd7;
   --serif:"Brygada 1918",Georgia,serif; --sans:"GSans","Google Sans","Product Sans",-apple-system,"Helvetica Neue",Arial,sans-serif;
 }
 *{box-sizing:border-box}
 html{color-scheme:light}
 body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;min-height:100vh}
 button{font:inherit;color:inherit;cursor:pointer}
-input,textarea{font:inherit;color:inherit}
+input,textarea,select{font:inherit;color:inherit}
 h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
 .wrap{max-width:980px;margin:0 auto;padding:18px 16px 80px}
-.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
 .logo{display:flex;align-items:center;gap:8px}
 .logo img{height:26px}
 .logo span{font-size:12px;color:var(--muted)}
 .top .dl{font-size:13px;color:var(--ink2);background:#fff;padding:6px 12px;border-radius:99px;display:flex;gap:8px;align-items:center}
 .top .dl b{font-weight:700}
+.top .dl .late{color:#b03b2c;font-weight:700}
 
 /* hero */
 .hero{background:var(--card);border-radius:26px;padding:24px 24px 22px;position:relative;overflow:hidden}
@@ -35,11 +36,14 @@ h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
 .stats{display:flex;gap:22px;flex-wrap:wrap;margin-top:18px;align-items:flex-end}
 .stat .n{font-family:var(--serif);font-size:44px;line-height:1;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
 .stat .n small{font-family:var(--sans);font-size:14px;color:var(--muted);margin-left:4px}
+.stat .n.bad{color:#b03b2c}
 .stat .k{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;margin-top:4px}
 .bar{position:relative;height:18px;border-radius:99px;background:var(--gray-t);margin-top:18px;overflow:visible}
 .bar .fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#4fb886,var(--green));width:0;transition:width .6s cubic-bezier(.2,.8,.2,1);position:relative}
 .bar .fill::after{content:"";position:absolute;right:-2px;top:-4px;width:26px;height:26px;border-radius:50%;background:#fff;border:4px solid var(--green);box-shadow:0 2px 8px rgba(0,0,0,.15)}
-.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.bar .m{position:absolute;top:-7px;width:2px;height:32px;background:#fff;opacity:.9}
+.bar .m i{position:absolute;top:34px;left:50%;transform:translateX(-50%);font-style:normal;font-size:11px;color:var(--muted);white-space:nowrap}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:34px}
 .badge{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:99px;font-size:13px;background:var(--gray-t);color:var(--muted);transition:all .3s}
 .badge i{width:18px;height:18px;border-radius:50%;background:#d9d7d1;display:grid;place-items:center;font-style:normal;font-size:11px;color:#fff}
 .badge.on{background:var(--green-t);color:#1f6f48;font-weight:700}
@@ -49,198 +53,157 @@ h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
 .done-btn small{font-weight:400;font-size:12px}
 
-/* route */
-.route{display:flex;gap:10px;margin:18px 0 12px;align-items:stretch}
-.stop{flex:1;background:#fff;border-radius:18px;padding:14px 16px;display:flex;gap:12px;align-items:center;border:2px solid transparent;cursor:pointer;text-align:left}
-.stop.on{border-color:var(--ink)}
-.stop.closed{border-color:var(--green)}
-.stop .no{width:40px;height:40px;border-radius:50%;background:var(--gray-t);display:grid;place-items:center;font-family:var(--serif);font-size:20px;flex:none}
-.stop.closed .no{background:var(--green);color:#fff}
-.stop .nm{font-weight:700;font-size:14px}
-.stop .sub{font-size:12.5px;color:var(--muted);margin-top:2px}
-.stop .cnt{margin-left:auto;font-family:var(--serif);font-size:26px;white-space:nowrap}
-.stop .cnt small{font-family:var(--sans);font-size:12px;color:var(--muted)}
-.setupline{font-size:13px;color:var(--ink2);background:#fff;border-radius:14px;padding:10px 14px;margin-bottom:12px;display:flex;gap:14px;flex-wrap:wrap}
-.setupline b{color:var(--ink)}
+/* legend */
+.legend{display:flex;gap:6px;flex-wrap:wrap;margin:18px 0 10px;align-items:center}
+.lg{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink2);padding:5px 10px;border-radius:99px;background:#fff}
+.lg i{width:10px;height:10px;border-radius:3px}
+.lg i.o{background:transparent;border:2px solid var(--red);border-radius:50%}
+.legend .sp{flex:1}
+.legend .reset{font-size:12px;color:var(--muted);background:none;border:0;text-decoration:underline;text-underline-offset:2px}
 
 /* tiles */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
-.tile{position:relative;border:0;border-radius:20px;padding:14px 16px 14px;min-height:190px;text-align:left;display:flex;flex-direction:column;gap:6px;background:#fff;color:var(--ink);transition:transform .15s,box-shadow .15s;overflow:hidden}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.tile{position:relative;border:0;border-radius:20px;padding:16px 16px 14px;min-height:178px;text-align:left;display:flex;flex-direction:column;gap:6px;background:var(--tc);color:var(--ink);transition:transform .15s,box-shadow .15s;overflow:hidden}
 .tile:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(0,0,0,.12)}
-.tile .hd{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
-.tile .hd .no{font-family:var(--serif);font-size:22px;letter-spacing:0;text-transform:none;font-weight:400;color:var(--ink);position:relative;padding-left:14px}
-.tile .hd .no::before{content:"";position:absolute;left:0;top:9px;width:8px;height:8px;border-radius:50%;background:var(--orange)}
-.tile.done .hd .no::before,.tile.wait .hd .no::before{background:currentColor;opacity:.5}
-.tile .hd .len{margin-left:auto;font-weight:700;color:var(--ink2);text-transform:none;letter-spacing:0;white-space:nowrap}
-.tile .hd .fm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px}
-.tile h3{font-family:var(--serif);font-size:18px;line-height:1.15;flex:1;font-weight:400}
-.tile .meta{display:flex;gap:10px;font-size:12px;color:var(--ink2);flex-wrap:wrap}
-.tile .meta span{display:inline-flex;align-items:center;gap:4px}
-.tile .meta svg,.tile .ft svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-2px}
-.tile .ft{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--ink2);margin-top:2px}
-.tile .cta{font-weight:700;color:var(--ink)}
-.tile.done{background:var(--green);color:#fff}
-.tile.done .hd,.tile.done .hd .no,.tile.done .hd .len,.tile.done .meta,.tile.done .ft,.tile.done .cta{color:#fff}
+.tile .ty{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--tt)}
+.tile .ty svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tile h3{font-family:var(--serif);font-size:20px;line-height:1.12;flex:1;font-weight:400;letter-spacing:-.005em;margin-top:2px}
+.tile .dl{font-size:12px;color:var(--ink2);display:flex;align-items:center;gap:5px}
+.tile .dl svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.tile .dl.late{color:#b03b2c;font-weight:700}
+.tile .ft{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--ink2)}
+.tile .min{display:inline-flex;align-items:center;gap:5px}
+.tile .min svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.tile .cta{font-weight:700;color:var(--tt)}
+.tile.reels{--tc:var(--orange-t);--tt:#b8461f}
+.tile.posts{--tc:var(--blue-t);--tt:#3350bd}
+.tile.stories{--tc:var(--beige-t);--tt:#7c6238}
+.tile.tg{--tc:var(--lilac-t);--tt:#5b47a8}
+.tile.done{--tc:var(--green);color:#fff}
+.tile.done .ty,.tile.done .ft,.tile.done .cta,.tile.done .dl{color:#fff}
+.tile.done .ft,.tile.done .dl{opacity:.9}
 .tile .stamp{position:absolute;right:12px;top:12px;width:34px;height:34px;border-radius:50%;background:#fff;color:var(--green);display:grid;place-items:center;font-weight:700;font-size:18px;transform:scale(0);transition:transform .35s cubic-bezier(.2,1.6,.4,1)}
 .tile.done .stamp{transform:scale(1)}
-.tile.done .hd .len{margin-right:36px}
-.tile.redo{outline:3px solid var(--orange);outline-offset:-3px}
-.tile.redo .cta{color:#c4522a}
-.tile.wait{background:#f1f0ec;color:var(--muted)}
-.tile.wait .hd,.tile.wait .cta,.tile.wait .meta,.tile.wait .ft,.tile.wait .hd .no,.tile.wait .hd .len{color:var(--muted)}
-.tile.wait h3{color:var(--ink2)}
-.tile .x{position:absolute;right:10px;top:10px;width:28px;height:28px;border-radius:50%;border:0;background:var(--gray-t);color:var(--ink2);font-size:15px;line-height:1;display:grid;place-items:center;opacity:.5;transition:opacity .15s;z-index:2}
-.tile:hover .x,.tile:focus-within .x{opacity:1}
-.tile .x:hover{background:#e6e4de;color:var(--ink)}
-.tile.done .x{background:rgba(255,255,255,.3);color:#fff}
-.tile.done .stamp{right:44px}
-.tile.done .hd .len{display:none}
-.tile.done .hd .fm{margin-right:70px}
-.tile .hd .len{margin-right:34px}
-.tile.cancel{background:var(--gray-t);color:var(--muted)}
-.tile.cancel h3{text-decoration:line-through;color:var(--muted)}
-.tile.cancel .hd,.tile.cancel .hd .no,.tile.cancel .cta,.tile.cancel .ft,.tile.cancel .meta{color:var(--muted)}
-.tile.cancel .why{font-size:12px;font-style:italic;color:var(--ink2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.tile.add{background:transparent;border:2px dashed #cfcdc7;color:var(--muted);align-items:center;justify-content:center;gap:6px}
+.tile.done h3{padding-right:30px}
+.tile.partial{outline:3px solid var(--orange);outline-offset:-3px}
+.tile.partial .cta{color:#b8461f}
+.tile.late{outline:3px solid var(--red);outline-offset:-3px}
+.tile.late .cta{color:#b03b2c}
+.tile.corpus{--tc:#e6f1ea;color:var(--ink)}
+.tile.corpus .stamp{transform:scale(1);background:var(--green);color:#fff}
+.tile.corpus .ty,.tile.corpus .cta{color:#1f6f48}
+.tile.off{--tc:#f1f0ec;color:var(--muted)}
+.tile.off .ty,.tile.off .cta,.tile.off .ft,.tile.off .dl{color:var(--muted)}
+.tile.off h3{color:var(--ink2)}
+.tile.cancel{--tc:var(--red-t);color:#8a3a2c}
+.tile.cancel h3{text-decoration:line-through;color:#8a3a2c}
+.tile.cancel .ty,.tile.cancel .cta,.tile.cancel .ft,.tile.cancel .dl{color:#b03b2c}
+.tile.cancel .why{font-size:12px;color:#8a3a2c;font-style:italic;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tile.add{--tc:transparent;border:2px dashed #cfcdc7;color:var(--muted);align-items:center;justify-content:center;gap:6px}
 .tile.add:hover{border-color:var(--ink2);color:var(--ink2);box-shadow:none}
 .tile.add .plus{font-family:var(--serif);font-size:44px;line-height:1}
 .tile.add span{font-size:13px}
-.tile.custom .hd .fm{color:#3350bd}
+.tile .x{position:absolute;right:10px;top:10px;width:28px;height:28px;border-radius:50%;border:0;background:rgba(255,255,255,.75);color:var(--ink2);font-size:16px;line-height:1;display:grid;place-items:center;opacity:.55;transition:opacity .15s,background .15s;z-index:2}
+.tile:hover .x,.tile:focus-within .x{opacity:1}
+.tile .x:hover{background:#fff;color:#b03b2c;opacity:1}
+.tile.done .x{background:rgba(255,255,255,.3);color:#fff}
+.tile.done .stamp{right:44px}
+.tile.done h3{padding-right:0}
 .confirm{position:fixed;inset:0;z-index:25;display:none;place-items:center;padding:20px;background:rgba(25,22,18,.4)}
 .confirm.on{display:grid}
 .confirm .in{width:min(460px,100%);background:#fff;border-radius:22px;padding:22px 22px 18px;display:flex;flex-direction:column;gap:12px;box-shadow:0 30px 80px rgba(0,0,0,.25)}
 .confirm h2{font-family:var(--serif);font-size:22px;line-height:1.15}
 .confirm .sub{font-size:13px;color:var(--muted)}
-.f{display:grid;grid-template-columns:110px 1fr;gap:8px 14px}
-.f .k{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;padding-top:9px}
-.f .k small{display:block;font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:#b3b2ad}
-.drop{border:2px dashed #cfcdc7;border-radius:14px;padding:14px;text-align:center;color:var(--muted);font-size:13.5px;cursor:pointer}
-.drop:hover{border-color:var(--ink2);color:var(--ink2)}
-.drop svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.chip{display:inline-flex;align-items:center;gap:6px;background:var(--gray-t);border-radius:99px;padding:5px 10px;font-size:12.5px}
-.chip svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}
-.chip b{font-weight:700}
-.sect.gray{color:var(--muted)}
 .tile.pop{animation:pop .5s cubic-bezier(.2,1.4,.4,1)}
 @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.06)}100%{transform:scale(1)}}
 .sect{grid-column:1/-1;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:700;margin-top:10px;display:flex;align-items:center;gap:10px}
 .sect::after{content:"";flex:1;height:1px;background:var(--line)}
-.sect .sd{font-weight:400;text-transform:none;letter-spacing:0}
-.diff{display:inline-flex;gap:2px}
-.diff i{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.25}
-.diff i.on{opacity:1}
+.sect .sd{font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted)}
+.sect.red{color:#b03b2c}
 
 /* tips */
 .tips{background:#fff;border-radius:20px;padding:18px 22px;margin-top:22px}
 .tips h2{font-family:var(--serif);font-size:20px;margin-bottom:8px}
 .tips ol{margin:0;padding-left:20px;color:var(--ink2);line-height:1.55}
 .tips li+li{margin-top:4px}
-.tips .other{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:13.5px;color:var(--ink2)}
 
 /* sheet */
 .dim{position:fixed;inset:0;background:rgba(25,22,18,.4);display:none;z-index:10}
 .dim.on{display:block}
-.sheet{position:fixed;left:50%;bottom:0;transform:translate(-50%,105%);width:min(720px,100%);max-height:94vh;background:#fff;border-radius:26px 26px 0 0;z-index:11;display:flex;flex-direction:column;transition:transform .28s cubic-bezier(.2,.8,.2,1);box-shadow:0 -20px 60px rgba(0,0,0,.2)}
+.sheet{position:fixed;left:50%;bottom:0;transform:translate(-50%,105%);width:min(680px,100%);max-height:92vh;background:#fff;border-radius:26px 26px 0 0;z-index:11;display:flex;flex-direction:column;transition:transform .28s cubic-bezier(.2,.8,.2,1);box-shadow:0 -20px 60px rgba(0,0,0,.2)}
 .sheet{visibility:hidden;transition:transform .28s cubic-bezier(.2,.8,.2,1),visibility 0s .28s}
 .sheet.on{transform:translate(-50%,0);visibility:visible;transition-delay:0s}
-@media (min-width:780px){.sheet{bottom:auto;top:50%;transform:translate(-50%,60%);border-radius:26px;max-height:90vh}.sheet.on{transform:translate(-50%,-50%)}}
+@media (min-width:760px){.sheet{bottom:auto;top:50%;transform:translate(-50%,60%);border-radius:26px;max-height:88vh}.sheet.on{transform:translate(-50%,-50%)}}
 @media (prefers-reduced-motion:reduce){.sheet,.bar .fill,.tile,.badge{transition:none}.done-btn.ready,.tile.pop{animation:none}}
 .sheet .hd{padding:18px 24px 12px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);flex-wrap:wrap}
-.sheet .hd .no{font-family:var(--serif);font-size:26px}
+.sheet .hd .tyb{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:8px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
 .sheet .hd .meta{font-size:13px;color:var(--muted)}
-.sheet .hd .meta b{color:var(--ink)}
+.sheet .hd .meta b{color:var(--ink);font-weight:700}
+.sheet .hd .meta.late b{color:#b03b2c}
 .sheet .hd .x{margin-left:auto;border:1px solid var(--line);background:#fff;border-radius:50%;width:34px;height:34px;display:grid;place-items:center;flex:none}
 .sheet .bd{padding:6px 24px 24px;overflow-y:auto;display:flex;flex-direction:column;gap:16px}
-.sheet h2.topic{font-family:var(--serif);font-size:24px;line-height:1.1;margin-top:8px}
-.sec h3{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px}
-.sec h3 small{font-weight:400;text-transform:none;letter-spacing:0;color:#b3b2ad}
-.setup{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.setup div{background:var(--gray-t);border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.45}
-.setup div b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:3px}
-.setup div.wide{grid-column:1/-1}
-.setup ul{margin:0;padding-left:16px}
-.hook{background:var(--beige-t);border-radius:16px;padding:14px 16px;font-family:var(--serif);font-size:22px;line-height:1.2;display:flex;gap:10px;align-items:flex-start;border-left:5px solid var(--orange)}
-.hook .pen{margin-top:2px}
-.pen{border:0;background:rgba(255,255,255,.7);border-radius:99px;font-size:12px;padding:4px 10px;color:var(--ink2);flex:none;font-family:var(--sans)}
-.pen:hover{background:#fff}
-.mine{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#3350bd;background:var(--blue-t);padding:2px 7px;border-radius:99px;font-family:var(--sans);vertical-align:middle;margin-left:6px}
+.f{display:grid;grid-template-columns:96px 1fr;gap:6px 14px}
+.f .k{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;padding-top:3px}
+.f .k small{display:block;font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:#b3b2ad}
+.f .v{color:var(--ink);min-width:0}
+.f .v h2{font-family:var(--serif);font-size:24px;line-height:1.1;display:flex;align-items:flex-start;gap:8px}
+.f .v p{margin:0;color:var(--ink2)}
+.pen{border:0;background:var(--gray-t);border-radius:99px;font-size:12px;padding:4px 10px;color:var(--ink2);flex:none;margin-top:4px;font-family:var(--sans)}
+.pen:hover{background:#e4e2dc}
 .inp{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;font-size:15px;background:#fff}
-textarea.inp{min-height:70px;resize:vertical}
-.beats{border:1.5px solid var(--line);border-radius:16px;overflow:hidden}
-.beat{display:grid;grid-template-columns:56px 1fr auto;gap:10px;padding:11px 14px;border-top:1px solid var(--line);align-items:start;font-size:15px;line-height:1.45}
-.beat:first-child{border-top:0}
-.beat .t{font-variant-numeric:tabular-nums;color:var(--muted);font-size:12.5px;padding-top:3px}
-.beat .tag{display:inline-block;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;padding:1px 7px;border-radius:99px;margin-right:6px;vertical-align:middle}
-.beat.turn{background:#faf9f6}
-.beat.turn .tag{background:var(--orange);color:#fff}
-.beat.cta .tag{background:var(--blue-t);color:#3350bd}
-.beat.bhook .tag{background:var(--gray-t);color:var(--ink2)}
-.beat .note{display:block;font-size:12.5px;color:var(--muted);margin-top:3px}
-.beat .acts{display:flex;gap:4px;align-items:flex-start}
-.beat .pen{background:var(--gray-t);opacity:.6;width:30px;height:30px;border-radius:50%;padding:0;display:grid;place-items:center;font-size:13px}
-.beat:hover .pen{opacity:1}
-.beat .pen.del:hover{background:var(--red-t);color:#b03b2c}
-.beat .pen.ins:hover{background:var(--green-t);color:#1f6f48}
-.beat.removed{background:var(--gray-t);color:var(--muted)}
-.beat.removed .txt{text-decoration:line-through}
-.beat.removed .mine{background:var(--gray-t);color:var(--muted)}
-.beat.added{background:#f7f9ff}
-.beat.added .mine{background:var(--blue-t);color:#3350bd}
-.beat .undo{border:0;background:transparent;color:#3350bd;text-decoration:underline;text-underline-offset:2px;font-size:12.5px;padding:0;white-space:nowrap;margin-top:3px}
-.addline{width:100%;border:1.5px dashed #cfcdc7;background:transparent;border-radius:12px;padding:10px;color:var(--muted);font-size:13.5px;margin-top:8px}
-.addline:hover{border-color:var(--ink2);color:var(--ink2)}
-.overlay{display:flex;flex-direction:column;gap:6px}
-.overlay div{display:grid;grid-template-columns:56px 1fr;gap:10px;font-size:13.5px;color:var(--ink2)}
-.overlay div span:first-child{color:var(--muted);font-variant-numeric:tabular-nums;font-size:12.5px}
-.overlay div b{font-family:var(--serif);font-weight:400;color:var(--ink);font-size:15px}
-.takes{display:flex;flex-direction:column;gap:6px}
-.take{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1.5px solid var(--line);border-radius:12px;cursor:pointer;font-size:14.5px}
-.take.on{border-color:var(--green);background:var(--green-t)}
-.take .cb{width:20px;height:20px;border-radius:6px;border:2px solid var(--muted);flex:none;margin-top:1px;display:grid;place-items:center;font-size:12px;color:#fff}
-.take.on .cb{background:var(--green);border-color:var(--green)}
-.take i{font-style:normal;font-family:var(--serif);font-size:16px}
-.take small{display:block;color:var(--muted);font-size:12px}
-.warn{background:var(--beige-t);border-left:5px solid var(--orange);border-radius:14px;padding:12px 14px;font-size:14px;color:var(--ink2)}
-.warn b{display:block;margin-bottom:2px;color:var(--ink)}
+textarea.inp{min-height:76px;resize:vertical}
+select.inp{appearance:none;background:#fff}
+.brief{margin-top:6px;font-size:13px;color:var(--ink2);background:var(--gray-t);border-radius:12px;padding:10px 12px;line-height:1.5}
+.brief summary{cursor:pointer;font-weight:700;color:var(--ink);list-style:none;display:flex;align-items:center;gap:6px}
+.brief summary::before{content:"›";display:inline-block;transition:transform .15s;font-size:16px}
+.brief[open] summary::before{transform:rotate(90deg)}
+.brief p{margin:8px 0 0}
+.ask{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:14px 16px;font-size:15px;line-height:1.5}
+.ask .lead{color:var(--muted);font-size:13px;margin-bottom:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ask .lead b{color:var(--ink);font-weight:700}
+.ask .lead svg,.sheet .tyb svg,.btn svg,.file svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.ask ol{margin:8px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+.ask ol li{display:grid;grid-template-columns:28px 1fr;gap:10px}
+.ask ol li i{width:26px;height:26px;border-radius:50%;background:var(--ac,var(--orange));color:#fff;display:grid;place-items:center;font-style:normal;font-weight:700;font-size:13px;margin-top:1px}
+.ask .no{margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);color:var(--ink2);font-size:14px}
+.ask .no b{color:var(--red)}
+.ask p{margin:0 0 6px}
+.ask ul{margin:6px 0 0;padding-left:18px;color:var(--ink2)}
+.warn{background:var(--orange-t);border-radius:14px;padding:12px 14px;font-size:14px;color:#8a3a1c}
+.warn b{display:block;margin-bottom:2px;color:#b8461f}
+.warn.red{background:var(--red-t);color:#8a2c20}
+.warn.red b{color:#b03b2c}
 .okbox{background:var(--green-t);border-radius:14px;padding:12px 14px;font-size:14px;color:#1f6f48}
 .okbox b{display:block}
 .files{display:flex;flex-direction:column;gap:6px}
 .file{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;font-size:13.5px}
-.file .th{width:34px;height:44px;border-radius:6px;background:#111;flex:none;display:grid;place-items:center;color:#fff;font-size:10px}
+.file .play{width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;flex:none;font-size:11px}
 .file .len{font-variant-numeric:tabular-nums;font-weight:700}
 .file .w{color:var(--muted);margin-left:auto;font-size:12.5px}
 .actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .btn{border:0;border-radius:99px;padding:14px 22px;font-size:15px;font-weight:700;display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:#fff}
-.btn.up{background:var(--green);box-shadow:0 8px 22px rgba(51,161,110,.35)}
+.btn.rec{background:var(--red);box-shadow:0 8px 22px rgba(217,81,63,.35)}
+.btn.rec i{width:12px;height:12px;border-radius:50%;background:#fff;display:inline-block}
 .btn.ghost{background:var(--gray-t);color:var(--ink)}
 .btn.sm{padding:9px 14px;font-size:13px}
-.btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.lnk{background:none;border:0;color:var(--muted);text-decoration:underline;text-underline-offset:2px;font-size:13px;padding:6px 0}
 .hint{font-size:13px;color:var(--muted)}
-.uploading{display:none;background:var(--gray-t);border-radius:16px;padding:14px 16px;font-size:14px}
-.uploading.on{display:block}
-.uploading .pb{height:8px;border-radius:99px;background:#dedcd6;margin-top:8px;overflow:hidden}
-.uploading .pb i{display:block;height:100%;background:var(--green);width:0;transition:width .3s}
+.recorder{display:none;background:#111;color:#fff;border-radius:18px;padding:18px 20px;align-items:center;gap:16px}
+.recorder.on{display:flex}
+.recorder .t{font-family:var(--serif);font-size:32px;font-variant-numeric:tabular-nums;min-width:86px}
+.recorder .w{flex:1;display:flex;align-items:center;gap:3px;height:36px}
+.recorder .w i{width:4px;background:#fff;border-radius:2px;height:8px;animation:wave .8s infinite ease-in-out}
+@keyframes wave{0%,100%{height:6px;opacity:.5}50%{height:30px;opacity:1}}
+.recorder .stop{border:0;background:var(--red);color:#fff;border-radius:99px;padding:12px 18px;font-weight:700}
+.sent{display:none;align-items:center;gap:12px;background:var(--green-t);color:#1f6f48;border-radius:16px;padding:14px 16px;font-weight:700}
+.sent.on{display:flex}
+.cancelbox{display:none;flex-direction:column;gap:8px;background:var(--red-t);border-radius:16px;padding:14px 16px}
+.cancelbox.on{display:flex}
+.cancelbox label{font-size:13px;color:#8a2c20;font-weight:700}
 
-/* prompter */
-.prompter{position:fixed;inset:0;background:#0f0e0c;color:#fff;z-index:60;display:none;flex-direction:column;padding:20px 24px}
-.prompter.on{display:flex}
-.prompter .ph{display:flex;align-items:center;gap:12px;font-size:13px;color:#bdbbb3}
-.prompter .ph .x{margin-left:auto;border:1px solid #444;background:transparent;color:#fff;border-radius:50%;width:36px;height:36px;display:grid;place-items:center}
-.prompter .pb{height:6px;background:#2a2926;border-radius:99px;margin:12px 0;overflow:hidden}
-.prompter .pb i{display:block;height:100%;background:var(--orange);width:0;transition:width .25s linear}
-.prompter .body{flex:1;display:flex;flex-direction:column;justify-content:center;gap:22px;max-width:900px;margin:0 auto;width:100%}
-.prompter .prev{font-size:20px;color:#6f6d67;line-height:1.3}
-.prompter .cur{font-family:var(--serif);font-size:clamp(28px,4.6vw,52px);line-height:1.15;text-wrap:balance}
-.prompter .cur .tg{display:block;font-family:var(--sans);font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--orange);margin-bottom:10px;font-weight:700}
-.prompter .next{font-size:22px;color:#8f8d86;line-height:1.3}
-.prompter .ctl{display:flex;gap:10px;justify-content:center;align-items:center;padding:14px 0 6px}
-.prompter .ctl button{border:1px solid #444;background:#1a1917;color:#fff;border-radius:99px;padding:12px 18px;font-weight:700}
-.prompter .ctl button.play{background:var(--orange);border-color:var(--orange);padding:12px 26px}
-.prompter .tm{font-family:var(--serif);font-size:26px;font-variant-numeric:tabular-nums;min-width:90px;text-align:center}
-
-/* toast, fin, confetti */
-.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,80px);background:#111;color:#fff;padding:12px 18px;border-radius:99px;font-size:14px;z-index:30;transition:transform .3s;white-space:nowrap}
+/* toast + celebration */
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,80px);background:#111;color:#fff;padding:12px 18px;border-radius:99px;font-size:14px;z-index:30;transition:transform .3s;display:flex;gap:10px;align-items:center;white-space:nowrap}
 .toast.on{transform:translate(-50%,0)}
 .fin{position:fixed;inset:0;background:var(--ground);z-index:40;display:none;place-items:center;text-align:center;padding:24px}
 .fin.on{display:grid}
@@ -253,45 +216,13 @@ textarea.inp{min-height:70px;resize:vertical}
 .fin .row .k{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;margin-top:4px}
 .fin .next{text-align:left;background:var(--gray-t);border-radius:16px;padding:14px 18px;font-size:14px;color:var(--ink2)}
 .fin .next b{color:var(--ink)}
-.clap{position:fixed;inset:0;z-index:35;display:none;place-items:center;pointer-events:none}
-.clap.on{display:grid}
-.clap div{font-family:var(--serif);font-size:clamp(40px,8vw,96px);color:#fff;background:#111;padding:14px 40px;border-radius:20px;animation:clap .9s ease-out forwards;transform:rotate(-4deg)}
-@keyframes clap{0%{transform:scale(.6) rotate(-4deg);opacity:0}25%{transform:scale(1.05) rotate(-4deg);opacity:1}75%{opacity:1}100%{transform:scale(1) rotate(-4deg);opacity:0}}
 canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:50}
 :focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 
 /* ── mobile bar ── */
 .mbar{display:none}
 @media (max-width:600px){
-  .route{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 8px}
-  .stop{padding:10px 10px;gap:8px;border-radius:14px}
-  .stop .no{width:30px;height:30px;font-size:16px}
-  .stop .nm{font-size:12.5px;line-height:1.2}
-  .stop .sub{display:none}
-  .stop .cnt{font-size:20px}
-  .tile .hd .fm{display:none}
-  .tile .hd .len{margin-left:auto;margin-right:34px}
-  .tile.done .hd .len{display:inline;margin-right:70px}
-  .tile .meta{font-size:11px;gap:6px}
-  .tile .ft{font-size:12px}
-  .sheet h2.topic{font-size:20px}
-  .setup{grid-template-columns:1fr}
-  .setup div{font-size:13px}
-  .hook{font-size:19px;padding:12px 14px}
-  .beat{grid-template-columns:40px 1fr auto;padding:10px 10px;font-size:14.5px;gap:8px}
-  .beat .pen{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;padding:0}
-  .take{padding:10px}
-  .prompter{padding:12px 14px calc(12px + env(safe-area-inset-bottom))}
-  .prompter .ph{font-size:12px}
-  .prompter .ph span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:55%}
-  .prompter .cur{font-size:clamp(26px,7.4vw,40px)}
-  .prompter .prev,.prompter .next{font-size:16px}
-  .prompter .ctl{gap:8px}
-  .prompter .ctl button{padding:14px 14px;flex:1;text-align:center}
-  .prompter .ctl button.play{flex:1.4}
-  .prompter .tm{font-size:22px;min-width:64px}
-  .drop{padding:12px}
-
+  .top{flex-wrap:wrap}
   body{padding-bottom:calc(84px + env(safe-area-inset-bottom))}
   .wrap{padding:12px 12px 20px}
   .top{margin-bottom:10px}
@@ -350,10 +281,7 @@ canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:50}
   .sheet .hd .x{position:absolute;right:12px;top:12px;margin:0}
   .hero h1 em{white-space:nowrap}
   .top .dl > span:nth-child(2){display:none}
-  .sheet .hd .no{font-size:22px}
-  .prompter .ctl button{padding:12px 10px;white-space:nowrap;font-size:14px}
-  .prompter .ctl button.play{flex:1.3}
-  .prompter .tm{font-size:20px;min-width:52px}
+  .hero h1{font-size:24px}
   /* bottom bar */
   .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:9;background:#fff;border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom));align-items:center;gap:12px;box-shadow:0 -10px 30px rgba(0,0,0,.08)}
   .mbar .mb-txt{flex:1;min-width:0;line-height:1.2}
@@ -365,324 +293,295 @@ canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:50}
   .mbar .btn:disabled{opacity:1;background:var(--gray-t);color:var(--muted)}
   .mbar .btn.ready{background:var(--green);animation:pulse 1.6s infinite}
 }
-.file .fx{margin-left:8px;flex:0 0 auto;width:28px;height:28px;border-radius:50%;border:1px solid var(--line, #ddd);background:#fff;color:var(--muted);font-size:13px;line-height:1;display:grid;place-items:center;cursor:pointer}
-.file .fx:hover{color:var(--ink);border-color:var(--ink)}
-.file.ask{background:var(--beige-t, #f3efe6);flex-wrap:wrap;gap:8px}
-.file.ask .q{flex:1 1 100%;font-size:13.5px}
-.file.ask .acts{display:flex;gap:8px}
-.btn.danger{background:#b8461f;color:#fff}
-@media(max-width:600px){.file .fx{width:34px;height:34px}}
 </style>
 
 <div class="wrap">
   <div class="top">
     <div class="logo"><img src="data:image/png;base64,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" alt="top100"><span>Продюсерский центр</span></div>
-    <div class="dl" id="dl"></div>
+    <div class="dl" id="topDl"></div>
   </div>
 
   <section class="hero">
-    <h1 id="h1"></h1>
-    <p id="heroP"></p>
-    <button class="done-btn" id="doneBtn"><span>Готово, всё сняла</span></button>
+    <h1>Юлия, неделя <em>14 – 20 сентября</em></h1>
+    <p>Тут всё, что нужно наговорить на неделю. Нажмите плитку, прочитайте, что должно быть в голосовом, и запишите его здесь или в боте. Записанное зеленеет само.</p>
+    <button class="done-btn" id="doneBtn"><span>Готово, всё записала</span></button>
     <div class="stats">
-      <div class="stat"><div class="n" id="stDone">0<small>из 0</small></div><div class="k">снято</div></div>
-      <div class="stat"><div class="n" id="stMin">0<small>мин</small></div><div class="k">осталось в кадре</div></div>
-      <div class="stat"><div class="n" id="stTakes">0<small>из 0</small></div><div class="k">хук-дублей</div></div>
+      <div class="stat"><div class="n" id="stDone">0<small>из 0</small></div><div class="k">записано</div></div>
+      <div class="stat"><div class="n" id="stMin">0<small>мин</small></div><div class="k">осталось голосом</div></div>
+      <div class="stat"><div class="n" id="stLate">0</div><div class="k">срок вышел</div></div>
     </div>
-    <div class="bar"><div class="fill" id="fill"></div></div>
+    <div class="bar"><div class="fill" id="fill"></div><div class="m" style="left:25%"><i>разогрев</i></div><div class="m" style="left:50%"><i>половина</i></div><div class="m" style="left:75%"><i>финишная прямая</i></div></div>
     <div class="badges" id="badges"></div>
   </section>
 
-  <div class="route" id="route"></div>
+  <div class="legend">
+    <span class="lg"><i style="background:var(--orange)"></i>Reels</span>
+    <span class="lg"><i style="background:var(--blue)"></i>Пост в Instagram</span>
+    <span class="lg"><i style="background:var(--beige)"></i>Сторис</span>
+    <span class="lg"><i style="background:var(--lilac)"></i>Пост в Telegram</span>
+    <span class="lg"><i style="background:var(--green);border-radius:50%"></i>записано</span>
+    <span class="lg"><i class="o"></i>срок вышел</span>
+    <span class="lg"><i style="background:var(--red-t);border:1px solid var(--red)"></i>удалено</span>
+    <span class="sp"></span>
+    <button class="reset" id="reset">сбросить отметки</button>
+  </div>
+
   <div class="grid" id="grid"></div>
 
   <section class="tips">
-    <h2>Как снимать, чтобы монтаж собрался с первого раза</h2>
+    <h2>Как записывать, чтобы получилось с первого раза</h2>
     <ol>
-      <li><b>Телефон вертикально, камера на уровне глаз,</b> кадр по грудь. Свет спереди, не сзади.</li>
-      <li><b>Снимайте на одной точке всё, что к ней относится,</b> и только потом переезжайте. Так одинаковый свет и фон.</li>
-      <li><b>Два-три дубля целиком</b> лучше, чем десять кусочков. Ошиблись — пауза, и начали фразу заново, не останавливая запись.</li>
-      <li><b>Хук-дубли</b> снимайте сразу после ролика, с той же точки и светом, по 10–15 секунд каждый.</li>
-      <li><b>Поворот не торопить.</b> Там, где стоит «пауза после», дайте фразе дозвучать одну секунду.</li>
+      <li><b>Одна плитка — одно голосовое.</b> Не склеивайте несколько заданий в одну запись, нам потом не разделить. Можно прислать несколько голосовых на одну плитку.</li>
+      <li><b>Говорите как клиентке на приёме,</b> а не как диктору. Оговорки и паузы — это хорошо, мы их вырежем сами.</li>
+      <li><b>Не надо ничего разыгрывать.</b> Если в задании стоит фраза клиентки, просто произнесите её так, как её говорят.</li>
+      <li><b>Удобнее в Telegram?</b> Отправьте голосовое боту под нужной темой и нажмите там «готово» — плитка здесь позеленеет сама. Туда же можно приложить фото и файлы.</li>
+      <li><b>Если чего-то не хватило в записи,</b> плитка станет оранжевой и мы напишем, что дозаписать. Это нормально.</li>
     </ol>
-    <div class="other">Карусели, сторис и посты в Telegram на этой неделе снимать не нужно: тексты собираем из ваших голосовых. Лайф-сторис снимаете сами в день выхода.</div>
   </section>
 </div>
 
 <div class="mbar" id="mbar"><div class="mb-txt"><b id="mbDone"></b><span id="mbSub"></span><div class="mb-bar"><i id="mbFill"></i></div></div><button class="btn" id="mbBtn"></button></div>
 <div class="dim" id="dim"></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true"></div>
-<div class="prompter" id="prompter"></div>
-<div class="clap" id="clap"><div>Снято!</div></div>
 <div class="confirm" id="confirm"></div>
 <div class="toast" id="toast"></div>
 <div class="fin" id="fin"></div>
 <canvas id="cf"></canvas>
 
 <script>
-const DATA = {"meta": {"name": "Маша", "week": "2026-W38", "deadline": "Исходники до <b>вс 13 сент, 22:00</b>", "key": "shoot-masha-w38", "demo": null, "locs": {"kab": {"n": 1, "name": "Кабинет клиники, стена по грудь", "short": "стена", "setup": "однотонная стена, снимаете по грудь, дневной свет; халат не надеваем"}, "dom": {"n": 2, "name": "Кабинет клиники, стол", "short": "стол", "setup": "стол, сверху бланки и лента, снимаете руки и предметы"}, "voice": {"n": 3, "name": "Без съёмки: только голос", "short": "голос", "setup": "эти ролики снимать не нужно: вы наговариваете текст, видеоряд собирает центр"}}}, "reels": [{"id": "R-01", "topic": "Почему после сладкого через два часа вы снова голодны?", "fmt": "Цепочка следствий", "len": 68, "status": "ready", "loc": "voice", "hook": "Съели пирожное, а через два часа голод сильнее прежнего.", "takes": ["Съели сладкое — а через два часа готовы съесть холодильник. Это не всегда отсутствие силы воли", "Съели сладкое, и через два часа снова тянет к холодильнику."], "cta": "написать, что было в тарелке за два часа до такого голода", "setup": null, "beats": [{"t": "0-3", "line": "Съели пирожное, а через два часа голод сильнее прежнего.", "turn": false, "payoff": false, "cta": false, "hook": true, "note": null}, {"t": "3-9", "line": "В тарелке была каша быстрого приготовления, ложка мёда, бутерброд с вареньем и чаёчек-кофеёчек с сахаром.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "9-15", "line": "Быстрые углеводы расщепляются до глюкозы. В ответ вырабатывается инсулин, чтобы глюкозу из крови убрать.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "15-20", "line": "И если тарелка состоит только из углеводов, инсулиновый ответ будет масштабным.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "20-28", "line": "Через два часа сахар снижается ниже привычной нормы, и возникает голод. Не аппетит, а голод. Плюс слабость, вас потрясывает. Это гипогликемия, сахар ниже порогового уровня.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "28-37", "line": "Но не каждое такое состояние гипогликемия. Откручиваем пару часов назад, вспоминаем, что было в тарелке, и тогда вы понимаете, что происходит.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "37-46", "line": "А в тарелке был мёд, потому что мёд полезен в кавычках. И тут на сцену выходят перекусы: кофе с печенюшками, и история повторяется.", "turn": true, "payoff": false, "cta": false, "hook": false, "note": "Пик ролика. Пауза после."}, {"t": "46-55", "line": "Поэтому компонуем здоровую тарелку каждый приём пищи: не только углеводы, но ещё белки, жиры и, самое главное, клетчатка. Клетчатка и белок сглаживают инсулиновый ответ.", "turn": false, "payoff": true, "cta": false, "hook": false, "note": null}, {"t": "55-60", "line": "Если это каждый день, загляните в тарелку и напишите, что в ней было два часа назад.", "turn": false, "payoff": false, "cta": true, "hook": false, "note": null}], "overlay": [{"t": "3-9", "text": "тарелка: только углеводы"}, {"t": "15-20", "text": "чем однороднее тарелка, тем крупнее выброс"}, {"t": "20-28", "text": "гипогликемия: сахар ниже порога"}, {"t": "28-37", "text": "не каждый эпизод гипогликемия"}, {"t": "37-46", "text": "«полезный» завтрак и есть разгон"}, {"t": "46-55", "text": "белок и клетчатка сглаживают инсулиновый ответ"}], "difficulty": "лёгкая", "props": [], "date": "2026-09-14", "wd": "пн", "post_time": "08:30"}, {"id": "R-11", "topic": "Инсулинорезистентность по талии", "fmt": "Техника замера на себе", "len": 66, "status": "ready", "loc": "kab", "hook": "Вес стоит на месте, а живот растёт. Сантиметр объяснит разницу.", "takes": ["Инсулинорезистентность может долго никак себя не выдавать. Но одну вещь вы можете проверить дома за 30 секунд — нужна только сантиметровая лента", "Сахар в норме, а инсулин не проверяли? Сантиметр по талии скажет раньше."], "cta": "написать, какая цифра вышла по сантиметру", "setup": {"pose": "Лица в кадре нет. Стоите или сидите боком к столу, в кадре только руки и сантиметровая лента; линию замера показываете поверх одежды на себе. Речь идёт вашим голосом за кадром.", "frame": "Средний план на уровне пояса, лица нет; лента и линия замера видны целиком, руки не выходят за кадр", "background": "Клиника, кабинет — распаковка маша · §14/1 («съёмки в клинике вообще без вопросов, пожалуйста»), точка 1 или 2, однотонный фон. Не в халате (§15.4/1)", "movement": ["В кадре только руки и лента, лицо не входит", "Замер показывайте один раз и медленно, чтобы линию было видно с первого просмотра", "Точка съёмки одна на все дубли, свет не переставляется"]}, "beats": [{"t": "0-3", "line": "Вес стоит на месте, а живот растёт. Сантиметр объяснит разницу.", "turn": false, "payoff": false, "cta": false, "hook": true, "note": null}, {"t": "3-9", "line": "Объём талии намного важнее той цифры, которую вы видите на весах.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "9-16", "line": "Лента меряет висцеральный жир, тот, что лежит внутри живота, в брюшной полости, а не складку под кожей.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "16-23", "line": "Он образуется под влиянием повышенного уровня инсулина и сам вмешивается в гормональный баланс.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "23-28", "line": "Мы теряем мышцы, жировой ткани становится больше, и формируется она именно там, внутри живота.", "turn": true, "payoff": false, "cta": false, "hook": false, "note": "Пик ролика. Пауза после."}, {"t": "28-35", "line": "И мерить надо в правильном месте. Берём сантиметр и измеряем самую выпуклую, выдающуюся часть живота.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "35-41", "line": "Для женщин объём талии не должен превышать восемьдесят сантиметров, для мужчин девяносто четыре.", "turn": false, "payoff": true, "cta": false, "hook": false, "note": null}, {"t": "41-49", "line": "Если намерили больше, это ещё не диагноз, это маркер риска. И стоит задуматься прежде всего о своём рационе питания.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "49-54", "line": "Первое, что вы сможете сделать уже сегодня, это увеличить количество овощей в тарелке.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "54-59", "line": "Эту цифру весы вам не покажут. Напишите, какая вышла по сантиметру.", "turn": false, "payoff": false, "cta": true, "hook": false, "note": null}], "overlay": [{"t": "3-9", "text": "весы против сантиметра"}, {"t": "9-16", "text": "жир внутри живота, вокруг органов"}, {"t": "23-28", "text": "вес стоит, живот растёт"}, {"t": "35-41", "text": "женщины до 80 · мужчины до 94 · маркер риска, не диагноз"}, {"t": "49-54", "text": "что сделать сегодня"}], "difficulty": "лёгкая", "props": ["сантиметровая лента", "напольные весы — если есть в кабинете (для кадра противопоставления); нет — бит 3–8 держится речью и лентой"], "date": "2026-09-14", "wd": "пн", "post_time": "19:30"}, {"id": "R-03", "topic": "Вес после отмены уколов", "fmt": "Сценка, потом разбор", "len": 40, "status": "ready", "loc": "kab", "hook": "Пациентка: «Три недели без уколов, а килограмм уже вернулся»", "takes": ["Пациентка: «Мне что, на уколах сидеть всю жизнь?»", "Три недели после последнего укола, и вес пошёл обратно."], "cta": "переслать той, кто собралась колоть сама", "setup": {"pose": "Стоит у стены, кадр по грудь. Две роли — сменой позы и разворота плеч: пациентка сидит или стоит сжато, взгляд в одну точку; врач стоит прямо, корпус к камере, руки спокойны. Грима и переодевания нет.", "frame": "По грудь, камера на уровне глаз; точка кадра одна на обе роли", "background": "Клиника, кабинет — распаковка маша · §14/1 («съёмки в клинике вообще без вопросов, пожалуйста»). Не в халате (§15.4/1)", "movement": ["Вслух в кадре ничего не говорите — реплики поставим карточками, музыка идёт фоном", "Между ролями меняется только поза и разворот плеч, точка съёмки и свет остаются те же", "На каждую роль снимите по два коротких дубля подряд, пока свет один"]}, "beats": [{"t": "0-3", "line": "Пациентка: «Три недели без уколов, а килограмм уже вернулся»", "turn": false, "payoff": false, "cta": false, "hook": true, "note": null}, {"t": "3-6", "line": "«Я терпела тошноту почти год»", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "6-10", "line": "«Уколы закрывают неконтролируемый аппетит»", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "10-15", "line": "«А год даётся на то, чтобы выстроить новый образ жизни»", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "15-23", "line": "«Новый образ жизни это сон, рацион и калораж, физическая активность и работа со стрессом» · «Сделали три из четырёх — вес будет возвращаться»", "turn": true, "payoff": false, "cta": false, "hook": false, "note": "Пик ролика. Пауза после."}, {"t": "23-32", "line": "«Исключить гормональные причины набора веса, проверить состояние мышечного каркаса» · «И с честным дневником питания за пять дней к врачу разбираться, что первично»", "turn": false, "payoff": true, "cta": false, "hook": false, "note": null}, {"t": "32-35", "line": "Перешлите той, кто собралась колоть сама.", "turn": false, "payoff": false, "cta": true, "hook": false, "note": null}], "overlay": [{"t": "3-6", "text": "Пациентка"}, {"t": "6-10", "text": "Врач"}, {"t": "10-15", "text": "Врач"}, {"t": "15-23", "text": "Врач"}, {"t": "23-32", "text": "Врач"}], "difficulty": "тяжёлый", "props": [], "date": "2026-09-15", "wd": "вт", "post_time": "19:30"}, {"id": "R-04", "topic": "Последствия Оземпика, о которых никто не говорит: неожиданная беременность", "fmt": "Предупреждение по обстановке", "len": 62, "status": "ready", "loc": "kab", "hook": "Женщина начинает принимать Оземпик, а беременность наступает неожиданно.", "takes": ["Почему беременность на Оземпике приходит неожиданно?", "Женщинам, которые собрались на Оземпик и не планируют беременность."], "cta": "переслать той, кто собирается на уколы для похудения", "setup": {"pose": "Стоит у стены, кадр по грудь, руки свободны; говорит как на приёме, спокойно", "frame": "По грудь, камера на уровне глаз", "background": "Клиника, кабинет — распаковка маша · §14/1 («съёмки в клинике вообще без вопросов, пожалуйста»). Не в халате (§15.4/1)", "movement": ["Говорить как на приёме, а не на камеру", "Один раз за ролик сменить положение корпуса — на повороте", "Темп ровный: это предупреждение, а не страшилка (риск шаблона M4)"]}, "beats": [{"t": "0-3", "line": "Женщина начинает принимать Оземпик, а беременность наступает неожиданно.", "turn": false, "payoff": false, "cta": false, "hook": true, "note": null}, {"t": "3-12", "line": "Совершенно неожиданная ситуация для тех, кто приходит с запросом снижения веса. Пришла худеть, а через три месяца полосатый тест.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "12-17", "line": "В женском теле при снижении жировой ткани происходят два ключевых момента.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "17-23", "line": "Во-первых, снижается инсулинорезистентность, а следом мужские половые гормоны, которые блокировали овуляцию. Во-вторых, снижается системное воспаление.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "23-32", "line": "И даже те, кто предохраняется таблетками, не защищены. Побочный эффект по замедлению моторики снижает эффективность таблеток для контрацепции, и беременность наступает на фоне таблеток.", "turn": true, "payoff": false, "cta": false, "hook": false, "note": "Пик ролика. Пауза после."}, {"t": "32-39", "line": "И первое, о чём я предупреждаю пациенток до пятидесяти: эта терапия повышает для кого-то риск, а для кого-то шанс наступления беременности.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "39-45", "line": "Поэтому, если вы не планируете прогуляться до роддома, посетите гинеколога и обсудите методы контрацепции, кроме таблетированных средств.", "turn": false, "payoff": true, "cta": false, "hook": false, "note": null}, {"t": "45-50", "line": "И второе: планирование здоровой беременности я всё-таки рекомендую после достижения целевого веса.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "50-54", "line": "Перешлите той, кто собирается на уколы для похудения.", "turn": false, "payoff": false, "cta": true, "hook": false, "note": null}], "overlay": [{"t": "3-12", "text": "пришла снижать вес, беременность не планировала"}, {"t": "17-23", "text": "жир ↓ → инсулинорезистентность ↓ → овуляция возвращается"}, {"t": "23-32", "text": "таблетки работают хуже, моторика замедлена"}, {"t": "32-39", "text": "для кого-то риск, для кого-то шанс"}, {"t": "39-45", "text": "до старта к гинекологу, контрацепция не в таблетках"}, {"t": "45-50", "text": "планирование после целевого веса"}], "difficulty": "тяжёлый", "props": [], "date": "2026-09-16", "wd": "ср", "post_time": "08:30"}, {"id": "R-05", "topic": "Вес встал, а гормоны в норме", "fmt": "Кейс-разоблачение ожидания", "len": 65, "status": "ready", "loc": "voice", "hook": "Мужчина скидывает двадцать три килограмма, и вес встаёт, хотя гормоны в норме.", "takes": ["Вес встал, гормоны в норме, ест правильно. Что тогда держит?", "Вес идёт вниз, а пациентской радости нет."], "cta": "переслать тому, у кого вес встал", "setup": null, "beats": [{"t": "0-3", "line": "Мужчина скидывает двадцать три килограмма, и вес встаёт, хотя гормоны в норме.", "turn": false, "payoff": false, "cta": false, "hook": true, "note": null}, {"t": "3-9", "line": "Я подняла карту. На старте он весил сто тридцать два, через год уже сто девять.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "9-13", "line": "С третьего приёма он как будто бы не рад.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "13-19", "line": "Поэтому ещё раз провели чекап и исключили гормональные причины. Мышечный каркас прирастает, рекомендации по тренировкам он тоже выполнял.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "19-28", "line": "А на очередном приёме я вдруг начинаю от него слышать: снова стал подъедать, на тренировку через раз. И мне звонит тренер и говорит, что он не ходит.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "28-34", "line": "Человек стал покупать одежду ещё большего размера, чем надо. Он как будто бы прячется.", "turn": true, "payoff": false, "cta": false, "hook": false, "note": "Пик ролика. Пауза после."}, {"t": "34-38", "line": "Казалось бы, вес это всегда только гормоны. Но нет.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "38-48", "line": "Причина была, ну как это принято говорить, в голове. Как только человек видит, что сильно худеет, он сам начинает повышать калораж и забрасывать тренировки. Я отправила его к психологу.", "turn": false, "payoff": true, "cta": false, "hook": false, "note": null}, {"t": "48-54", "line": "Через год вес практически идеальный для его роста, а мешковатую одежду он оставил на память.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "54-57", "line": "Перешлите тому, у кого вес встал.", "turn": false, "payoff": false, "cta": true, "hook": false, "note": null}], "overlay": [{"t": "3-9", "text": "старт 132 · через год 109"}, {"t": "13-19", "text": "гормональных причин нет, мышцы прирастают"}, {"t": "19-28", "text": "следующий приём: срывается"}, {"t": "28-34", "text": "одежда на размер больше, чем нужно"}, {"t": "34-38", "text": "вес не всегда про гормоны"}, {"t": "38-48", "text": "причина в другой системе"}, {"t": "48-53", "text": "через год"}], "difficulty": "лёгкая", "props": [], "date": "2026-09-17", "wd": "чт", "post_time": "08:30"}, {"id": "R-06", "topic": "Тестостерон после 30", "fmt": "Список признаков по телу", "len": 64, "status": "ready", "loc": "kab", "hook": "Мужчина списывает живот на возраст, а я проверяю тестостерон.", "takes": ["Мужчинам за тридцать: живот растёт, а тестостерон не проверял никто.", "Признаки сниженного тестостерона мужчина замечает в зале, но списывает на возраст."], "cta": "переслать мужу", "setup": {"pose": "Стоит у стены, кадр по грудь, руки свободны; на признаках показывает зону на себе", "frame": "По грудь, камера на уровне глаз", "background": "Клиника, кабинет — распаковка маша · §14/1 («съёмки в клинике вообще без вопросов, пожалуйста»). Не в халате (§15.4/1)", "movement": ["Говорить как на приёме, а не на камеру", "Рука подключается только там, где называется зона тела (щека, грудь, живот); в остальных битах руки спокойны", "Один раз за ролик сменить положение корпуса — на повороте"]}, "beats": [{"t": "0-3", "line": "Мужчина списывает живот на возраст, а я проверяю тестостерон.", "turn": false, "payoff": false, "cta": false, "hook": true, "note": null}, {"t": "3-10", "line": "После тридцати он неуклонно снижается, в среднем на один процент в год. И это легко заметить в зеркале.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "10-17", "line": "Первое, лицо: сухость кожи. И снижается частота бритья, а на щеках появляются как будто бы проплешины.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "17-23", "line": "Второе, самое заметное: увеличение подкожного жира в области груди, в запущенном случае по женскому типу.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "23-30", "line": "Третий самый важный момент, это объём талии. Контролировать можно дома, имея сантиметровую ленту. Желательно меньше, чем девяносто четыре.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "30-39", "line": "Есть перемена, которую он за собой не видит: как будто успокоился, может всплакнуть от умиления, чего раньше за ним вообще не водилось. Чаще всего это замечают жёны.", "turn": true, "payoff": false, "cta": false, "hook": false, "note": "Пик ролика. Пауза после."}, {"t": "39-49", "line": "Если совпало хотя бы два признака из четырёх, лучше всего проверить общий тестостерон, базовую биохимию и уровень витамина D. И с этим к эндокринологу: он поможет разобраться, что первично.", "turn": false, "payoff": true, "cta": false, "hook": false, "note": null}, {"t": "49-54", "line": "Уровень тестостерона, я считаю, нужно проверять любому мужчине в возрасте тридцать плюс.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "54-57", "line": "Напишите, сколько признаков совпало, и перешлите мужу.", "turn": false, "payoff": false, "cta": true, "hook": false, "note": null}], "overlay": [{"t": "3-10", "text": "после 30 примерно минус 1 % в год"}, {"t": "10-17", "text": "1 · бриться нужно реже"}, {"t": "17-23", "text": "2 · жир в области груди"}, {"t": "23-30", "text": "3 · талия дома сантиметром, до 94"}, {"t": "30-39", "text": "4 · это замечают жёны, а не мужчины"}, {"t": "39-49", "text": "тестостерон · базовая биохимия · витамин D"}], "difficulty": "лёгкая", "props": ["сантиметровая лента (упоминается в бите 18–24; в кадре не обязательна, но лежит рядом — тот же реквизит, что у R-11)"], "date": "2026-09-17", "wd": "чт", "post_time": "19:30"}, {"id": "R-07", "topic": "Гормоны щитовидки навсегда или нет", "fmt": "Два препарата / подхода рядом", "len": 55, "status": "ready", "loc": "voice", "hook": "Гормоны щитовидки навсегда, если ткани не осталось. А если осталась?", "takes": ["Каждая первая на приёме говорит, что не хочет пить гормоны.", "Что решает, будете вы пить гормоны щитовидки всю жизнь или нет?"], "cta": "сохранить и спросить на приёме, что показало ваше УЗИ щитовидной железы", "setup": null, "beats": [{"t": "0-3", "line": "Гормоны щитовидки навсегда, если ткани не осталось. А если осталась?", "turn": false, "payoff": false, "cta": false, "hook": true, "note": null}, {"t": "3-9", "line": "Сравним два случая. Назначение в обоих одно и то же. А в чём разница?", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "9-12", "line": "Ключевую роль здесь играет УЗИ щитовидной железы.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "12-19", "line": "Вариант первый: железа увеличена, узлов нет. С высокой долей вероятности гормоны не навсегда, потому что ткань есть.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "19-26", "line": "А во втором случае функциональной ткани щитовидной железы практически не осталось. Продуцировать гормоны нечем, и другого выхода, кроме заместительной терапии, просто нет.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "26-33", "line": "Железа больше не работает, за неё работает таблетка. Эти гормоны продлевают жизнь и сохраняют молодость. Я так и говорю: щитовидка в коробочке.", "turn": true, "payoff": false, "cta": false, "hook": false, "note": "Пик ролика. Пауза после."}, {"t": "33-43", "line": "Навсегда или нет, решает одно: сколько работающей ткани осталось. Есть ткань, гормоны могут оказаться не навсегда. Ткани нет, и пить их ровно столько, сколько вы хотите жить здоровую жизнь.", "turn": false, "payoff": true, "cta": false, "hook": false, "note": null}, {"t": "43-48", "line": "Сохраните и спросите на приёме, что показало ваше УЗИ щитовидной железы.", "turn": false, "payoff": false, "cta": true, "hook": false, "note": null}], "overlay": [{"t": "9-12", "text": "разницу решает УЗИ"}, {"t": "12-19", "text": "ткань есть → гормоны могут быть временными"}, {"t": "19-26", "text": "ткани нет → замещение"}, {"t": "26-33", "text": "работу железы делает таблетка"}, {"t": "33-43", "text": "навсегда или нет решает объём работающей ткани"}], "difficulty": "лёгкая", "props": [], "date": "2026-09-18", "wd": "пт", "post_time": "08:30"}, {"id": "R-12", "topic": "Бланк до и через три месяца", "fmt": "До / после с цифрой", "len": 50, "status": "ready", "loc": "kab", "hook": "Один бланк до, второй через три месяца, а стрелочек стало меньше.", "takes": ["Тот же бланк через три месяца, а что поменялось между ними?", "Одни стрелочки уходят из бланка первыми, а какие держатся дольше?"], "cta": "переслать тому, кто третий год носит бланк со стрелочками", "setup": {"pose": "Лица в кадре нет. Сидите за столом, в кадре руки и два одинаковых бланка; палец ведёт по строке, о которой в этот момент речь. Слова идут вашим голосом за кадром и подписью на кадре.", "frame": "Сверху вниз на стол, оба бланка попадают в кадр целиком; один и тот же ракурс на кадр «до» и на кадр «после»", "background": "Клиника, кабинет, стол — распаковка маша · §14/1, точка 1. Не в халате (§15.4/1)", "movement": ["Оба кадра снимаются с одной точки, двигаются только бланки", "Палец ведёт по строке, о которой идёт речь, и останавливается на ней", "Два коротких дубля подряд, свет не переставляется"]}, "beats": [{"t": "0-3", "line": "Один бланк до, второй через три месяца, а стрелочек стало меньше.", "turn": false, "payoff": false, "cta": false, "hook": true, "note": null}, {"t": "3-11", "line": "Вот типичный бланк. Печень, АЛТ и АСТ, повышены. Инсулин и индекс HOMA, это тоже про инсулин, повышены. И сахар натощак повышен, но незначительно.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "11-18", "line": "Через три месяца тот же бланк, и стрелочек стало меньше. Добавили овощей, убрали соусы, убрали ультрапереработанную еду.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "18-25", "line": "Первыми нормализуются глюкоза и инсулин, это самые отзывчивые показатели. А печень требует больше внимания и настойчивости.", "turn": true, "payoff": false, "cta": false, "hook": false, "note": "Пик ролика. Пауза после."}, {"t": "25-34", "line": "Что именно человек делал? Начал есть обычную здоровую еду и готовить дома. Мы изменили способ приготовления: жареные наггетсы на курицу в духовке. И печень вздохнула, и поджелудочная.", "turn": false, "payoff": true, "cta": false, "hook": false, "note": null}, {"t": "34-40", "line": "И это не один пациент, это среднестатистическая картина того, кто приходит за снижением веса.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "40-44", "line": "Перешлите тому, кто третий год носит бланк со стрелочками.", "turn": false, "payoff": false, "cta": true, "hook": false, "note": null}], "overlay": [{"t": "3-11", "text": "печень · сахар · инсулин"}, {"t": "11-18", "text": "через три месяца стрелочек меньше"}, {"t": "18-25", "text": "глюкоза и инсулин отвечают первыми, печень дольше"}, {"t": "25-34", "text": "тарелка и способ приготовления"}, {"t": "34-40", "text": "типичная картина, не конкретный пациент"}], "difficulty": "лёгкая", "props": ["два одинаковых макета бланка, «до» и «через три месяца» (готовит ПЦ, строки общие, цифр реальных пациентов нет, ТТГ на макете не ставим)", "стол и однотонная поверхность под бланки"], "date": "2026-09-18", "wd": "пт", "post_time": "19:30"}, {"id": "R-08", "topic": "Я врач и призываю вас не назначать себе Оземпик самостоятельно", "fmt": "Что проверить перед тем, как", "len": 75, "status": "ready", "loc": "kab", "hook": "Что врач проверяет до Оземпика и что делать, если вы уже колете?", "takes": ["Я врач, и я призываю вас не назначать себе Оземпик самостоятельно.", "Вы уже на Оземпике. Что должно насторожить и когда бежать к врачу?"], "cta": "сохранить как список того, что врач обязан узнать до назначения", "setup": {"pose": "Стоит у стены, кадр по грудь, руки свободны; говорит от лица врача, спокойно и прямо", "frame": "По грудь, камера на уровне глаз", "background": "Клиника, кабинет — распаковка маша · §14/1 («съёмки в клинике вообще без вопросов, пожалуйста»). Не в халате (§15.4/1)", "movement": ["Говорить как на приёме, а не на камеру", "На перечислении пунктов руки спокойны, счёт идёт голосом, а не пальцами", "Один раз за ролик сменить положение корпуса — на повороте"]}, "beats": [{"t": "0-3", "line": "Что врач проверяет до Оземпика и что делать, если вы уже колете?", "turn": false, "payoff": false, "cta": false, "hook": true, "note": null}, {"t": "3-10", "line": "Прежде чем выписать такой серьёзный лекарственный препарат, нужно удостовериться, что у вас нет противопоказаний к его применению.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "10-18", "line": "Давайте по пунктам. Первое: в каком состоянии желчный пузырь, нет ли там воспаления или камнеобразования. Второе: УЗИ поджелудочной железы.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "18-28", "line": "Третье: состояние желудочно-кишечного тракта на текущий момент. Препарат сам замедляет моторику, и если его назначили в обход противопоказаний, это нарушение может не пройти даже после отмены.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "28-34", "line": "А бесконтрольный приём приводит к приступу желчекаменной болезни и экстренному удалению желчного пузыря.", "turn": true, "payoff": false, "cta": false, "hook": false, "note": "Пик ролика. Пауза после."}, {"t": "34-41", "line": "К опущению почек, если снижение веса идёт слишком быстро и человек меняет дозы по инструкции из интернета.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "41-48", "line": "А если вы уже на препарате: тошноту он вызывает, но она не должна доходить до ежедневной рвоты.", "turn": false, "payoff": true, "cta": false, "hook": false, "note": null}, {"t": "48-52", "line": "И любой симптом со стороны желудочно-кишечного тракта доводим до врача.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "52-58", "line": "Если тошнота становится непроходящей, возможно, это панкреатит, и это требует экстренного вмешательства врачей.", "turn": false, "payoff": true, "cta": false, "hook": false, "note": null}, {"t": "58-63", "line": "Задача врача не просто назначить укол, а решить, безопасен ли он для вас.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "63-67", "line": "Сохраните как список того, что врач обязан узнать до назначения.", "turn": false, "payoff": false, "cta": true, "hook": false, "note": null}], "overlay": [{"t": "3-10", "text": "что врач узнаёт до назначения"}, {"t": "10-18", "text": "1 · желчный пузырь · 2 · поджелудочная"}, {"t": "18-28", "text": "3 · моторика может не вернуться после отмены"}, {"t": "28-34", "text": "доза из интернета"}, {"t": "41-48", "text": "любой симптом ЖКТ → врачу"}, {"t": "52-58", "text": "непроходящая тошнота → сразу к врачу"}], "difficulty": "тяжёлый", "props": [], "date": "2026-09-19", "wd": "сб", "post_time": "11:00"}, {"id": "R-09", "topic": "Газировка и сахар в крови", "fmt": "Гринскрин над чужим", "len": 68, "status": "ready", "loc": "kab", "hook": "Миллиард литров газировки. Кто-то думает: зубы и калории, а я вижу поджелудочную.", "takes": ["Стакан газировки в день. Что он делает с сахаром в крови?", "Стакан в день, бутылка или только по выходным. Где начинается разница?"], "cta": "написать, сколько газировки уходит в неделю", "setup": {"pose": "Стоит у однотонной стены, кадр по грудь; корпус развёрнут так, чтобы заголовок за спиной не перекрывался", "frame": "По грудь, камера на уровне глаз; справа от неё свободное поле под подложку, которую ставит монтаж", "background": "Клиника, кабинет, однотонная стена или кресло (распаковка маша · §14/1) — заголовок новости за спиной ставит ПЦ монтажом. Не в халате (§15.4/1)", "movement": ["Показывайте рукой туда, где будет заголовок, — примерно на уровне плеча, поле справа от вас", "Говорить как на приёме, а не на камеру", "Не двигайтесь по кадру: подложка ставится под одну точку съёмки"]}, "beats": [{"t": "0-3", "line": "Миллиард литров газировки. Кто-то думает: зубы и калории, а я вижу поджелудочную.", "turn": false, "payoff": false, "cta": false, "hook": true, "note": null}, {"t": "3-12", "line": "Это продажи сладкой газировки за семь месяцев, только по России. И за этой цифрой эпидемия сахарного диабета второго типа.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "12-20", "line": "Жидкий сахар впитывается моментально. Чем резче подъём, тем интенсивнее поджелудочная обязана реагировать, и делать это она будет до последнего вздоха.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "20-29", "line": "Этот сахар прикрыт ортофосфорной кислотой, она притупляет вкусовые рецепторы на распознавание сахара. Если перевести на граммовку, сработал бы рвотный рефлекс, а газировку вы заливаете и не чувствуете.", "turn": true, "payoff": false, "cta": false, "hook": false, "note": "Пик ролика. Пауза после."}, {"t": "29-38", "line": "Кто-то пьёт стаканчик в день, кто-то бутылку, кто-то несколько раз в год. Механизм одинаковый у всех. Несколько раз в год, и риск общепопуляционный.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "38-43", "line": "А если газировка у вас хотя бы раз в неделю стабильна, я вам помогу.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "43-52", "line": "Сдайте инсулин и глюкозу через час после газировки, вне зависимости от объёма. Если инсулин выше верхней границы нормы, это повод встретиться с эндокринологом.", "turn": false, "payoff": true, "cta": false, "hook": false, "note": null}, {"t": "52-56", "line": "Чувствует только ваша поджелудочная железа. Посмотрите, пожалуйста, правде в глаза.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "56-59", "line": "Напишите, сколько газировки уходит у вас за неделю.", "turn": false, "payoff": false, "cta": true, "hook": false, "note": null}], "overlay": [{"t": "3-12", "text": "в России за 7 месяцев больше миллиарда литров"}, {"t": "12-20", "text": "жидкий сахар всасывается моментально"}, {"t": "20-29", "text": "ортофосфорная кислота притупляет вкус"}, {"t": "29-38", "text": "несколько раз в год · раз в неделю · каждый день"}, {"t": "43-52", "text": "инсулин и глюкоза через час после газировки"}], "difficulty": "лёгкая", "props": [], "date": "2026-09-20", "wd": "вс", "post_time": "11:00"}, {"id": "R-10", "topic": "Анализы, которые я сдаю себе", "fmt": "Мой протокол по пунктам", "len": 66, "status": "ready", "loc": "kab", "hook": "Я эндокринолог. Зачем мне короткий чекап, если жалоб нет?", "takes": ["Десять пунктов в моём коротком чекапе, и жалоб у меня нет.", "Вот короткий чекап, который эндокринолог делает себе сам."], "cta": "сохранить список", "setup": {"pose": "Стоит у стены, кадр по грудь, руки свободны; говорит от первого лица, спокойно", "frame": "По грудь, камера на уровне глаз", "background": "Клиника, кабинет — распаковка маша · §14/1 («съёмки в клинике вообще без вопросов, пожалуйста»). Не в халате (§15.4/1)", "movement": ["Говорить как на приёме, а не на камеру", "На перечислении руки спокойны, счёт идёт голосом", "Один раз за ролик сменить положение корпуса — на повороте"]}, "beats": [{"t": "0-3", "line": "Я эндокринолог. Зачем мне короткий чекап, если жалоб нет?", "turn": false, "payoff": false, "cta": false, "hook": true, "note": null}, {"t": "3-10", "line": "Я делаю его четыре раза в год. Каждые три месяца я сдаю базовые десять пунктов, поехали.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "10-19", "line": "Общий анализ крови, он отражает общее состояние организма. Общий анализ мочи, скрининг почек. УЗИ брюшной полости и щитовидной железы. Базовая биохимия.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "19-26", "line": "Дальше гормоны щитовидной железы, щитовидка это лично моя боль, я за ней обязана следить. Профиль поджелудочной железы и витамин D3.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "26-30", "line": "Обычный омега-индекс в процентах я не сдаю никогда, только развёрнутый.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "30-37", "line": "Гомоцистеин не входит в стандартную биохимию, а в определённых исследованиях его уже открыто называют молекулой смерти.", "turn": true, "payoff": false, "cta": false, "hook": false, "note": "Пик ролика. Пауза после."}, {"t": "37-42", "line": "Описательные методы видят начало раньше жалоб. И я дальше живу уверенностью, что со мной всё хорошо.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "42-52", "line": "А если сдавать всё сразу человек не готов, можно сдать чекап по крови: общий анализ крови и мочи, базовая биохимия, гомоцистеин, плюс профиль щитовидной и поджелудочной. УЗИ можно не делать.", "turn": false, "payoff": true, "cta": false, "hook": false, "note": null}, {"t": "52-56", "line": "Это мой личный протокол. Цели и цифры у каждого свои.", "turn": false, "payoff": false, "cta": false, "hook": false, "note": null}, {"t": "56-58", "line": "Сохраните список.", "turn": false, "payoff": false, "cta": true, "hook": false, "note": null}], "overlay": [{"t": "3-10", "text": "4 раза в год · 10 пунктов · жалоб нет"}, {"t": "10-19", "text": "1–5 · кровь · моча · УЗИ · биохимия"}, {"t": "19-26", "text": "6–8 · щитовидная · поджелудочная · витамин D"}, {"t": "26-30", "text": "9 · омега-индекс только развёрнутый"}, {"t": "30-37", "text": "10 · гомоцистеин, которого нет в стандартной биохимии"}, {"t": "37-42", "text": "зачем: видно раньше жалоб"}, {"t": "42-52", "text": "с чего начать: по крови, без УЗИ"}], "difficulty": "лёгкая", "props": [], "date": "2026-09-20", "wd": "вс", "post_time": "19:30"}]};
-const W36_DEMO={init:{'R-01':'done','R-02':'done','R-03':'redo','R-09':'wait'},files:{'R-01':[['0:58','IMG_4412.MOV','11:20'],['1:02','IMG_4413.MOV','11:24'],['0:14','хук-дубль 1','11:27'],['0:12','хук-дубль 2','11:28']],'R-02':[['1:05','IMG_4419.MOV','11:52']],'R-03':[['1:10','IMG_4402.MOV','вчера']]},redo:{'R-03':'В записи эхо от пустого кабинета и слышно коридор. Переснимите на той же точке, ближе к камере, дверь закрыть. Текст менять не нужно.'},takes:{'R-01':[true,true]}};
-const META = Array.isArray(DATA)?{name:'Катя',week:'2026-W36',deadline:'Исходники до <b>вс 6 сент, 12:00</b> · сегодня сб 5 сент',key:'shoot-w36',demo:W36_DEMO}:DATA.meta;
-const REELS = Array.isArray(DATA)?DATA:DATA.reels;
-const DEMO = META.demo||{init:{},files:{},redo:{},takes:{}};
-// слоты без готового сценария — «сценарий готовится»
-REELS.forEach(r=>{ if(r.status!=='ready' && !DEMO.init[r.id]) DEMO.init[r.id]='wait'; });
-const LOC={"kab": {"n": 1, "name": "Кабинет клиники, стена по грудь", "short": "стена", "setup": "однотонная стена, снимаете по грудь, дневной свет; халат не надеваем"}, "dom": {"n": 2, "name": "Кабинет клиники, стол", "short": "стол", "setup": "стол, сверху бланки и лента, снимаете руки и предметы"}, "voice": {"n": 3, "name": "Без съёмки: только голос", "short": "голос", "setup": "эти ролики снимать не нужно: вы наговариваете текст, видеоряд собирает центр"}};
-const ICO={cam:'<svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg>',clock:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',takes:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18M8 4l2 5M14 4l2 5"/></svg>',tg:'<svg viewBox="0 0 24 24"><path d="M21 5L3 12l6 2 2 6 3-4 5 3z"/></svg>',up:'<svg viewBox="0 0 24 24"><path d="M12 16V4M6 10l6-6 6 6"/><path d="M4 20h16"/></svg>',play:'<svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg>'};
+const DATA = {"briefs": {"Сценка": "вы одна в кадре и играете обе стороны рабочего диалога — сначала как это звучит вслух, потом как есть на самом деле. Смена ракурса или титр вместо второго актёра", "Сценка с разбором": "сначала разыгрываете сцену целиком, потом разбираете её как специалист: что это было и что с этим делать", "Реакция на чужое": "вы цитируете расхожий совет или чужой тезис и отвечаете на него как специалист — с механизмом и позицией в конце", "Голос симптома": "вы говорите от лица симптома или от лица той части человека, которая так себя ведёт", "Разбор чужого ролика": "на экране — чужой ролик или переписка, вы комментируете голосом, в кадр не заходите", "Карусель": "пост из 6–8 карточек, текст пишет центр вашими словами из голосового; вы утверждаете", "Направление в TG": "мы не пишем текст за вас — даём тему, угол и три вопроса, на которые ваш пост отвечает", "Карусель · закреп": "закреплённый пост знакомства: 7 карточек, начинается с ситуации, в которой читатель узнаёт себя, а не с регалий"}, "slots": [{"id": "C-00", "ch": "ig_posts", "fmt": "Карусель · закреп", "topic": "Кто я и что здесь будет", "angle": "Закреплённый пост знакомства. Начинается не с регалий, а с ситуации, в которой читатель узнаёт себя: человек тянет всё, держится на «нормально» и не понимает, почему сил нет. Дальше — откуда она это знает (19 лет внутри бизнеса и 10 лет практики), три вещи, про которые здесь будет разговор, и одна фраза о том, чего здесь не будет.", "ask": "Закреплённый пост · голосовое 3–4 минуты. Это интервью: отвечайте по порядку, целыми фразами.\n\nПро что: первый пост в аккаунте, который человек видит до того, как решит подписаться. Не резюме — узнавание.\n\n1. Опишите человека, который к вам приходит чаще всего, одной сценой: что у него происходит в жизни в тот момент, когда он решает написать. Без диагнозов, как вы рассказали бы коллеге.\n2. Откуда вы знаете про работу изнутри — коротко, без перечисления должностей: что вы делали в бизнесе и почему из-за этого говорите про выгорание иначе, чем психолог без такого опыта.\n3. Три темы, про которые здесь будет разговор. Своими словами, как вы их называете.\n4. 🎯 Что человек получит, если останется читать: одной фразой, честно — не «изменит жизнь», а то, что реально происходит после разговора с вами.\n5. Чего здесь точно не будет. У вас есть про это сильная позиция — скажите её.\n\nБез этого пост не соберётся: сцена клиента рассказана · сказано, почему вы знаете про работу изнутри · названо, что человек получает.\n\nНе надо: перечислять дипломы и повышения квалификации — мы поставим их последней карточкой; рассказывать свою биографию.", "voice_ref": "открыт. В корпусе есть всё: самопрезентация (голосовое 1 п.1), путь из бизнеса в психологию (голосовое 2 п.1), её «я не отлетевшая» и «мне важно, чтобы люди чувствовали себя нормальными» (голосовое 2 п.4). Нет одного — короткой фразы, кому этот аккаунт.", "len": 30, "date": "2026-09-14", "wd": "пн"}, {"id": "R-01", "ch": "ig_reels", "fmt": "Сценка", "topic": "Комплимент, после которого плохо", "angle": "Сцена: коллега при всех говорит что-то вроде бы приятное, а человек весь день ходит пришибленный, и придраться формально не к чему. Вы играете эту реплику за коллегу, потом называете приём по имени и говорите, что за ним стоит.", "ask": "Ролик 55 секунд · голосовое 3–4 минуты. Это интервью: отвечайте по порядку, целыми фразами — из ваших ответов соберём реплики.\n\nПро что: коллега при всех говорит что-то формально приятное, а человеку после этого весь день плохо, и объяснить он не может.\n\n1. Произнесите 2–3 такие реплики дословно — как они звучат в реальном офисе. Не описывайте, а скажите их голосом того человека.\n2. Что именно делает такую фразу ударом: назовите приём по имени, как вы называете его на консультации.\n3. Зачем человек так говорит — что он этим получает в коллективе. Одной мыслью, без ярлыков.\n4. 🎯 Что делать тому, кто это услышал: одна фраза, которую можно сказать в ответ прямо там, и почему именно она работает. Скажите её дословно.\n5. Что будет, если продолжать не замечать — коротко, из вашей практики, без страшилок.\n\nБез этого ролик не соберётся: реплики произнесены дословно · приём назван · ответная фраза сказана вслух.\n\nНе надо: ставить диагнозы говорящему («нарцисс», «абьюзер»); советовать «просто не обращать внимания»; обещать, что человек изменится.", "voice_ref": "открыт. В корпусе есть механизм целиком: «ты слишком чувствительный, вообще ничего такого не происходит» и разбор газлайтинга (голосовое 3 п.4), пассивная агрессия как 90 % рабочих кейсов (голосовое 4 п.3). Нет самой реплики-комплимента — её надо услышать от неё.", "len": 55, "date": "2026-09-16", "wd": "ср"}, {"id": "R-02", "ch": "ig_reels", "fmt": "Реакция на чужое", "topic": "Сорок откликов без ответа", "angle": "Человек отправил сорок откликов, не получил ни одного ответа и уже думает, что дело в нём. Вы отвечаете на эту мысль: что на самом деле происходит по ту сторону отклика и почему молчание не равно оценке человека.", "ask": "Ролик 60 секунд · голосовое 3–4 минуты. Наговорите в диктофон, в кадр заходить не нужно — мы положим ваш голос на видеоряд.\n\nПро что: человек отправил сорок откликов, ответов ноль, и он уже уверен, что с ним что-то не так.\n\n1. Скажите дословно, какими словами это описывают у вас на консультации. Одну-две фразы, как их говорят.\n2. Вы сидели по другую сторону — были HR-директором. Что на самом деле происходит с откликом внутри компании и почему ответа может не быть вообще ни при чём человек.\n3. Назовите 2–3 причины молчания, которые к качеству кандидата отношения не имеют.\n4. 🎯 Что человеку с этим делать: одно конкретное действие на эту неделю, которое меняет ситуацию, и как понять, что оно сработало. Без «просто продолжай откликаться».\n5. Одной фразой: когда молчание всё-таки сигнал — и на что тогда смотреть.\n\nБез этого ролик не соберётся: фраза клиента произнесена · названо, что происходит со стороны компании · дано одно действие.\n\nНе надо: обещать работу; учить «правильному резюме» — это отдельный ролик; обесценивать рынок.", "voice_ref": "открыт. В корпусе — её карта запросов дословно: «у меня очень много отказов на хэдхантере», «я не прохожу собеседования» (голосовое 4 п.2), и позиция про HR-сторону (19 лет в найме, HRD до 500 человек). Нет — того, что видит рекрутёр.", "len": 60, "date": "2026-09-16", "wd": "ср"}, {"id": "R-03", "ch": "ig_reels", "fmt": "Сценка с разбором", "topic": "Я просто доделаю, мне несложно", "angle": "Сцена: человек в третий раз берёт чужую задачу со словами «мне несложно», и так три года. Вы играете сцену, потом разбираете, почему в коллективе первым ломается самый ответственный и кому это выгодно.", "ask": "Ролик 70 секунд · голосовое 4 минуты. Это интервью: сначала сцена, потом разбор.\n\nПро что: человек раз за разом берёт чужую работу со словами «мне несложно» — и через три года у него не осталось сил.\n\n1. Разыграйте словами короткий диалог: как коллега передаёт задачу и что отвечает тот, кто её берёт. Дословно, как это звучит.\n2. Что этот человек получает, когда соглашается. Вы называете это выгодой адаптивности — объясните её на этом примере.\n3. Почему в коллективе ломается именно самый ответственный, а не самый загруженный.\n4. 🎯 Что он может сделать в следующий раз, когда к нему подойдут: одна фраза дословно, которую можно сказать, не разрушив отношения. И что будет дальше — честно, включая неприятную реакцию.\n5. Одной фразой: чем эта усталость отличается от обычной, которая проходит за выходные.\n\nБез этого ролик не соберётся: диалог произнесён дословно · названа выгода, ради которой человек соглашается · дана фраза отказа.\n\nНе надо: советовать «просто научись говорить нет»; обвинять коллег; обещать, что после одной фразы всё изменится.", "voice_ref": "открыт. В корпусе: «я перерабатываю — этого никто не замечает» (голосовое 4 п.2) и её тезис про выгоду адаптивности — почему мы соглашаемся терпеть там, где нас используют (программа курса, тема 4). Нет — самой сцены передачи задачи.", "len": 60, "date": "2026-09-17", "wd": "чт"}, {"id": "R-04", "ch": "ig_reels", "fmt": "Голос симптома", "topic": "Болит перед разговором", "angle": "Вы говорите от лица симптома: голова, живот или спина, которые каждый раз включаются перед разговором с определённым человеком. Что симптом защищает, зачем пришёл и при каком условии уходит — с обязательным «сначала к врачу».", "ask": "Ролик 50 секунд · голосовое 3 минуты. Говорите от лица симптома — как будто тело объясняет, зачем оно так делает.\n\nПро что: у человека каждый раз что-то болит перед конкретным разговором — с начальником, с мамой, с партнёром.\n\n1. Назовите 2–3 самых частых телесных сигнала, которые вы видите в практике именно перед тяжёлым разговором.\n2. Скажите от лица тела: зачем оно включает этот симптом, от чего защищает. Прямой речью — «я болю, потому что…».\n3. Почему человек чаще всего этой связи не видит.\n4. 🎯 Что сделать, чтобы проверить связь самому: один конкретный способ (например, что и когда отследить) — и что человек увидит, если связь есть. Обязательно скажите вслух, что сначала нужно исключить медицинскую причину.\n5. Одной фразой: при каком условии симптом уходит.\n\nБез этого ролик не соберётся: сигналы названы · тело говорит прямой речью · сказано про врача · дан способ проверить.\n\nНе надо: называть диагнозы и болезни; говорить «это психосоматика» про конкретного зрителя; отговаривать от обследования.", "voice_ref": "открыт. В корпусе — готовый кейс: язвы во рту и спазмы кишечника ровно к приезду мамы, головная боль, «чуть в аварию не попал» (голосовое 4 п.4), и её рамка интегративного подхода (голосовое 3 п.2). Кейс надо обезличить: сменить родственника и отрасль.", "len": 50, "date": "2026-09-18", "wd": "пт"}, {"id": "C-01", "ch": "ig_posts", "fmt": "Карусель", "topic": "Ненавижу работу, но не могу уйти", "angle": "Разбор клубка: человек говорит «ненавижу работу, но уйти не могу — ипотека», а под этим лежат деньги, отношения и страх, и работа там всего одна нитка. По карточкам — из чего состоит клубок и почему решать его надо не с работы.", "ask": "Карусель 7–8 карточек · голосовое 4 минуты. Текст напишем вашими словами, вы утвердите.\n\nПро что: «ненавижу работу, но не могу уйти» — и почему дело почти никогда не в работе.\n\n1. Произнесите эту фразу так, как её говорят вам на приёме, целиком, со всеми оговорками.\n2. Разложите клубок: из чего он обычно состоит и в каком порядке одно держит другое. На вашем примере из практики, обезличенно.\n3. Почему решать с работы — самый частый и самый дорогой путь.\n4. 🎯 С чего человеку начать разбирать клубок самому: первый шаг, который можно сделать без специалиста, и признак, что вы разбираете верную нитку.\n5. Одной фразой: что меняется, когда нитку нашли.\n\nБез этого карусель не соберётся: фраза произнесена · клубок разложен по порядку · назван первый шаг.\n\nНе надо: советовать увольняться; говорить, что «надо просто потерпеть»; называть диагнозы.", "voice_ref": "открыт. В корпусе — «клубок» дословно и разворот целиком: ненавижу работу → ипотека → не люблю мужа → антидепрессанты (голосовое 3 п.4); кейс девушки, пришедшей за резюме (голосовое 4 п.3).", "len": 30, "date": "2026-09-17", "wd": "чт"}, {"id": "R-05", "ch": "ig_reels", "fmt": "Реакция на чужое", "topic": "Держись, ты же сильная", "angle": "На экране — расхожие фразы поддержки: «держи нос выше», «выноси позитивное», «ты же сильная». Вы спорите с ними как специалист: почему это худшее, что можно сказать человеку в кризисе, и что говорят вместо.", "ask": "Ролик 65 секунд · голосовое 3 минуты. Наговорите в диктофон — в кадр не заходите, на экране будут фразы, с которыми вы спорите.\n\nПро что: человеку в кризисе говорят «держись, ты же сильная» — и ему становится хуже.\n\n1. Назовите 3–4 такие фразы дословно, как их говорят друзья и коллеги.\n2. Что происходит с человеком внутри, когда он это слышит. Одной мыслью, без терминов.\n3. Почему люди так говорят — что они на самом деле пытаются сделать.\n4. 🎯 Что сказать вместо: две-три фразы дословно, которые действительно помогают. И одна вещь, которую можно сделать молча.\n5. Одной фразой: когда позитив всё-таки уместен — у вас есть про это чёткая позиция.\n\nБез этого ролик не соберётся: чужие фразы названы дословно · сказано, что вместо · названо, когда позитив уместен.\n\nНе надо: осуждать тех, кто так говорит; называть диагнозы; обещать, что боль пройдёт быстро.", "voice_ref": "открыт. В корпусе — её убеждение целиком и почти готовыми словами: «держи нос выше», «давай ты не плачь, ты же сильная», и её ответ про признание объёма боли (голосовое 3 п.4). Это самый закрытый корпусом слот недели.", "len": 65, "date": "2026-09-18", "wd": "пт"}, {"id": "TG-01", "ch": "tg", "fmt": "Направление в TG", "topic": "Кивает и не делает", "angle": "Для её базы, где сидят реальные клиенты и руководители: сотрудник соглашается на планёрке и не делает, и так третий раз. Что это за форма сопротивления, почему повторить задачу громче не помогает и что делает руководитель, который хочет результата, а не признания вины.", "ask": "Пост в ваш Telegram · голосовое 3 минуты. Текст вы пишете сами — мы даём тему, угол и вопросы, на которые пост отвечает.\n\nПро что: сотрудник кивает на планёрке и не делает. Третий раз.\n\n1. Как это выглядит в реальности — приведите короткую сцену из практики, обезличенно.\n2. Что это за форма сопротивления и почему она возникает именно там, где нельзя сказать «нет» прямо.\n3. Почему повторить задачу ещё раз и жёстче — не работает.\n4. 🎯 Что делает руководитель, который хочет результата: конкретный ход или вопрос, который переводит скрытое сопротивление в открытый разговор. Дословно.\n5. Одной фразой: как понять, что ход сработал.\n\nБез этого пост не соберётся: сцена названа · механизм объяснён · дан конкретный ход.\n\nНе надо: советовать увольнять; называть сотрудника токсиком; обещать, что сработает с первого раза.", "voice_ref": "открыт. В корпусе — её тезис дословно: «в 90 % кейсов моих взрослых клиентов в коллективах именно пассивная агрессия, и именно она принципиально не решается», и её метод — выводить конфликт в открытый (голосовое 4 п.3).", "len": 0, "date": "2026-09-18", "wd": "пт"}, {"id": "R-06", "ch": "ig_reels", "fmt": "Сценка", "topic": "Говорю третий раз, не слышит", "angle": "Одна и та же просьба к руководителю в двух версиях: та, что пролетает мимо, и та, после которой что-то меняется. Разница в одном элементе, и вы его называете.", "ask": "Ролик 55 секунд · голосовое 3–4 минуты. Мы снимем две версии одной сцены рядом, поэтому нужны обе реплики дословно.\n\nПро что: человек третий раз просит руководителя об одном и том же, и ничего не меняется.\n\n1. Скажите дословно, как звучит просьба, которая пролетает мимо. Так, как её реально произносят.\n2. Скажите дословно вторую версию той же просьбы — ту, после которой руководитель реагирует.\n3. Назовите, в чём именно разница. Один элемент, а не список.\n4. 🎯 Как человеку построить свою фразу по этому принципу: скажите формулу или шаблон, который он подставит под свою ситуацию. И что будет, если руководитель всё равно не отреагирует.\n5. Одной фразой: когда дело не в формулировке, а в том, что разговаривать уже не с кем.\n\nБез этого ролик не соберётся: обе версии произнесены дословно · разница названа одним элементом · дан шаблон.\n\nНе надо: учить «правильно манипулировать»; обещать, что руководитель изменится; советовать сразу увольняться.", "voice_ref": "открыт. В корпусе — «меня не слышит начальник» из её карты запросов (голосовое 4 п.2) и её собственный пример разговора на равных: четырёхчасовой разбор с педагогами, где она задавала вопросы вместо обвинений (голосовое 4 п.3). 🔴 Пример со школой в кадре не используется — сын под запретом; механизм переносится на рабочую сцену.", "len": 55, "date": "2026-09-19", "wd": "сб"}, {"id": "C-02", "ch": "ig_posts", "fmt": "Карусель", "topic": "Пятая просьба за неделю", "angle": "Пять «помоги по-быстрому» за неделю и пять «да». По карточкам: почему мы соглашаемся там, где нас используют, что это даёт и как выглядит отказ, после которого с вами продолжают работать. Ведёт к её курсу о токсичном коллективе.", "ask": "Карусель 7–8 карточек · голосовое 3–4 минуты.\n\nПро что: человека пятый раз за неделю просят «помочь по-быстрому», и он пятый раз говорит да.\n\n1. Приведите 2–3 типичные просьбы дословно — как они звучат.\n2. Что человек получает, когда соглашается: вы называете это выгодой адаптивности — объясните на примере.\n3. Как выглядит отказ, после которого с человеком продолжают нормально работать: скажите формулировку дословно.\n4. 🎯 Что человек может сделать уже в понедельник: один шаг, выполнимый в реальном офисе, и как понять, что он сработал.\n5. Одной фразой: чем отказ отличается от конфликта.\n\nБез этого карусель не соберётся: просьбы произнесены · названа выгода · дана формулировка отказа.\n\nНе надо: «просто научись говорить нет»; советовать уходить из компании; обещать, что отношения не испортятся.", "voice_ref": "открыт. В корпусе — программа курса (темы 1, 4 и 6: границы, выгода адаптивности, сценарии) и её формулировки из шага 2 п.1: «когда нужно защищать свои границы». Материала хватает, нужен её голос под карточки.", "len": 30, "date": "2026-09-19", "wd": "сб"}, {"id": "R-07", "ch": "ig_reels", "fmt": "Разбор чужого ролика", "topic": "Отпуск, который не восстановил", "angle": "На экране — типичный совет «просто отдохни, возьми отпуск». Вы разбираете по шагам, что происходит с человеком, который уехал телом, а тревогой остался на работе, и в какой точке круг разрывается.", "ask": "Ролик 75 секунд · голосовое 4 минуты. Наговорите в диктофон — в кадр заходить не нужно.\n\nПро что: человек взял отпуск, вернулся — и через два дня снова пустой.\n\n1. Скажите, как звучит совет, с которым вы спорите, и почему он так популярен.\n2. Разложите по шагам, что происходит с человеком в отпуске, который не восстанавливает: что с телом, что с головой, что с тревогой.\n3. В какой точке этого круга он разрывается — назовите её конкретно.\n4. 🎯 Что человеку сделать в ближайший выходной, чтобы отдых начал работать: одно действие, выполнимое без отпуска и без денег. И по какому признаку он поймёт, что получилось.\n5. Одной фразой: когда отдых уже не поможет и нужен специалист.\n\nБез этого ролик не соберётся: механизм разложен по шагам · названа точка разрыва · дано одно действие.\n\nНе надо: советовать «уволиться и уехать»; называть диагнозы; обещать, что одного выходного хватит.", "voice_ref": "открыт. В корпусе — её раздражитель «давай ты просто начни вставать раньше, делай физические упражнения, и у тебя всё получится» (голосовое 3 п.4) и описание фонового состояния — «фоновая тошнота» (там же). Нет — механизма невосстановления по шагам.", "len": 75, "date": "2026-09-20", "wd": "вс"}, {"id": "TG-02", "ch": "tg", "fmt": "Направление в TG", "topic": "Фоновая тошнота", "angle": "Её собственная метафора: состояние, когда яркого симптома нет, а жить нечем — как отравление, которое ещё не началось, но уже идёт. Для тёплой базы: как отличить усталость, которая пройдёт за выходные, от той, что не проходит годами.", "ask": "Пост в ваш Telegram · голосовое 3 минуты. Текст вы пишете сами — даём тему, угол и вопросы.\n\nПро что: состояние, когда ничего конкретного не болит, а жить нечем.\n\n1. Расскажите вашу метафору про фоновую тошноту — целиком, своими словами, как вы объясняете это на приёме.\n2. Назовите 3–4 признака, по которым человек может опознать у себя это состояние.\n3. Чем оно отличается от усталости, которая проходит за выходные.\n4. 🎯 Что человеку сделать в ближайшие дни, если он себя узнал: один шаг, и чего делать точно не надо.\n5. Одной фразой: почему на этом состоянии можно прожить годы и не заметить.\n\nБез этого пост не соберётся: метафора рассказана · признаки названы · дан шаг.\n\nНе надо: ставить диагноз депрессии; пугать; звать на консультацию в лоб — это пост про узнавание.", "voice_ref": "открыт. Метафора есть дословно: «фоновая, постоянная неприятная тошнота или тяжесть в желудке перед основным проявлением… человек просто живёт постоянно с фоновой тошнотой» (голосовое 3 п.4). Это готовая первая строка поста.", "len": 0, "date": "2026-09-20", "wd": "вс"}], "meta": {"expert": "belkina", "name": "Юлия", "week": {"iso": "2026-W38", "start": "2026-09-14", "end": "2026-09-20"}, "stage": "С1", "aud": {"B1": "Не могу бросить руль", "B2": "Токсичный коллектив", "B3": "Карьерный тупик", "B4": "Тело уже кричит"}, "voice_dl": "2026-09-13 20:00", "shoot_dl": "2026-09-15", "upload_dl": "2026-09-15 22:00", "sapp_dl": "2026-09-14 12:00", "built": "2026-09-11", "plan_id": "belkina-2026-W38", "expert_card": {"role": "Психолог: выгорание, работа и карьера · телесные практики", "niche": "психология", "since": "первая неделя", "base": "Instagram ~1 500 (не ведётся с 2022) · Telegram 235", "shoot_chip": "снимает сама, вт–чт", "voice_chip": "голосовые на все слоты", "slots_chip": "12 слотов · 7 Reels · 3 карусели · 0 сторис · 2 TG"}}};
+const NOW = new Date('2026-09-03T10:00:00');            // демо-дата: ср 3 сент, 10:00
+const TYPE={ig_reels:['Reels','reels'],ig_posts:['Пост в Instagram','posts'],ig_stories:['Сторис','stories'],tg:['Пост в Telegram','tg']};
+const DEADLINE={ig_reels:'2026-09-13T20:00',ig_posts:'2026-09-13T20:00',tg:'2026-09-13T20:00',ig_stories:'2026-09-13T20:00'};
+const REDL={ig_reels:'вс 13 сент, 20:00',ig_posts:'вс 13 сент, 20:00',tg:'вс 13 сент, 20:00',ig_stories:'вс 13 сент, 20:00'};
+const REDL_S={ig_reels:'вс 13.09 20:00',ig_posts:'вс 13.09 20:00',tg:'вс 13.09 20:00',ig_stories:'вс 13.09 20:00'};
+const ICO={reels:'<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 9h18M8 3l3 6M14 3l3 6M10 13l5 3-5 3z"/></svg>',
+ posts:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg>',
+ stories:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/></svg>',
+ tg:'<svg viewBox="0 0 24 24"><path d="M21 5L3 12l6 2 2 6 3-4 5 3z"/></svg>',
+ mic:'<svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>',
+ clock:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'};
 const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const plural=(n,a,b,c)=>{const m=n%10,h=n%100;return (h>10&&h<20)?c:(m===1?a:(m>1&&m<5?b:c))};
-const DIFF={'лёгкая':1,'средняя':2,'тяжёлый':3};
 
-// состояния: done | redo | wait | todo (демо — только у прототипа W36)
-const INIT=DEMO.init, FILES=DEMO.files, REDO_NOTE=DEMO.redo, TAKES_INIT=DEMO.takes;
-const LOCS=["kab", "dom", "voice"].filter(l=>REELS.some(r=>r.loc===l));
-document.getElementById('dl').innerHTML=META.deadline||'';
-document.getElementById('h1').innerHTML=`${esc(META.name)}, <em>съёмочный день</em>`;
-{const rd=REELS.filter(r=>r.status==='ready').length, wt=REELS.length-rd;
- const pts=LOCS.length===1?'Одна точка':'Две точки';
- document.getElementById('heroP').textContent=`Сценарии готовы и согласованы. ${pts}, ${rd} ${plural(rd,'ролик','ролика','роликов')} к съёмке${wt?`, ещё ${wt} ${plural(wt,'ждёт','ждут','ждут')} ваших голосовых`:''}, всё с телефона. Открывайте карточку, читайте, снимайте и загружайте видео. Снятое зеленеет само.`;}
-
-let state={}; try{state=JSON.parse(localStorage.getItem(META.key)||'{}')}catch(e){state={}}
-state.st=state.st||{}; state.files=state.files||{}; state.takes=state.takes||{}; state.edits=state.edits||{}; state.stop=state.stop||'dom'; state.why=state.why||{}; state.custom=state.custom||[]; state.noDemo=state.noDemo||{};
-function save(){try{localStorage.setItem(META.key,JSON.stringify(state))}catch(e){}}
-
-const ALL=()=>REELS.concat(state.custom.map(c=>({...c,custom:true,takes:[],beats:[],overlay:[],setup:null,fmt:'Ваш ролик',len:c.len||60,difficulty:null})));
-const st=r=>state.st[r.id]||INIT[r.id]||'todo';
-const files=r=>(state.files[r.id]||[]).concat((state.noDemo||{})[r.id]?[]:(FILES[r.id]||[]));
-const takesDone=r=>r.takes.map((_,i)=>(state.takes[r.id]||TAKES_INIT[r.id]||[])[i]===true);
-const hook=r=>(state.edits[r.id]&&state.edits[r.id].hook)||r.hook;
-const line=(r,i)=>(state.edits[r.id]&&state.edits[r.id].beats&&state.edits[r.id].beats[i])||r.beats[i].line;
-const ED=r=>{const e=state.edits[r.id]=Object.assign({beats:{},removed:[],added:[]},state.edits[r.id]);e.beats=e.beats||{};e.removed=e.removed||[];e.added=e.added||[];return e};
-// эффективный сценарий: исходные биты (с пометкой удалённых) + строки эксперта после нужного индекса
-function effBeats(r){
-  const e=state.edits[r.id]||{}, rem=new Set(e.removed||[]), add=e.added||[], out=[];
-  r.beats.forEach((b,i)=>{out.push({...b,i,line:line(r,i),removed:rem.has(i),edited:!!(e.beats&&e.beats[i])});
-    add.forEach((a,ai)=>{if(a.after===i)out.push({t:b.t,line:a.line,added:true,ai})});});
-  add.forEach((a,ai)=>{if(a.after===-1)out.unshift({t:r.beats[0]?r.beats[0].t:'',line:a.line,added:true,ai})});
-  return out;
+// минуты голосового — из первой строки задания
+function minutes(ask){
+  if(!ask) return 0;
+  const l=ask.split('\n')[0].toLowerCase();
+  let m=l.match(/голосовое\s*([\d,–\-]+)\s*(минут|мин|секунд|с\b)/);
+  if(!m) m=ask.toLowerCase().match(/голосовое\s*([\d,–\-]+)\s*(минут|мин|секунд)/);
+  if(!m) return 2;
+  const nums=m[1].replace(',','.').split(/[–-]/).map(Number);
+  let v=nums[nums.length-1]; if(m[2].startsWith('с')) v=v/60;
+  return Math.round(v*2)/2;
 }
-const liveBeats=r=>effBeats(r).filter(b=>!b.removed);
-const editCount=()=>Object.keys(state.edits).filter(k=>{const e=state.edits[k];return e.hook||(e.beats&&Object.keys(e.beats).length)||(e.removed&&e.removed.length)||(e.added&&e.added.length)}).length;
-const shootable=()=>ALL().filter(r=>!['wait','cancel'].includes(st(r)));
-const doneList=()=>shootable().filter(r=>st(r)==='done');
-const byLoc=l=>ALL().filter(r=>r.loc===l&&st(r)!=='cancel');
+// демо-состояния: done | partial | corpus | life | todo
+const INIT={};
+const FILES={};
+const PARTIAL_NOTE={'R-03':'Пункт 2 — кем она была рядом с этой мамой и почему чувство тогда нельзя было показать. 30–40 секунд достаточно, остальное не пересказывайте.'};
+const LIFE={ideas:['готовка: борщ, пироги или тарт','баня и массаж по средам','прогулки в парке, собаки','синхронное плавание и стойка на руках','книга или фильм, которые зацепили','репост чужого поста с одной фразой от себя'],
+ limits:['не показывать партнёра и близких (лайфстайл без лиц — можно)','не эзотерическое считывание','без действующих клиентов, даже обезличенно','без темы зависимостей и игромании']};
+const FORMATS={ig_reels:['Цитата клиента с разбором','Чувство как маркер','Откуда это взялось','Переписка с комментарием','Причина не там, где ищут','Реакция на чужое','Провокация','Правило с ценой'],ig_posts:['Карусель'],ig_stories:['Сторис-серия','Лайфстайл'],tg:['Лонгрид Telegram']};
+const order={ig_reels:0,ig_posts:1,ig_stories:2,tg:3};
 
-const BADGES=[[1,'Первый дубль','1'],[50,'Половина','½'],['loc','Точка закрыта','⌂'],[100,'Съёмочный день закрыт','✓']];
+let state={}; try{state=JSON.parse(localStorage.getItem('voice-belkina-w38')||'{}')}catch(e){state={}}
+state.st=state.st||{}; state.files=state.files||{}; state.topics=state.topics||{}; state.why=state.why||{}; state.custom=state.custom||[];
+function save(){try{localStorage.setItem('voice-belkina-w38',JSON.stringify(state))}catch(e){}}
+
+function allSlots(){
+  const base=DATA.slots.map(s=>({...s,min:minutes(s.ask),cls:TYPE[s.ch][1],tname:TYPE[s.ch][0],st0:INIT[s.id]||(s.ask?'todo':'life')}));
+  const custom=state.custom.map(c=>({...c,min:1.5,cls:TYPE[c.ch][1],tname:TYPE[c.ch][0],st0:'todo',custom:true}));
+  return base.concat(custom).sort((a,b)=>order[a.ch]-order[b.ch]||a.id.localeCompare(b.id));
+}
+const st=s=>state.st[s.id]||s.st0;
+const topic=s=>state.topics[s.id]||s.topic;
+const files=s=>(state.files[s.id]||[]).concat(FILES[s.id]||[]);
+const isLate=s=>!['done','corpus','life','cancel','partial'].includes(st(s))&&!s.custom&&new Date(DEADLINE[s.ch])<NOW;
+const required=()=>allSlots().filter(s=>!['life','cancel'].includes(st(s)));
+const doneList=()=>required().filter(s=>['done','corpus'].includes(st(s)));
+const plural=(n,a,b,c)=>{const m=n%10,h=n%100;return (h>10&&h<20)?c:(m===1?a:(m>1&&m<5?b:c))};
+
+const BADGES=[[1,'Первая запись','1'],[50,'Половина','½'],[75,'Финишная прямая','¾'],[100,'Неделя записана','✓']];
 let lastPct=null;
 function renderHero(){
-  const sh=shootable(), dn=doneList(); const pct=sh.length?Math.round(dn.length/sh.length*100):0;
-  const left=sh.filter(r=>st(r)!=='done').reduce((a,r)=>a+r.len,0);
-  const tk=ALL().reduce((a,r)=>a+r.takes.length,0), tkd=ALL().reduce((a,r)=>a+takesDone(r).filter(Boolean).length,0);
-  document.getElementById('stDone').innerHTML=`${dn.length}<small>из ${sh.length}</small>`;
-  document.getElementById('stMin').innerHTML=`${Math.round(left/60*10)/10}<small>мин</small>`.replace('.',',');
-  document.getElementById('stTakes').innerHTML=`${tkd}<small>из ${tk}</small>`;
+  const req=required(), done=doneList(), late=allSlots().filter(isLate);
+  const pct=req.length?Math.round(done.length/req.length*100):0;
+  const left=req.filter(s=>!['done','corpus'].includes(st(s))).reduce((a,s)=>a+(st(s)==='partial'?0.5:s.min),0);
+  document.getElementById('stDone').innerHTML=`${done.length}<small>из ${req.length}</small>`;
+  document.getElementById('stMin').innerHTML=`${left%1?left.toFixed(1).replace('.',','):left}<small>мин</small>`;
+  const sl=document.getElementById('stLate'); sl.textContent=late.length; sl.classList.toggle('bad',late.length>0);
   document.getElementById('fill').style.width=pct+'%';
-  const locClosed=LOCS.some(l=>{const L=byLoc(l).filter(r=>st(r)!=='wait');return L.length>0&&L.every(r=>st(r)==='done')});
-  document.getElementById('badges').innerHTML=BADGES.map(b=>`<span class="badge ${(b[0]==='loc'?locClosed:pct>=b[0])?'on':''}"><i>${b[2]}</i>${b[1]}</span>`).join('');
-  const btn=document.getElementById('doneBtn'); const todo=sh.length-dn.length;
-  btn.classList.toggle('ready',todo===0); btn.disabled=todo!==0;
-  btn.innerHTML=todo===0?`<span>Готово, всё сняла</span> →`:`<span>Готово</span><small>ещё ${todo} ${plural(todo,'ролик','ролика','роликов')}</small>`;
+  document.getElementById('badges').innerHTML=BADGES.map(b=>`<span class="badge ${pct>=b[0]?'on':''}"><i>${b[2]}</i>${b[1]}</span>`).join('');
+  const btn=document.getElementById('doneBtn'); const todo=req.length-done.length;
+  btn.classList.toggle('ready',todo===0&&req.length>0);
+  btn.innerHTML=todo===0?`<span>Готово, всё записала</span> →`:`<span>Готово</span><small>ещё ${todo} ${plural(todo,'запись','записи','записей')}</small>`;
+  btn.disabled=todo!==0;
   const mb=document.getElementById('mbBtn'); mb.disabled=btn.disabled; mb.classList.toggle('ready',!btn.disabled); mb.textContent=todo===0?'Готово →':'Готово';
-  document.getElementById('mbDone').textContent=`${dn.length} из ${sh.length} снято`; document.getElementById('mbSub').textContent=todo===0?'всё снято, жмите «Готово»':`ещё ${todo} ${plural(todo,'ролик','ролика','роликов')} · ≈ ${Math.round(left/60*10)/10} мин в кадре`.replace('.',','); document.getElementById('mbFill').style.width=pct+'%';
-  if(lastPct!==null&&pct>lastPct){const hit=BADGES.find(b=>b[0]!=='loc'&&lastPct<b[0]&&pct>=b[0]); if(hit&&hit[0]<100) toast(`${hit[2]} ${hit[1]}!`);}
+  document.getElementById('mbDone').textContent=`${done.length} из ${req.length} записано`; document.getElementById('mbSub').textContent=todo===0?'всё записано, жмите «Готово»':`ещё ${todo} ${plural(todo,'запись','записи','записей')} · ≈ ${left%1?left.toFixed(1).replace('.',','):left} мин`; document.getElementById('mbFill').style.width=pct+'%';
+  document.getElementById('topDl').innerHTML=late.length?`<span class="late">Срок вышел у ${late.length} ${plural(late.length,'записи','записей','записей')}</span><span>·</span><span>ближайший срок <b>вс 13.09 20:00</b></span>`:`Ближайший срок: <b>вс 13.09 20:00</b>`;
+  if(lastPct!==null&&pct>lastPct){const hit=BADGES.find(b=>lastPct<b[0]&&pct>=b[0]); if(hit&&hit[0]<100) toast(`${hit[2]} ${hit[1]}!`);}
   lastPct=pct;
 }
-function renderRoute(){
-  document.getElementById('route').innerHTML=LOCS.map(l=>{
-    const list=byLoc(l).filter(r=>st(r)!=='wait'), d=list.filter(r=>st(r)==='done').length, closed=list.length>0&&d===list.length;
-    return `<button class="stop ${state.stop===l?'on':''} ${closed?'closed':''}" data-stop="${l}"><span class="no">${closed?'✓':LOC[l].n}</span><span><div class="nm">Точка ${LOC[l].n} · ${LOC[l].name}</div><div class="sub">${LOC[l].setup}</div></span><span class="cnt">${list.length?`${d}<small>/${list.length}</small>`:`<small>ждёт</small>`}</span></button>`;
-  }).join('');
-  document.querySelectorAll('.stop').forEach(b=>b.onclick=()=>{state.stop=b.dataset.stop;save();renderRoute();document.querySelector(`.sect[data-loc="${b.dataset.stop}"]`)?.scrollIntoView({behavior:'smooth',block:'start'})});
-}
-function tileHTML(r){
-  const t=st(r), td=takesDone(r);
-  const cls=(t==='done'?'done':t==='redo'?'redo':t==='wait'?'wait':t==='cancel'?'cancel':'')+(r.custom?' custom':'');
-  const cta=t==='done'?'Снято':t==='redo'?'Переснять ›':t==='wait'?'Сценарий готовится':t==='cancel'?'Удалено':r.custom?'Открыть ›':'Открыть сценарий ›';
-  const d=DIFF[r.difficulty]||0;
-  return `<button class="tile ${cls}" data-id="${r.id}">${t!=='cancel'?`<span class="x" data-x="${r.id}" role="button" aria-label="Удалить" title="Удалить этот ролик">✕</span>`:''}<span class="stamp">✓</span>
-    <span class="hd"><span class="no">${r.custom?'+':r.id.replace('R-','')}</span><span class="fm" title="${esc(r.fmt)}">${esc(r.fmt)}</span><span class="len">${r.len} с</span></span>
-    <h3>${esc(r.topic)}</h3>
-    <span class="meta">${d?`<span title="сложность">${'<span class="diff">'+[1,2,3].map(i=>`<i class="${i<=d?'on':''}"></i>`).join('')+'</span>'} ${r.difficulty}</span>`:''}${r.takes.length?`<span>${ICO.takes}хук-дубли ${td.filter(Boolean).length}/${r.takes.length}</span>`:''}</span>
-    ${t==='cancel'?`<span class="why">${esc(state.why[r.id]||'')}</span>`:''}<span class="ft"><span>${t==='cancel'?'':t==='done'?`${ICO.cam} ${files(r).length} ${plural(files(r).length,'файл','файла','файлов')}`:t==='wait'?'ждём голосовое':t==='redo'?'нужен второй дубль':r.custom?'ваш ролик':`${liveBeats(r).length} реплик`}</span><span class="cta">${cta}</span></span></button>`;
+
+function tileHTML(s){
+  const t=st(s), late=isLate(s);
+  const cls=[s.cls,t==='done'?'done':'',t==='partial'?'partial':'',late?'late':'',t==='corpus'?'corpus':'',t==='life'?'off':'',t==='cancel'?'cancel':''].join(' ');
+  const cta=t==='done'?'Записано':t==='partial'?'Дозаписать ›':t==='corpus'?'Уже есть':t==='life'?'Свободный формат':t==='cancel'?'Удалено':'Записать ›';
+  const ft=t==='life'?'снимаете сами':t==='corpus'?'из ваших записей':t==='cancel'?'':`${ICO.mic}≈ ${String(s.min).replace('.',',')} мин`;
+  let dl='';
+  if(t==='done') dl=`<span class="dl">✓ ${files(s).length} ${plural(files(s).length,'голосовое','голосовых','голосовых')}</span>`;
+  else if(t==='cancel') dl=`<span class="why">${esc(state.why[s.id]||'')}</span>`;
+  else if(t==='corpus') dl=`<span class="dl">записывать не нужно</span>`;
+  else if(t==='life') dl=`<span class="dl">в день выхода, ${s.wd} ${s.date.slice(8)}.${s.date.slice(5,7)}</span>`;
+  else if(s.custom) dl=`<span class="dl">ваша идея · когда удобно</span>`;
+  else if(t==='partial') dl=`<span class="dl" style="color:#b8461f;font-weight:700">${ICO.clock}дозапись до ср 3.09 18:00</span>`;
+  else dl=`<span class="dl ${late?'late':''}">${ICO.clock}${late?'срок вышел · был '+REDL_S[s.ch]:'до '+REDL_S[s.ch]}</span>`;
+  return `<button class="tile ${cls}" data-id="${s.id}">${t!=='cancel'?`<span class="x" data-x="${s.id}" role="button" aria-label="Удалить" title="Удалить эту тему">✕</span>`:''}<span class="stamp">✓</span>
+    <span class="ty"><span style="display:inline-flex;gap:6px;align-items:center">${ICO[s.cls]}${s.tname}</span></span>
+    <h3>${esc(topic(s))}</h3>${dl}
+    <span class="ft"><span class="min">${ft}</span><span class="cta">${cta}</span></span></button>`;
 }
 function renderGrid(){
-  let h='';
-  LOCS.forEach(l=>{const list=byLoc(l);h+=`<div class="sect" data-loc="${l}">Точка ${LOC[l].n} · ${LOC[l].short} · ${list.length} <span class="sd">· ${LOC[l].setup}</span></div>`+list.map(tileHTML).join('')+`<button class="tile add" data-add="${l}"><span class="plus">+</span><span>Свой ролик</span></button>`});
-  const canc=ALL().filter(r=>st(r)==='cancel'); if(canc.length) h+=`<div class="sect gray">Удалено · ${canc.length}</div>`+canc.map(tileHTML).join('');
+  const all=allSlots(); let h='';
+  ['ig_reels','ig_posts','ig_stories','tg'].forEach(ch=>{
+    const list=all.filter(s=>s.ch===ch&&st(s)!=='cancel');
+    h+=`<div class="sect">${TYPE[ch][0]} · ${list.length} <span class="sd">· срок ${REDL[ch]}</span></div>`;
+    h+=list.map(tileHTML).join('');
+    h+=`<button class="tile add" data-add="${ch}"><span class="plus">+</span><span>Своя идея${ch==='ig_reels'?' ролика':ch==='ig_stories'?' сторис':' поста'}</span></button>`;
+  });
+  const canc=all.filter(s=>st(s)==='cancel');
+  if(canc.length) h+=`<div class="sect red">Удалено · ${canc.length}</div>`+canc.map(tileHTML).join('');
   document.getElementById('grid').innerHTML=h;
 }
 
-// ── карточка ──
-let cur=null;
-const filesHTML=r=>{const f=files(r);return f.length?`<div class="sec" id="filesSec"><h3>Ваши файлы <small>${f.length} ${plural(f.length,'файл','файла','файлов')}</small></h3><div class="files">${f.map((x,i)=>`<div class="file" data-fi="${i}"><span class="th">${x[0]}</span><span>${esc(x[1])}</span><span class="w">${x[2]}</span><button class="fx" data-del="${i}" aria-label="Удалить файл" title="Удалить файл">✕</button></div>`).join('')}</div></div>`:''};
-function wireFiles(r){
-  document.querySelectorAll('[data-del]').forEach(b=>b.onclick=e=>{e.stopPropagation();const i=+b.dataset.del;const row=b.closest('.file');const f=files(r)[i];
-    row.classList.add('ask');row.innerHTML=`<span class="q">Удалить <b>${esc(f[1])}</b>? Файл пропадёт и у нас.</span><span class="acts"><button class="btn sm danger" data-delok="${i}">Удалить</button><button class="btn ghost sm" data-delno="${i}">Отмена</button></span>`;
-    row.querySelector('[data-delno]').onclick=ev=>{ev.stopPropagation();openSheet(r.id)};
-    row.querySelector('[data-delok]').onclick=ev=>{ev.stopPropagation();
-      const all=files(r).slice(); all.splice(i,1); state.files[r.id]=all; state.noDemo[r.id]=true;
-      if(!all.length && st(r)==='done'){ state.st[r.id]='todo'; toast('Файлов не осталось — ролик снова к съёмке'); } else toast('Файл удалён');
-      save(); renderAll(); openSheet(r.id);
-    };
-  });
+// ── шторка ──
+let cur=null, timer=null, secs=0;
+function askHTML(s){
+  const lines=(s.ask||'').split('\n'); const lead=lines[0]; const rest=lines.slice(1);
+  const steps=[], paras=[]; let no='';
+  rest.forEach(l=>{l=l.trim(); if(!l) return; const m=l.match(/^(\d+)[.)]\s*(.*)/); if(m) steps.push(m[2]); else if(/^не надо/i.test(l)) no=l.replace(/^не надо:?\s*/i,''); else if(steps.length) steps[steps.length-1]+=' '+l; else paras.push(l);});
+  return `<div class="ask" style="--ac:${{reels:'var(--orange)',posts:'var(--blue)',stories:'var(--beige)',tg:'var(--lilac)'}[s.cls]}">
+    <div class="lead">${ICO.mic}<b>${esc(lead)}</b></div>${paras.map(p=>`<p>${esc(p)}</p>`).join('')}
+    ${steps.length?`<ol>${steps.map((x,i)=>`<li><i>${i+1}</i><span>${esc(x)}</span></li>`).join('')}</ol>`:''}
+    ${no?`<div class="no"><b>Не надо:</b> ${esc(no)}</div>`:''}</div>`;
 }
+function filesHTML(s){
+  const f=files(s); if(!f.length) return '';
+  return `<div class="f"><span class="k">Ваш материал<small>из бота и отсюда</small></span><div class="v"><div class="files">${f.map(x=>`<div class="file"><span class="play">▶</span>${ICO.mic}<span class="len">${x[0]}</span><span class="w">${x[1]}</span></div>`).join('')}</div></div></div>`;
+}
+const col=s=>({reels:['var(--orange-t)','#b8461f'],posts:['var(--blue-t)','#3350bd'],stories:['var(--beige-t)','#7c6238'],tg:['var(--lilac-t)','#5b47a8']}[s.cls]);
+
 function openSheet(id){
-  cur=ALL().find(r=>r.id===id); const r=cur, t=st(r), td=takesDone(r), ed=state.edits[r.id]||{};
-  let h=`<div class="hd"><span class="no">${r.id.replace('R-','')}</span><span class="meta">${esc(r.fmt)} · <b>${r.len} с</b> · точка ${LOC[r.loc].n}, ${LOC[r.loc].short}${r.difficulty?' · '+r.difficulty:''}</span><button class="x" id="closeS" aria-label="Закрыть">✕</button></div><div class="bd">
-    <h2 class="topic">${esc(r.topic)}</h2>`;
-  if(t==='cancel'){h+=`<div class="warn"><b>Вы удалили этот ролик.</b> Причина: «${esc(state.why[r.id]||'')}». Мы увидим это у себя.</div><div class="actions"><button class="btn ghost sm" id="undo">Вернуть</button></div></div>`;show(h);document.getElementById('undo').onclick=()=>{state.st[r.id]='todo';delete state.why[r.id];save();closeSheet();renderAll()};return;}
-  if(r.custom){h+=customSheet(r,t);show(h);wireCustom(r);return;}
-  if(t==='wait'){h+=`<div class="warn"><b>Сценарий ещё готовится.</b> Голосовое на эту тему не записано, поэтому сценария пока нет. Запишите его в «Записях недели», и карточка появится здесь сама.</div></div>`;show(h);return;}
-  if(t==='redo') h+=`<div class="warn"><b>Нужен второй дубль.</b> ${esc(REDO_NOTE[r.id]||'')}</div>`;
-  if(t==='done') h+=`<div class="okbox"><b>Снято, файлы у нас.</b> Хотите добавить дубль — загрузите ещё.</div>`;
-  const s=r.setup||{};
-  h+=`<div class="sec"><h3>Как сесть и снять</h3><div class="setup">
-    <div><b>Поза</b>${esc(s.pose)}</div><div><b>Кадр</b>${esc(s.frame)}</div>
-    <div class="wide"><b>Фон</b>${esc((s.background||'').split(' — ')[0])}</div>
-    ${(s.movement||[]).length?`<div class="wide"><b>Движение и темп</b><ul>${s.movement.map(m=>`<li>${esc(m)}</li>`).join('')}</ul></div>`:''}</div></div>`;
-  h+=`<div class="sec"><h3>Хук · первые 3 секунды <small>можно поправить</small></h3><div class="hook" id="hookV"><span>${esc(hook(r))}${ed.hook?'<span class="mine">ваша правка</span>':''}</span><button class="pen" id="editH">изменить</button></div></div>`;
-  const eb=effBeats(r), nLive=eb.filter(b=>!b.removed).length;
-  h+=`<div class="sec"><h3>Сценарий · ${nLive} ${plural(nLive,'реплика','реплики','реплик')} <small>✎ поправить · ✕ убрать · + вставить строку после</small></h3><div class="beats">${eb.map(b=>{
-    if(b.added) return `<div class="beat added" data-ai="${b.ai}"><span class="t">—</span><span class="txt">${esc(b.line)}<span class="mine">ваша строка</span></span><span class="acts"><button class="pen" data-aedit="${b.ai}" title="Поправить">✎</button><button class="pen del" data-adel="${b.ai}" title="Убрать">✕</button></span></div>`;
-    if(b.removed) return `<div class="beat removed" data-i="${b.i}"><span class="t">${b.t} с</span><span><span class="txt">${esc(b.line)}</span><span class="mine">убрано</span></span><button class="undo" data-undo="${b.i}">вернуть</button></div>`;
-    return `<div class="beat ${b.turn?'turn':''} ${b.cta?'cta':''} ${b.hook?'bhook':''}" data-i="${b.i}"><span class="t">${b.t} с</span><span>${b.turn?'<span class="tag">поворот</span>':b.cta?'<span class="tag">призыв</span>':b.hook?'<span class="tag">хук</span>':''}${esc(b.line)}${b.edited?'<span class="mine">ваша правка</span>':''}${b.turn?`<span class="note">${esc(b.note||'Пауза после, не торопить.')}</span>`:''}</span><span class="acts"><button class="pen" data-edit="${b.i}" title="Поправить">✎</button><button class="pen del" data-bdel="${b.i}" title="Убрать строку">✕</button><button class="pen ins" data-ins="${b.i}" title="Вставить строку после">+</button></span></div>`;
-  }).join('')}</div><button class="addline" data-ins="${r.beats.length-1}">+ Добавить строку в конец</button></div>`;
-  if(r.overlay.length) h+=`<div class="sec"><h3>На экране появится <small>говорить это не нужно</small></h3><div class="overlay">${r.overlay.map(o=>`<div><span>${o.t} с</span><b>${esc(o.text)}</b></div>`).join('')}</div></div>`;
-  if(r.takes.length) h+=`<div class="sec"><h3>Хук-дубли · ${r.takes.length} <small>та же точка и свет, 10–15 секунд каждый, сразу после ролика</small></h3><div class="takes">${r.takes.map((tk,i)=>`<div class="take ${td[i]?'on':''}" data-take="${i}"><span class="cb">${td[i]?'✓':''}</span><span><i>${esc(tk)}</i><small>${td[i]?'снят':'отметьте, когда сняли'}</small></span></div>`).join('')}</div></div>`;
-  h+=filesHTML(r);
-  h+=`<div class="uploading" id="upl">Загружаем 2 видео… <div class="pb"><i id="upb"></i></div></div>`;
-  h+=`<div class="actions" id="acts"><button class="btn ghost" id="prBtn">${ICO.play}Режим суфлёра</button><button class="btn up" id="upBtn">${ICO.up}${t==='done'?'Загрузить ещё':'Загрузить видео'}</button><button class="btn ghost" id="tgBtn">${ICO.tg}Через бота</button></div>
-    <div class="hint">Видео можно отправить и боту в Telegram под этой темой — здесь карточка позеленеет сама. Загружайте все дубли, выберем лучший мы.</div></div>`;
-  show(h);
-  document.getElementById('editH').onclick=()=>{const v=document.getElementById('hookV');v.innerHTML=`<div style="flex:1"><textarea class="inp" id="hookI" style="font-family:var(--sans);font-size:15px">${esc(hook(r))}</textarea><div class="actions" style="margin-top:8px"><button class="btn sm" id="hookOk">Сохранить</button><button class="btn ghost sm" id="hookNo">Отмена</button></div><div class="hint" style="font-family:var(--sans);font-size:12.5px;margin-top:6px">Команда увидит правку. Смысл и длина фразы — на ваш вкус, это ваши слова.</div></div>`;
-    document.getElementById('hookOk').onclick=()=>{const v=document.getElementById('hookI').value.trim();state.edits[r.id]=Object.assign({},state.edits[r.id],{hook:v&&v!==r.hook?v:undefined});save();openSheet(r.id)};
-    document.getElementById('hookNo').onclick=()=>openSheet(r.id);};
-  document.querySelectorAll('[data-bdel]').forEach(b=>b.onclick=()=>{const i=+b.dataset.bdel;const e=ED(r);if(!e.removed.includes(i))e.removed.push(i);save();openSheet(r.id);toast('Строка убрана. Команда увидит')});
-  document.querySelectorAll('[data-undo]').forEach(b=>b.onclick=()=>{const i=+b.dataset.undo;const e=ED(r);e.removed=e.removed.filter(x=>x!==i);save();openSheet(r.id)});
-  document.querySelectorAll('[data-adel]').forEach(b=>b.onclick=()=>{const ai=+b.dataset.adel;const e=ED(r);e.added.splice(ai,1);save();openSheet(r.id)});
-  document.querySelectorAll('[data-aedit]').forEach(b=>b.onclick=()=>{const ai=+b.dataset.aedit;const e=ED(r);const row=b.closest('.beat');row.innerHTML=`<span class="t">—</span><div><textarea class="inp" id="aI">${esc(e.added[ai].line)}</textarea><div class="actions" style="margin-top:8px"><button class="btn sm" id="aOk">Сохранить</button><button class="btn ghost sm" id="aNo">Отмена</button></div></div><span></span>`;
-    document.getElementById('aOk').onclick=()=>{const v=document.getElementById('aI').value.trim();if(v)e.added[ai].line=v;save();openSheet(r.id)};document.getElementById('aNo').onclick=()=>openSheet(r.id);});
-  document.querySelectorAll('[data-ins]').forEach(b=>b.onclick=()=>{const i=+b.dataset.ins;const host=b.classList.contains('addline')?b:b.closest('.beat');
-    const box=document.createElement('div');box.className='beat added';box.innerHTML=`<span class="t">—</span><div><textarea class="inp" id="nI" placeholder="Что скажете здесь — своими словами"></textarea><div class="actions" style="margin-top:8px"><button class="btn sm" id="nOk">Добавить</button><button class="btn ghost sm" id="nNo">Отмена</button></div></div><span></span>`;
-    if(b.classList.contains('addline')){host.parentNode.insertBefore(box,host);host.style.display='none'} else host.after(box);
-    box.querySelector('#nI').focus();
-    box.querySelector('#nOk').onclick=()=>{const v=box.querySelector('#nI').value.trim();if(v){ED(r).added.push({after:i,line:v});save();openSheet(r.id);toast('Строка добавлена. Команда увидит')}else openSheet(r.id)};
-    box.querySelector('#nNo').onclick=()=>openSheet(r.id);});
-  document.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>{const i=+b.dataset.edit; const row=b.closest('.beat'); row.innerHTML=`<span class="t">${r.beats[i].t} с</span><div><textarea class="inp" id="bI">${esc(line(r,i))}</textarea><div class="actions" style="margin-top:8px"><button class="btn sm" id="bOk">Сохранить</button><button class="btn ghost sm" id="bNo">Отмена</button>${(state.edits[r.id]&&state.edits[r.id].beats&&state.edits[r.id].beats[i])?'<button class="btn ghost sm" id="bReset">Вернуть исходную</button>':''}</div></div><span></span>`;
-    document.getElementById('bOk').onclick=()=>{const v=document.getElementById('bI').value.trim();const e=state.edits[r.id]=Object.assign({beats:{}},state.edits[r.id]);e.beats=e.beats||{};if(v&&v!==r.beats[i].line)e.beats[i]=v;else delete e.beats[i];save();openSheet(r.id)};
-    document.getElementById('bNo').onclick=()=>openSheet(r.id);
-    const br=document.getElementById('bReset'); if(br) br.onclick=()=>{delete state.edits[r.id].beats[i];save();openSheet(r.id)};});
-  document.querySelectorAll('[data-take]').forEach(el=>el.onclick=()=>{const i=+el.dataset.take;const arr=state.takes[r.id]||td.slice();arr[i]=!arr[i];state.takes[r.id]=arr;save();openSheet(r.id);renderAll();});
-  wireFiles(r);
-  document.getElementById('prBtn').onclick=()=>openPrompter(r);
-  document.getElementById('upBtn').onclick=()=>upload(r);
-  document.getElementById('tgBtn').onclick=()=>toast('В продукте: откроется бот, тема уже выбрана');
+  cur=allSlots().find(x=>x.id===id); const s=cur, t=st(s), late=isLate(s), c=col(s);
+  let h=`<div class="hd"><span class="tyb" style="background:${c[0]};color:${c[1]}">${ICO[s.cls]}${s.tname}</span>`;
+  if(s.custom) h+=`<span class="meta">ваша идея · срока нет</span>`;
+  else if(t==='partial') h+=`<span class="meta">дозапись до <b>ср 3 сент, 18:00</b></span>`;
+  else if(!['life','corpus','cancel','done'].includes(t)) h+=`<span class="meta ${late?'late':''}">${late?'срок вышел · был':'срок'} <b>${REDL[s.ch]}</b></span>`;
+  h+=`<span class="meta">выходит ${s.wd} ${s.date.slice(8)}.${s.date.slice(5,7)}</span><button class="x" id="closeS" aria-label="Закрыть">✕</button></div><div class="bd">`;
+  h+=`<div class="f">
+    <span class="k">Тема<small>можно поправить</small></span><div class="v" id="topicV"><h2><span>${esc(topic(s))}</span>${t!=='cancel'?'<button class="pen" id="editT">изменить</button>':''}</h2></div>
+    <span class="k">Формат</span><div class="v">${esc(s.fmt)}${DATA.briefs[s.fmt]?`<details class="brief"><summary>Что важно в этом формате</summary><p>${esc(DATA.briefs[s.fmt])}</p></details>`:''}</div>
+    ${s.angle?`<span class="k">Фокус</span><div class="v"><p>${esc(s.angle)}</p></div>`:''}
+  </div>`;
+  if(late&&t!=='partial') h+=`<div class="warn red"><b>Срок вышел ${REDL[s.ch]}.</b> Бот напомнил в чате вчера в 18:30. Запишите, когда сможете, — мы ждём именно этот кусок, чтобы двигаться дальше.</div>`;
+  if(t==='life'){
+    h+=`<div class="ask" style="--ac:var(--beige)"><div class="lead">${ICO.mic}<b>Свободный формат, записывать заранее не нужно</b></div><p>Снимаете сами телефоном в день выхода. Утром бот напомнит.</p>
+      <p style="margin-top:8px"><b>Идеи на эту неделю:</b></p><ul>${[s.angle].concat(LIFE.ideas).filter(Boolean).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+      <div class="no"><b>Не надо:</b> ${LIFE.limits.join('; ')}.</div></div>`;
+  } else if(t==='corpus'){
+    h+=`<div class="okbox"><b>Уже есть в ваших записях.</b> ${esc(s.voice_ref||'')}</div>`;
+  } else if(t==='cancel'){
+    h+=`<div class="warn red"><b>Вы удалили этот контент.</b> Причина: «${esc(state.why[s.id]||'')}». Мы увидим это у себя и заменим слот.</div><div class="actions"><button class="btn ghost sm" id="undo">Вернуть в неделю</button></div>`;
+  } else {
+    h+=`<div class="f"><span class="k">Что должно быть в голосовом<small>чек-лист по пунктам</small></span><div class="v">${s.ask?askHTML(s):`<div class="ask"><div class="lead">${ICO.mic}<b>Ваша идея</b></div><p>Наговорите свободно: с чего начинается, что главное, чем закончить. Мы соберём каркас сами.</p></div>`}</div></div>`;
+    if(t==='partial') h+=`<div class="warn"><b>Нужно дозаписать</b>${esc(PARTIAL_NOTE[s.id]||'Одного пункта в записи не хватило.')}</div>`;
+    h+=filesHTML(s);
+    if(t==='done') h+=`<div class="sent on">✓ Голосовое получено. Спасибо! <span style="font-weight:400;color:var(--ink2)">Хотите добавить — запишите ещё одно.</span></div>`;
+    h+=`<div class="recorder" id="rec"><div class="t" id="rt">0:00</div><div class="w">${'<i style="animation-delay:'+[0,.1,.2,.3,.15,.05,.25,.35,.1,.2,.3,.05,.15,.25,.35,.2,.1,.3].join('s"></i><i style="animation-delay:')+'s"></i>'}</div><button class="stop" id="stop">Стоп · отправить</button></div>`;
+    h+=`<div class="sent" id="sent">✓ Отправлено. Плитка станет зелёной.</div>`;
+    h+=`<div class="actions" id="acts"><button class="btn rec" id="recBtn"><i></i>${t==='partial'?'Дозаписать голосовое':t==='done'?'Записать ещё одно':'Записать голосовое'}</button><button class="btn ghost" id="tgBtn">${ICO.tg}В Telegram-боте</button></div>
+      <div class="hint">В боте: выберите неделю и эту тему, отправьте голосовое (можно несколько, плюс фото или файлы) и нажмите «готово». Плитка здесь позеленеет сама.</div>`;
+  }
+  h+=`</div>`;
+  const sh=document.getElementById('sheet'); sh.innerHTML=h; sh.classList.add('on'); document.getElementById('dim').classList.add('on');
+  document.getElementById('closeS').onclick=closeSheet;
+  const et=document.getElementById('editT'); if(et) et.onclick=()=>{
+    const v=document.getElementById('topicV'); v.innerHTML=`<input class="inp" id="topicI" value="${esc(topic(s))}"><div class="actions" style="margin-top:8px"><button class="btn sm" id="topicOk">Сохранить</button><button class="lnk" id="topicNo">отмена</button></div><div class="hint" style="margin-top:6px">Мы увидим правку и подстроим задание.</div>`;
+    document.getElementById('topicI').focus();
+    document.getElementById('topicOk').onclick=()=>{const val=document.getElementById('topicI').value.trim(); if(val){state.topics[s.id]=val;save();} openSheet(s.id); renderGrid();};
+    document.getElementById('topicNo').onclick=()=>openSheet(s.id);
+  };
+  const rb=document.getElementById('recBtn'); if(rb) rb.onclick=startRec;
+  const tb=document.getElementById('tgBtn'); if(tb) tb.onclick=()=>toast('В продукте: откроется чат с ботом, эта тема уже выбрана');
+  const un=document.getElementById('undo'); if(un) un.onclick=()=>{state.st[s.id]='todo';delete state.why[s.id];save();closeSheet();renderAll();};
 }
-function show(h){const sh=document.getElementById('sheet'); sh.innerHTML=h; sh.classList.add('on'); document.getElementById('dim').classList.add('on'); document.getElementById('closeS').onclick=closeSheet;}
-function closeSheet(){document.getElementById('sheet').classList.remove('on');document.getElementById('dim').classList.remove('on')}
-document.getElementById('dim').onclick=closeSheet;
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSheet();closePrompter();document.getElementById('confirm').classList.remove('on')}});
-document.getElementById('grid').addEventListener('click',e=>{const x=e.target.closest('.x');if(x){e.stopPropagation();openDelete(x.dataset.x);return}const a=e.target.closest('.tile.add');if(a){openAdd(a.dataset.add);return}const b=e.target.closest('.tile');if(b)openSheet(b.dataset.id)});
-function openDelete(id){
-  const r=ALL().find(x=>x.id===id); if(!r) return; const c=document.getElementById('confirm');
-  c.innerHTML=`<div class="in"><h2>Расскажите, почему хотите удалить этот ролик?</h2><div class="sub">${esc(r.topic)}</div>
-    <textarea class="inp" id="dWhy" placeholder="Например: не хочу это снимать / тема уже не актуальна / хук не мой"></textarea>
-    <div class="actions"><button class="btn sm" id="dGo" disabled>Удалить</button><button class="btn ghost sm" id="dNo">Отменить</button></div></div>`;
-  c.classList.add('on'); const ta=document.getElementById('dWhy'); ta.focus();
-  ta.oninput=()=>{document.getElementById('dGo').disabled=ta.value.trim().length<3};
-  document.getElementById('dNo').onclick=()=>c.classList.remove('on'); c.onclick=e=>{if(e.target===c)c.classList.remove('on')};
-  document.getElementById('dGo').onclick=()=>{state.why[r.id]=ta.value.trim();state.st[r.id]='cancel';save();c.classList.remove('on');renderAll();toast('Ролик удалён и ушёл вниз. Мы это увидим у себя')};
-}
-let pendingFiles=[];
-function openAdd(loc){
-  pendingFiles=[];
-  const h=`<div class="hd"><span class="no">+</span><span class="meta">свой ролик · точка ${LOC[loc].n}, ${LOC[loc].short}</span><button class="x" id="closeS" aria-label="Закрыть">✕</button></div><div class="bd">
-    <div class="f"><span class="k">Название</span><div><input class="inp" id="nTitle" placeholder="О чём ролик — двумя-пятью словами"></div>
-    <span class="k">Хук<small>первая фраза</small></span><div><input class="inp" id="nHook" placeholder="С чего начинается — как скажете в камеру"></div>
-    <span class="k">Описание</span><div><textarea class="inp" id="nDesc" style="min-height:110px" placeholder="Опишите, как видите ролик, чтобы мы правильно его смонтировали: что происходит в кадре, где поворот, чем заканчивается, что показать текстом"></textarea></div>
-    <span class="k">Файлы<small>видео, фото</small></span><div><div class="drop" id="nDrop">${ICO.up} Нажмите, чтобы приложить видео или фото<br><span style="font-size:12px">можно несколько · или отправьте боту после</span></div><div class="chips" id="nChips"></div></div></div>
-    <div class="actions"><button class="btn" id="nOk" disabled>Добавить ролик</button><button class="btn ghost" id="nNo">Отмена</button></div><div class="hint">Ролик появится у нас в плане недели. Сценарий под него не нужен — монтируем по вашему описанию.</div></div>`;
-  show(h); document.getElementById('nNo').onclick=closeSheet;
-  document.getElementById('nTitle').oninput=e=>{document.getElementById('nOk').disabled=e.target.value.trim().length<3};
-  document.getElementById('nDrop').onclick=()=>{const n=pendingFiles.length+1;const now=new Date();pendingFiles.push([`0:${40+Math.floor(Math.random()*20)}`,`IMG_45${20+n}.MOV`,`${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`]);document.getElementById('nChips').innerHTML=pendingFiles.map(f=>`<span class="chip">${ICO.cam}<b>${f[1]}</b> ${f[0]}</span>`).join('');};
+function openAdd(ch){
+  const tn=TYPE[ch][0], c={reels:['var(--orange-t)','#b8461f'],posts:['var(--blue-t)','#3350bd'],stories:['var(--beige-t)','#7c6238'],tg:['var(--lilac-t)','#5b47a8']}[TYPE[ch][1]];
+  let h=`<div class="hd"><span class="tyb" style="background:${c[0]};color:${c[1]}">${ICO[TYPE[ch][1]]}${tn}</span><span class="meta">своя идея</span><button class="x" id="closeS" aria-label="Закрыть">✕</button></div><div class="bd">
+    <div class="f"><span class="k">Тема</span><div class="v"><input class="inp" id="nTopic" placeholder="О чём хотите сказать — двумя-пятью словами"></div>
+    <span class="k">Описание</span><div class="v"><textarea class="inp" id="nAngle" style="min-height:110px" placeholder="Расскажите, как вы видите ${{ig_reels:'этот рилс',ig_posts:'эту карусель',ig_stories:'эти сторис',tg:'этот пост'}[ch]}: с чего начинается, что главное, чем заканчивается"></textarea></div></div>
+    <div class="actions"><button class="btn" id="nOk" disabled>Добавить и записать</button><button class="lnk" id="nNo">отмена</button></div></div>`;
+  const sh=document.getElementById('sheet'); sh.innerHTML=h; sh.classList.add('on'); document.getElementById('dim').classList.add('on');
+  document.getElementById('closeS').onclick=closeSheet; document.getElementById('nNo').onclick=closeSheet;
+  document.getElementById('nTopic').oninput=e=>{document.getElementById('nOk').disabled=e.target.value.trim().length<3};
   document.getElementById('nOk').onclick=()=>{
-    const n=state.custom.length+1, id=`K-${n}`;
-    state.custom.push({id,loc,topic:document.getElementById('nTitle').value.trim(),hook:document.getElementById('nHook').value.trim(),desc:document.getElementById('nDesc').value.trim(),date:'2026-09-06',wd:'вс'});
-    if(pendingFiles.length){state.files[id]=pendingFiles.slice();state.st[id]='done';}
-    save(); closeSheet(); renderAll(); toast(pendingFiles.length?'Ролик добавлен и уже снят. Мы это увидим':'Ролик добавлен. Загрузите видео, когда снимете');
+    const n=state.custom.filter(x=>x.ch===ch).length+1; const pre={ig_reels:'R',ig_posts:'P',ig_stories:'S',tg:'TG'}[ch];
+    const id=`${pre}-К${n}`;
+    state.custom.push({id,ch,topic:document.getElementById('nTopic').value.trim(),fmt:{ig_reels:'Ваш ролик',ig_posts:'Ваша карусель',ig_stories:'Ваши сторис',tg:'Ваш пост'}[ch],angle:document.getElementById('nAngle').value.trim(),ask:null,date:'2026-09-13',wd:'вс'});
+    save(); renderGrid(); openSheet(id); toast('Плитка добавлена. Мы увидим её у себя');
   };
 }
-function customSheet(r,t){
-  return `${t==='done'?'<div class="okbox"><b>Снято, файлы у нас.</b> Смонтируем по вашему описанию.</div>':''}
-    <div class="sec"><h3>Хук · первые 3 секунды</h3><div class="hook"><span>${esc(r.hook||'—')}</span></div></div>
-    <div class="sec"><h3>Как вы видите ролик</h3><div class="setup"><div class="wide">${esc(r.desc||'—')}</div></div></div>
-    ${filesHTML(r)}
-    <div class="uploading" id="upl">Загружаем 2 видео… <div class="pb"><i id="upb"></i></div></div>
-    <div class="actions" id="acts"><button class="btn up" id="upBtn">${ICO.up}${t==='done'?'Загрузить ещё':'Загрузить видео'}</button><button class="btn ghost" id="tgBtn">${ICO.tg}Через бота</button></div></div>`;
+function startRec(){
+  document.getElementById('acts').style.display='none';
+  const r=document.getElementById('rec'); r.classList.add('on'); secs=0; document.getElementById('rt').textContent='0:00';
+  timer=setInterval(()=>{secs++;document.getElementById('rt').textContent=`${Math.floor(secs/60)}:${String(secs%60).padStart(2,'0')}`},1000);
+  document.getElementById('stop').onclick=stopRec;
 }
-function wireCustom(r){wireFiles(r);document.getElementById('upBtn').onclick=()=>upload(r);document.getElementById('tgBtn').onclick=()=>toast('В продукте: откроется бот, ролик уже выбран');}
-
-function upload(r){
-  document.getElementById('acts').style.display='none'; const u=document.getElementById('upl'); u.classList.add('on'); const pb=document.getElementById('upb'); let p=0;
-  const iv=setInterval(()=>{p+=8+Math.random()*12;pb.style.width=Math.min(100,p)+'%';if(p>=100){clearInterval(iv);
-    const n=(state.files[r.id]||[]).length; const now=new Date(); const hm=`${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
-    state.files[r.id]=[[`0:${50+Math.floor(Math.random()*12)}`,`IMG_44${30+n}.MOV`,hm],[`1:0${Math.floor(Math.random()*9)}`,`IMG_44${31+n}.MOV`,hm]].concat(state.files[r.id]||[]);
-    state.st[r.id]='done'; save(); closeSheet(); renderAll();
-    const el=document.querySelector(`.tile[data-id="${r.id}"]`); if(el){el.classList.add('pop');const b=el.getBoundingClientRect();confetti(b.left+b.width/2,b.top+b.height/2)}
-    const c=document.getElementById('clap'); c.classList.remove('on'); void c.offsetWidth; c.classList.add('on'); setTimeout(()=>c.classList.remove('on'),950);
-  }},160);
+function stopRec(){
+  clearInterval(timer); document.getElementById('rec').classList.remove('on'); document.getElementById('sent').classList.add('on');
+  state.st[cur.id]='done'; (state.files[cur.id]=state.files[cur.id]||[]).unshift([`${Math.floor(secs/60)}:${String(secs%60).padStart(2,'0')}`,'только что']); save();
+  setTimeout(()=>{closeSheet();renderAll();const el=document.querySelector(`.tile[data-id="${cur.id}"]`);if(el){el.classList.add('pop');const r=el.getBoundingClientRect();confetti(r.left+r.width/2,r.top+r.height/2)}},700);
 }
-
-// ── суфлёр ──
-let pr={r:null,i:0,on:false,t0:0,raf:null,el:0};
-function beatRange(b){const m=String(b.t).match(/(\d+)\s*[-–]\s*(\d+)/);return m?[+m[1],+m[2]]:[0,0]}
-function openPrompter(r){pr.r=r;pr.i=0;pr.on=false;pr.el=0;const p=document.getElementById('prompter');p.classList.add('on');closeSheet();drawPr();}
-function drawPr(){
-  const r=pr.r,L=liveBeats(r),b=L[pr.i],prev=L[pr.i-1],next=L[pr.i+1];
-  const total=beatRange(L[L.length-1])[1]||r.len;
-  document.getElementById('prompter').innerHTML=`<div class="ph"><span>${r.id.replace('R-','')} · ${esc(r.topic)}</span><span>реплика ${pr.i+1} из ${L.length}</span><button class="x" id="prX" aria-label="Закрыть">✕</button></div>
-    <div class="pb"><i style="width:${Math.min(100,pr.el/total*100)}%"></i></div>
-    <div class="body"><div class="prev">${prev?esc(prev.line):''}</div>
-      <div class="cur"><span class="tg">${b.added?'ваша строка':b.turn?'поворот · пауза после':b.cta?'призыв':b.hook?'хук · крупно, в камеру':b.t+' с'}</span>${esc(b.line)}</div>
-      <div class="next">${next?esc(next.line):'<span style="color:var(--orange)">конец · улыбка, стоп</span>'}</div></div>
-    <div class="ctl"><button id="prPrev">‹ назад</button><button class="play" id="prPlay">${pr.on?'⏸ пауза':'▶ старт'}</button><span class="tm" id="prTm">${fmtT(pr.el)}</span><button id="prNext">дальше ›</button></div>`;
-  document.getElementById('prX').onclick=closePrompter;
-  document.getElementById('prPrev').onclick=()=>{pr.i=Math.max(0,pr.i-1);pr.el=beatRange(L[pr.i])[0];drawPr()};
-  document.getElementById('prNext').onclick=()=>{if(pr.i<L.length-1){pr.i++;pr.el=beatRange(L[pr.i])[0];drawPr()}};
-  document.getElementById('prPlay').onclick=()=>{pr.on=!pr.on;if(pr.on){pr.t0=performance.now()-pr.el*1000;tickPr()}else cancelAnimationFrame(pr.raf);drawPr()};
+function closeSheet(){clearInterval(timer);document.getElementById('sheet').classList.remove('on');document.getElementById('dim').classList.remove('on')}
+document.getElementById('dim').onclick=closeSheet;
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSheet();document.getElementById('confirm').classList.remove('on')}});
+document.getElementById('grid').addEventListener('click',e=>{const x=e.target.closest('.x');if(x){e.stopPropagation();openDelete(x.dataset.x);return}const a=e.target.closest('.tile.add');if(a){openAdd(a.dataset.add);return}const b=e.target.closest('.tile');if(b)openSheet(b.dataset.id)});
+function openDelete(id){
+  const s=allSlots().find(x=>x.id===id); if(!s) return;
+  const c=document.getElementById('confirm');
+  c.innerHTML=`<div class="in"><h2>Расскажите, почему хотите удалить этот контент?</h2><div class="sub">${esc(topic(s))} · ${s.tname}</div>
+    <textarea class="inp" id="dWhy" placeholder="Например: не хочу говорить про это публично / тема не моя / уже было"></textarea>
+    <div class="actions"><button class="btn sm" id="dGo" disabled style="background:var(--red)">Удалить</button><button class="btn ghost sm" id="dNo">Отменить</button></div></div>`;
+  c.classList.add('on'); const ta=document.getElementById('dWhy'); ta.focus();
+  ta.oninput=()=>{document.getElementById('dGo').disabled=ta.value.trim().length<3};
+  document.getElementById('dNo').onclick=()=>c.classList.remove('on');
+  c.onclick=e=>{if(e.target===c)c.classList.remove('on')};
+  document.getElementById('dGo').onclick=()=>{state.why[s.id]=ta.value.trim();state.st[s.id]='cancel';save();c.classList.remove('on');renderAll();toast('Удалено и ушло вниз. Мы это увидим у себя');};
 }
-const fmtT=s=>`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
-function tickPr(){
-  if(!pr.on) return; pr.el=(performance.now()-pr.t0)/1000; const r=pr.r;
-  const L=liveBeats(r); const idx=L.findIndex(b=>{if(b.added)return false;const [a,z]=beatRange(b);return pr.el>=a&&pr.el<z});
-  if(idx>=0&&idx!==pr.i&&!(L[pr.i]&&L[pr.i].added&&idx<pr.i)){pr.i=idx;drawPr()} else {const tm=document.getElementById('prTm'); if(tm) tm.textContent=fmtT(pr.el); const total=beatRange(L[L.length-1])[1]||r.len; const bar=document.querySelector('.prompter .pb i'); if(bar) bar.style.width=Math.min(100,pr.el/total*100)+'%'; if(pr.el>=total){pr.on=false;drawPr();return}}
-  pr.raf=requestAnimationFrame(tickPr);
-}
-function closePrompter(){pr.on=false;cancelAnimationFrame(pr.raf);document.getElementById('prompter').classList.remove('on')}
+document.getElementById('mbBtn').onclick=()=>document.getElementById('doneBtn').click();
+document.getElementById('reset').onclick=()=>{state={st:{},files:{},topics:{},why:{},custom:[]};save();lastPct=null;renderAll();document.getElementById('fin').classList.remove('on')};
 
 // ── готово ──
-document.getElementById('mbBtn').onclick=()=>document.getElementById('doneBtn').click();
 document.getElementById('doneBtn').onclick=()=>{
-  const sh=shootable(), dn=doneList(); if(sh.length!==dn.length) return;
-  const nf=ALL().reduce((a,r)=>a+files(r).length,0);
-  document.getElementById('fin').innerHTML=`<div class="in"><h1>Съёмочный день <em>закрыт</em>.<br>Спасибо, Катя!</h1>
-    <div class="row"><div><div class="n">${dn.length}</div><div class="k">роликов</div></div><div><div class="n">${nf}</div><div class="k">файлов</div></div><div><div class="n">${editCount()}</div><div class="k">ваших правок</div></div></div>
-    <p>Дальше наша работа: монтаж, субтитры, обложки. Ваши правки в хуках и репликах команда увидит рядом с файлами.</p>
-    <div class="next"><b>Что дальше</b><br>· пн 31 авг 08:30 — выходит первый ролик недели<br>· до среды — покажем готовые ролики, можно посмотреть до публикации<br>· в среду — заказ голосовых на следующую неделю</div>
-    <div class="actions" style="justify-content:center;margin-top:22px"><button class="btn" id="finClose">К съёмочному дню</button></div></div>`;
+  const req=required(), done=doneList(); if(req.length!==done.length) return;
+  const mins=req.reduce((a,s)=>a+(st(s)==='corpus'?0:s.min),0);
+  document.getElementById('fin').innerHTML=`<div class="in"><h1>Неделя <em>записана</em>.<br>Спасибо, Юлия!</h1>
+    <div class="row"><div><div class="n">${done.length}</div><div class="k">тем записано</div></div><div><div class="n">≈${Math.round(mins)}</div><div class="k">минут</div></div><div><div class="n">${allSlots().filter(s=>st(s)==='cancel').length}</div><div class="k">отменено</div></div></div>
+    <p>Дальше наша работа: из записей соберём сценарии и тексты.</p>
+    <div class="next"><b>Что дальше</b><br>· пт 4 сент — сценарии роликов придут сюда же, можно поправить хук<br>· сб 5 сент — съёмочный день, ролики по сценариям<br>· вс 6 сент до 12:00 — загрузить исходники в бота</div>
+    <div class="actions" style="justify-content:center;margin-top:22px"><button class="btn" id="finClose">К плану недели</button></div></div>`;
   document.getElementById('fin').classList.add('on');
   document.getElementById('finClose').onclick=()=>document.getElementById('fin').classList.remove('on');
   setTimeout(()=>{for(let i=0;i<5;i++)setTimeout(()=>confetti(innerWidth*(0.2+0.15*i),innerHeight*0.3,90),i*180)},200);
 };
 
-// ── тост, конфетти ──
+// ── тост и конфетти ──
 let tt;
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2400)}
 const cv=document.getElementById('cf'),cx=cv.getContext('2d');let parts=[],raf;
 function confetti(x,y,n=46){
   if(matchMedia('(prefers-reduced-motion:reduce)').matches) return;
   cv.width=innerWidth;cv.height=innerHeight;
-  const cols=['#f4794f','#7691e6','#33a16e','#b09777','#ffffff'];
+  const cols=['#f4794f','#7691e6','#33a16e','#b09777','#9a86d8','#ffffff'];
   for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,v=4+Math.random()*7;parts.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-4,g:.28,r:3+Math.random()*4,c:cols[i%cols.length],l:60+Math.random()*30,rot:Math.random()*6})}
   if(!raf) tick();
 }
@@ -691,7 +590,7 @@ function tick(){
   parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.vx*=.98;p.l--;p.rot+=.1;cx.save();cx.translate(p.x,p.y);cx.rotate(p.rot);cx.globalAlpha=Math.min(1,p.l/25);cx.fillStyle=p.c;cx.fillRect(-p.r,-p.r/2,p.r*2,p.r);cx.restore()});
   raf=parts.length?requestAnimationFrame(tick):(cx.clearRect(0,0,cv.width,cv.height),null);
 }
-function renderAll(){renderGrid();renderRoute();renderHero()}
+function renderAll(){renderGrid();renderHero()}
 renderAll();
 </script>
 <style>
@@ -700,35 +599,20 @@ renderAll();
 .soon-note{font:500 11px/1 GSans,system-ui;letter-spacing:.04em;text-transform:uppercase;color:#8a8580;margin-left:6px}
 .dl,#topDl,.sd{display:none!important}
 </style><script>
-/* Режим прототипа для «Съёмочного дня» (11.09.2026, правка Ксении «все кнопки, которые пока не работают,
-   сделать неактивными»). Бэкенда нет: загрузка видео, бот, правки сценария и отметка «готово» никуда не уходят,
-   хотя интерфейс обещает «мы увидим это у себя». Оставлены рабочими только те действия, которые честно
-   работают в браузере: открыть карточку, переключить точку съёмки, суфлёр, закрыть. */
 (function(){
-  const KEEP=new Set(['closeS','prBtn','prX','prPrev','prPlay','prNext','finClose']);
+  const KEEP=new Set(['closeS']);
   function apply(){
     document.querySelectorAll('button').forEach(b=>{
-      if(b.classList.contains('soon')) return;
-      if(KEEP.has(b.id)) return;
-      if(b.hasAttribute('data-stop')) return;                                  // точки съёмки — переключение вкладок
-      if(b.classList.contains('tile')&&!b.classList.contains('add')) return;   // карточку ролика открыть можно
-      if(b.closest('#prompter')) return;                                       // суфлёр работает офлайн
+      if(b.classList.contains('tile')&&!b.classList.contains('add')) return;   // плитку открыть можно — там задание
+      if(KEEP.has(b.id)||b.classList.contains('soon')) return;
       b.classList.add('soon'); b.title='скоро — прототип';
-      const t=(b.innerText||'').trim();
-      if(!b.querySelector('.soon-note') && t.length>2 && !b.classList.contains('x') && !b.classList.contains('pen')
-         && !b.classList.contains('fx') && !b.classList.contains('undo'))
-        b.insertAdjacentHTML('beforeend','<span class="soon-note">скоро</span>');
+      if(!b.querySelector('.soon-note') && b.innerText.trim().length>1 && !b.classList.contains('x') && !b.classList.contains('pen') && !b.classList.contains('stop')) b.insertAdjacentHTML('beforeend','<span class="soon-note">скоро</span>');
     });
-    document.querySelectorAll('.tile .x, .tile .stamp').forEach(e=>e.classList.add('soon'));
-    document.querySelectorAll('.mbar,.mb-bar').forEach(e=>e.classList.add('soon-bar'));
-    // обещания передачи данных центру, за которыми пока ничего не стоит
-    document.querySelectorAll('.hint,.note,.q,.warn,small,span,div').forEach(e=>{
-      if(e.children.length===0 && /Команда увидит правку|Мы увидим это у себя|Файл пропадёт и у нас|появится у нас в плане/i.test(e.textContent))
-        e.textContent = e.textContent.replace(/Команда увидит правку\.?/i,'Правки пока сохраняются только у вас в браузере.')
-                                     .replace(/Мы увидим это у себя\.?/i,'Пока видно только вам.')
-                                     .replace(/Файл пропадёт и у нас\.?/i,'Файл пропадёт у вас в браузере.')
-                                     .replace(/Ролик появится у нас в плане недели\.?/i,'Пока сохранится только у вас.');
-    });
+    document.querySelectorAll('.tile .x, .tile .cta, .tile [class*=cta]').forEach(e=>e.classList.add('soon'));
+    document.querySelectorAll('.bar,.badges,.stats').forEach(e=>e.classList.add('soon-bar'));
+    document.querySelectorAll('.meta,.warn,.dl,.stat,.chip,.k,button').forEach(e=>{ if(/срок вышел|дедлайн|напомнил|срок вт|срок сб/i.test(e.textContent) && !e.closest('#grid')) e.style.display='none'; });
+    document.querySelectorAll('.stat').forEach(e=>{ if(/срок вышел/i.test(e.textContent)) e.style.display='none'; });
+    document.querySelectorAll('span,div,p').forEach(e=>{ if(e.children.length===0 && /^(Записать|Дозаписать)\s*›?$/.test(e.textContent.trim())) { e.textContent='запись — скоро'; e.classList.add('soon'); } });
   }
   apply(); new MutationObserver(()=>apply()).observe(document.body,{childList:true,subtree:true});
 })();
