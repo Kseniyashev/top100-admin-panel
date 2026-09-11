@@ -435,7 +435,7 @@ const DIFF={'лёгкая':1,'средняя':2,'тяжёлый':3};
 
 // состояния: done | redo | wait | todo (демо — только у прототипа W36)
 const INIT=DEMO.init, FILES=DEMO.files, REDO_NOTE=DEMO.redo, TAKES_INIT=DEMO.takes;
-const LOCS=['dom','kab'].filter(l=>REELS.some(r=>r.loc===l));
+const LOCS=['kab','dom','voice'].filter(l=>REELS.some(r=>r.loc===l));
 document.getElementById('dl').innerHTML=META.deadline||'';
 document.getElementById('h1').innerHTML=`${esc(META.name)}, <em>съёмочный день</em>`;
 {const rd=REELS.filter(r=>r.status==='ready').length, wt=REELS.length-rd;
