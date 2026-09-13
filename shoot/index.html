@@ -705,7 +705,9 @@ renderAll();
    хотя интерфейс обещает «мы увидим это у себя». Оставлены рабочими только те действия, которые честно
    работают в браузере: открыть карточку, переключить точку съёмки, суфлёр, закрыть. */
 (function(){
-  const KEEP=new Set(['closeS','prBtn','prX','prPrev','prPlay','prNext','finClose']);
+  // 13.09: правка сценария под себя работает — она живёт в localStorage эксперта и никуда не уходит.
+  const KEEP=new Set(['closeS','prBtn','prX','prPrev','prPlay','prNext','finClose',
+                      'editH','hookOk','hookNo','bOk','bNo','bReset']);
   function apply(){
     document.querySelectorAll('button').forEach(b=>{
       if(b.classList.contains('soon')) return;
@@ -713,13 +715,14 @@ renderAll();
       if(b.hasAttribute('data-stop')) return;                                  // точки съёмки — переключение вкладок
       if(b.classList.contains('tile')&&!b.classList.contains('add')) return;   // карточку ролика открыть можно
       if(b.closest('#prompter')) return;                                       // суфлёр работает офлайн
+      if(b.classList.contains('pen')) return;                                  // ✎ ✕ + — правка сценария под себя
       b.classList.add('soon'); b.title='скоро — прототип';
       const t=(b.innerText||'').trim();
       if(!b.querySelector('.soon-note') && t.length>2 && !b.classList.contains('x') && !b.classList.contains('pen')
          && !b.classList.contains('fx') && !b.classList.contains('undo'))
         b.insertAdjacentHTML('beforeend','<span class="soon-note">скоро</span>');
     });
-    document.querySelectorAll('.tile .x, .tile .stamp').forEach(e=>e.classList.add('soon'));
+    document.querySelectorAll('.tile .stamp').forEach(e=>e.classList.add('soon'));
     document.querySelectorAll('.mbar,.mb-bar').forEach(e=>e.classList.add('soon-bar'));
     // обещания передачи данных центру, за которыми пока ничего не стоит
     document.querySelectorAll('.hint,.note,.q,.warn,small,span,div').forEach(e=>{
