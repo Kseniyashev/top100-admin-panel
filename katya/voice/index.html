@@ -61,6 +61,20 @@ h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
 .legend .sp{flex:1}
 .legend .reset{font-size:12px;color:var(--muted);background:none;border:0;text-decoration:underline;text-underline-offset:2px}
 
+
+/* линии повествования */
+.lines{background:var(--card);border-radius:26px;padding:20px 24px 22px;margin-top:14px}
+.lines h2{font-family:var(--serif);font-size:22px;font-weight:400;margin:0 0 4px}
+.lines .sub{color:var(--muted);font-size:13px;margin-bottom:14px}
+.lines ul{list-style:none;margin:0;padding:0;display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.lines li{display:flex;gap:10px;align-items:flex-start}
+.lines .dot{width:10px;height:10px;border-radius:50%;background:var(--lc);margin-top:5px;flex:0 0 auto}
+.lines .nm{font-weight:700;font-size:14px;display:block}
+.lines .ab{color:var(--ink2);font-size:13px;line-height:1.35}
+.lines .cnt{color:var(--muted);font-weight:400}
+.tile .line{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;
+  letter-spacing:.02em;color:var(--tt);opacity:.75;margin-top:-2px}
+.tile .line i{width:7px;height:7px;border-radius:50%;background:currentColor;display:inline-block}
 /* tiles */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
 .tile{position:relative;border:0;border-radius:20px;padding:16px 16px 14px;min-height:178px;text-align:left;display:flex;flex-direction:column;gap:6px;background:var(--tc);color:var(--ink);transition:transform .15s,box-shadow .15s;overflow:hidden}
@@ -314,6 +328,8 @@ canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:50}
     <div class="badges" id="badges"></div>
   </section>
 
+  <section class="lines" id="linesBox"></section>
+
   <div class="legend">
     <span class="lg"><i style="background:var(--orange)"></i>Reels</span>
     <span class="lg"><i style="background:var(--blue)"></i>Пост в Instagram</span>
@@ -437,8 +453,27 @@ function tileHTML(s){
   else dl=`<span class="dl ${late?'late':''}">${ICO.clock}${late?'срок вышел · был '+REDL_S[s.ch]:'до '+REDL_S[s.ch]}</span>`;
   return `<button class="tile ${cls}" data-id="${s.id}">${t!=='cancel'?`<span class="x" data-x="${s.id}" role="button" aria-label="Удалить" title="Удалить эту тему">✕</span>`:''}<span class="stamp">✓</span>
     <span class="ty"><span style="display:inline-flex;gap:6px;align-items:center">${ICO[s.cls]}${s.tname}</span></span>
+    ${s.line?`<span class="line"><i></i>${esc(s.line)}</span>`:''}
     <h3>${esc(topic(s))}</h3>${dl}
     <span class="ft"><span class="min">${ft}</span><span class="cta">${cta}</span></span></button>`;
+}
+
+const LINE_ORDER=[...new Set((DATA.slots||[]).map(s=>s.line).filter(Boolean))];
+const LINE_P=['#c9743f','#4a7fb5','#5f9e6e','#b5544a','#8a6fb0','#b59a3f','#4f9a9a','#9a6b8a',
+              '#7a8b3f','#a35f7a','#3f6f8b','#8b6b3f'];
+function lineColor(n){const i=LINE_ORDER.indexOf(n);return i<0?'var(--muted)':LINE_P[i%LINE_P.length]}
+function renderLines(){
+  const box=document.getElementById('linesBox'); if(!box) return;
+  const meta=(DATA.meta&&DATA.meta.lines)||[];
+  const names=LINE_ORDER;
+  if(!names.length){box.style.display='none';return}
+  const about=Object.fromEntries(meta.map(x=>[x.name,x.about||'']));
+  const cnt=n=>(DATA.slots||[]).filter(s=>s.line===n).length;
+  box.innerHTML=`<h2>О чём эта неделя</h2>
+    <div class="sub">Все записи складываются в несколько разговоров. Вот они — чтобы было видно, зачем каждая тема.</div>
+    <ul>${names.map(n=>`<li><span class="dot" style="--lc:${lineColor(n)}"></span><span>
+      <span class="nm">${esc(n)} <span class="cnt">· ${cnt(n)}</span></span>
+      <span class="ab">${esc(about[n]||'')}</span></span></li>`).join('')}</ul>`;
 }
 function renderGrid(){
   const all=allSlots(); let h='';
@@ -476,6 +511,7 @@ function openSheet(id){
   if(s.custom) h+=`<span class="meta">ваша идея · срока нет</span>`;
   else if(t==='partial') h+=`<span class="meta">дозапись до <b>ср 3 сент, 18:00</b></span>`;
   else if(!['life','corpus','cancel','done'].includes(t)) h+=`<span class="meta ${late?'late':''}">${late?'срок вышел · был':'срок'} <b>${REDL[s.ch]}</b></span>`;
+  if(s.line) h+=`<span class="meta">линия: <b>${esc(s.line)}</b></span>`;
   h+=`<span class="meta">выходит ${s.wd} ${s.date.slice(8)}.${s.date.slice(5,7)}</span><button class="x" id="closeS" aria-label="Закрыть">✕</button></div><div class="bd">`;
   h+=`<div class="f">
     <span class="k">Тема<small>можно поправить</small></span><div class="v" id="topicV"><h2><span>${esc(topic(s))}</span>${t!=='cancel'?'<button class="pen" id="editT">изменить</button>':''}</h2></div>
@@ -590,7 +626,7 @@ function tick(){
   parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.vx*=.98;p.l--;p.rot+=.1;cx.save();cx.translate(p.x,p.y);cx.rotate(p.rot);cx.globalAlpha=Math.min(1,p.l/25);cx.fillStyle=p.c;cx.fillRect(-p.r,-p.r/2,p.r*2,p.r);cx.restore()});
   raf=parts.length?requestAnimationFrame(tick):(cx.clearRect(0,0,cv.width,cv.height),null);
 }
-function renderAll(){renderGrid();renderHero()}
+function renderAll(){renderLines();renderGrid();renderHero()}
 renderAll();
 </script>
 <style>
