@@ -393,10 +393,9 @@ function minutes(ask){
 // демо-состояния: done | partial | corpus | life | todo
 const INIT={};
 const FILES={};
-const PARTIAL_NOTE={'R-03':'Пункт 2 — кем она была рядом с этой мамой и почему чувство тогда нельзя было показать. 30–40 секунд достаточно, остальное не пересказывайте.'};
-const LIFE={ideas:['готовка: борщ, пироги или тарт','баня и массаж по средам','прогулки в парке, собаки','синхронное плавание и стойка на руках','книга или фильм, которые зацепили','репост чужого поста с одной фразой от себя'],
- limits:['не показывать партнёра и близких (лайфстайл без лиц — можно)','не эзотерическое считывание','без действующих клиентов, даже обезличенно','без темы зависимостей и игромании']};
-const FORMATS={ig_reels:['Цитата клиента с разбором','Чувство как маркер','Откуда это взялось','Переписка с комментарием','Причина не там, где ищут','Реакция на чужое','Провокация','Правило с ценой'],ig_posts:['Карусель'],ig_stories:['Сторис-серия','Лайфстайл'],tg:['Лонгрид Telegram']};
+const PARTIAL_NOTE={};
+const LIFE={"ideas": [], "limits": []};
+const FORMATS={"ig_reels": ["Сценка с разоблачением вслух", "Переписка с комментарием", "Сценка, потом разбор", "Спор с чужим тезисом", "Изнанка профессии", "Личная сцена, потом обобщение"], "ig_posts": ["Карусель · закреп", "Карусель"], "tg": ["Лонгрид", "Пост с CTA"]};
 const order={ig_reels:0,ig_posts:1,ig_stories:2,tg:3};
 
 let state={}; try{state=JSON.parse(localStorage.getItem('voice-inna-w39')||'{}')}catch(e){state={}}
@@ -509,7 +508,7 @@ function openSheet(id){
   cur=allSlots().find(x=>x.id===id); const s=cur, t=st(s), late=isLate(s), c=col(s);
   let h=`<div class="hd"><span class="tyb" style="background:${c[0]};color:${c[1]}">${ICO[s.cls]}${s.tname}</span>`;
   if(s.custom) h+=`<span class="meta">ваша идея · срока нет</span>`;
-  else if(t==='partial') h+=`<span class="meta">дозапись до <b>ср 3 сент, 18:00</b></span>`;
+  else if(t==='partial') h+=`<span class="meta">дозапись до <b>пт 18.09 18:00</b></span>`;
   else if(!['life','corpus','cancel','done'].includes(t)) h+=`<span class="meta ${late?'late':''}">${late?'срок вышел · был':'срок'} <b>${REDL[s.ch]}</b></span>`;
   if(s.line) h+=`<span class="meta">линия: <b>${esc(s.line)}</b></span>`;
   h+=`<span class="meta">выходит ${s.wd} ${s.date.slice(8)}.${s.date.slice(5,7)}</span><button class="x" id="closeS" aria-label="Закрыть">✕</button></div><div class="bd">`;
@@ -522,7 +521,7 @@ function openSheet(id){
   if(t==='life'){
     h+=`<div class="ask" style="--ac:var(--beige)"><div class="lead">${ICO.mic}<b>Свободный формат, записывать заранее не нужно</b></div><p>Снимаете сами телефоном в день выхода. Утром бот напомнит.</p>
       <p style="margin-top:8px"><b>Идеи на эту неделю:</b></p><ul>${[s.angle].concat(LIFE.ideas).filter(Boolean).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
-      <div class="no"><b>Не надо:</b> ${LIFE.limits.join('; ')}.</div></div>`;
+      ${LIFE.limits.length?`<div class="no"><b>Не надо:</b> ${LIFE.limits.join('; ')}.</div>`:''}</div>`;
   } else if(t==='corpus'){
     h+=`<div class="okbox"><b>Уже есть в ваших записях.</b> ${esc(s.voice_ref||'')}</div>`;
   } else if(t==='cancel'){
@@ -603,7 +602,7 @@ document.getElementById('doneBtn').onclick=()=>{
   document.getElementById('fin').innerHTML=`<div class="in"><h1>Неделя <em>записана</em>.<br>Спасибо, Инна!</h1>
     <div class="row"><div><div class="n">${done.length}</div><div class="k">тем записано</div></div><div><div class="n">≈${Math.round(mins)}</div><div class="k">минут</div></div><div><div class="n">${allSlots().filter(s=>st(s)==='cancel').length}</div><div class="k">отменено</div></div></div>
     <p>Дальше наша работа: из записей соберём сценарии и тексты.</p>
-    <div class="next"><b>Что дальше</b><br>· пт 4 сент — сценарии роликов придут сюда же, можно поправить хук<br>· сб 5 сент — съёмочный день, ролики по сценариям<br>· вс 6 сент до 12:00 — загрузить исходники в бота</div>
+    <div class="next"><b>Что дальше</b><br>· сб 19 сент, 12:00 — сценарии роликов придут сюда же, можно поправить хук<br>· ср 23 сент — съёмочный день, ролики по сценариям<br>· ср 23 сент, 22:00 — загрузить исходники</div>
     <div class="actions" style="justify-content:center;margin-top:22px"><button class="btn" id="finClose">К плану недели</button></div></div>`;
   document.getElementById('fin').classList.add('on');
   document.getElementById('finClose').onclick=()=>document.getElementById('fin').classList.remove('on');

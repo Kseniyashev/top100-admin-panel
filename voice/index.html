@@ -522,7 +522,7 @@ function openSheet(id){
   if(t==='life'){
     h+=`<div class="ask" style="--ac:var(--beige)"><div class="lead">${ICO.mic}<b>Свободный формат, записывать заранее не нужно</b></div><p>Снимаете сами телефоном в день выхода. Утром бот напомнит.</p>
       <p style="margin-top:8px"><b>Идеи на эту неделю:</b></p><ul>${[s.angle].concat(LIFE.ideas).filter(Boolean).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
-      <div class="no"><b>Не надо:</b> ${LIFE.limits.join('; ')}.</div></div>`;
+      ${LIFE.limits.length?`<div class="no"><b>Не надо:</b> ${LIFE.limits.join('; ')}.</div>`:''}</div>`;
   } else if(t==='corpus'){
     h+=`<div class="okbox"><b>Уже есть в ваших записях.</b> ${esc(s.voice_ref||'')}</div>`;
   } else if(t==='cancel'){
