@@ -174,6 +174,7 @@ tr:hover td .edit{opacity:1}
 td.topic{min-width:210px;max-width:230px}
 td.topic b{font-weight:700;display:block}
 td.topic span{color:var(--ink2);display:block;font-size:12px;margin-top:2px}
+td.topic .lineTag{display:inline-block;margin-top:5px;font-size:11px;line-height:1.3;color:var(--lc);border:1px solid var(--lc);border-radius:20px;padding:1px 8px;opacity:.9}
 td.fmt{min-width:130px}
 td.axes{min-width:170px}
 .ax{display:flex;align-items:center;gap:6px;white-space:nowrap;line-height:1.5}
@@ -420,6 +421,7 @@ table.spec .who{white-space:nowrap}
             <button class="chip" data-f="ig_posts"><i style="background:var(--blue)"></i>Посты</button>
             <button class="chip" data-f="ig_stories"><i style="background:var(--beige)"></i>Сторис</button>
             <button class="chip" data-f="tg"><i style="background:var(--green)"></i>Telegram</button>
+            <span id="lineChips" style="display:inline-flex;gap:6px;flex-wrap:wrap;margin-left:10px"></span>
             <span class="sw" style="margin-left:10px"><button class="toggle" id="onlyAct" aria-label="Только требующие действия"></button>Только требующие действия</span>
             <span class="sp"></span>
             <input type="search" placeholder="Поиск по теме, хуку, id…" id="q">
@@ -698,6 +700,16 @@ function healthOld(s){
 function needsAction(s){const h=health(s)[1];return h==='bad'||h==='rev'||(s.voice.st==='partial')}
 
 /* ───────────── table ───────────── */
+
+// 🔴 Цвет линии — по ПОРЯДКУ её появления в неделе, не по хешу имени: хеш давал коллизии
+// (у Полины четыре линии из восьми делили цвет с соседней, и смысл цветовой метки пропадал).
+const LINE_ORDER=[...new Set(S.map(s=>s.line).filter(Boolean))];
+function lineColor(n){
+  const P=['#c9743f','#4a7fb5','#5f9e6e','#b5544a','#8a6fb0','#b59a3f','#4f9a9a','#9a6b8a',
+           '#7a8b3f','#a35f7a','#3f6f8b','#8b6b3f'];
+  const i=LINE_ORDER.indexOf(n);
+  return i<0 ? 'var(--ink2)' : P[i%P.length];
+}
 const GROUPS=[
  {n:'Выход',c:'#cfcdc7',cols:[['Дата · время',''],['Статус','сводный по слоту'],['Тип контента','']]},
  {n:'Содержание',c:'var(--beige)',cols:[['Тема','из плана эксперта'],['Формат',''],['Оси','цель · источник · ЦА'],['Каркас','из библиотеки']]},
@@ -707,22 +719,34 @@ const GROUPS=[
  {n:'Сборка',c:'var(--beige)',cols:[['Подпись','Reels и карусели'],['Готовая единица','рилсмейкер · Спилберг'],['Дедлайн подготовки','Reels и карусели']]},
  {n:'Публикация',c:'var(--green)',cols:[['Согласование → Postiz','SMM']]},
 ];
+
+let LINE_F='all';
+function renderLineChips(){
+  const box=document.getElementById('lineChips'); if(!box) return;
+  const names=[...new Set(S.map(s=>s.line).filter(Boolean))];
+  if(!names.length){box.innerHTML='';return}
+  const cnt=n=>S.filter(s=>s.line===n).length;
+  box.innerHTML=`<button class="chip lchip ${LINE_F==='all'?'on':''}" data-l="all">Все линии</button>`+
+    names.map(n=>`<button class="chip lchip ${LINE_F===n?'on':''}" data-l="${esc(n)}" title="${esc(n)}">`+
+      `<i style="background:${lineColor(n)}"></i>${esc(n)} <b style="font-weight:600;opacity:.6">${cnt(n)}</b></button>`).join('');
+  box.querySelectorAll('.lchip').forEach(b=>b.onclick=()=>{LINE_F=b.dataset.l;renderLineChips();renderTable()});
+}
 function renderTable(){
-  const f=document.querySelector('.chip.on').dataset.f, only=document.getElementById('onlyAct').classList.contains('on'), q=(document.getElementById('q').value||'').toLowerCase();
+  const f=(document.querySelector('.chip[data-f].on')||{dataset:{f:'all'}}).dataset.f, only=document.getElementById('onlyAct').classList.contains('on'), q=(document.getElementById('q').value||'').toLowerCase();
   let h='<thead><tr class="groups">';
   GROUPS.forEach((g,i)=>{h+=`<th colspan="${g.cols.length}" class="${i?'gstart':''} ${i===0?'st1':''}" style="--gc:${g.c}${i===0?';left:0':''}"><span>${g.n}</span></th>`});
   h+='</tr><tr class="cols">';
   let ci=0;
   GROUPS.forEach((g,gi)=>g.cols.forEach((c,k)=>{const sticky=ci===0?'st1':ci===1?'st2':'';h+=`<th class="${k===0&&gi?'gstart':''} ${sticky}">${c[0]}${c[1]?`<small>${c[1]}</small>`:''}</th>`;ci++}));
   h+='</tr></thead><tbody>';
-  S.filter(s=>(f==='all'||s.ch===f)&&(!only||needsAction(s))&&(!q||(s.topic+s.hook+s.id).toLowerCase().includes(q))).forEach(s=>{
+  S.filter(s=>(f==='all'||s.ch===f)&&(LINE_F==='all'||s.line===LINE_F)&&(!only||needsAction(s))&&(!q||(s.topic+s.hook+s.id+(s.line||'')).toLowerCase().includes(q))).forEach(s=>{
     const [rc,hc]=health(s); const g=GOAL[s.job]; const v=voiceState(s);
     const dlBad=s.voice.st==='wait'&&past(VOICE_DL);
     h+=`<tr data-id="${s.id}" class="${s.cancel?'cancel':''}" style="--rowc:${rc}">
       <td class="st1"><span class="d">${s.wd} ${fmtD(s.d)}</span> <span class="t">${s.t}</span><span class="edit">✎</span><div class="id">${s.id}</div></td>
       <td class="st2">${pubStatusCell(s)}</td>
       <td><span class="type ${TYPECLS[s.ch]}">${ico[TYPECLS[s.ch]]}${TYPE[s.ch]}</span></td>
-      <td class="topic gstart"><b>${esc(s.topic)}</b></td>
+      <td class="topic gstart"><b>${esc(s.topic)}</b>${s.line?`<span class="lineTag" style="--lc:${lineColor(s.line)}">${esc(s.line)}</span>`:''}</td>
       <td class="fmt">${esc(s.fmt)}${s.len?`<span class="sub">${s.len} с</span>`:''}</td>
       <td class="axes">
         <div class="ax"><span class="k">цель</span><i style="background:var(--${g[1]})"></i>${g[0]}</div>
@@ -913,12 +937,12 @@ function renderSpec(){
 }
 
 /* ───────────── wiring ───────────── */
-document.querySelectorAll('.toolbar .chip').forEach(b=>b.onclick=()=>{document.querySelectorAll('.toolbar .chip').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderTable()});
+document.querySelectorAll('.toolbar .chip[data-f]').forEach(b=>b.onclick=()=>{document.querySelectorAll('.toolbar .chip[data-f]').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderTable()});
 document.getElementById('onlyAct').onclick=e=>{e.currentTarget.classList.toggle('on');renderTable()};
 document.getElementById('q').oninput=renderTable;
 document.getElementById('plan').addEventListener('click',e=>{if(e.target.closest('button'))return;const tr=e.target.closest('tr[data-id]');if(tr)openDrawer(tr.dataset.id)});
 document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#tabs button').forEach(x=>x.classList.remove('on'));b.classList.add('on');document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+b.dataset.v))});
-renderPipeline();renderTable();renderCal();renderNotes();renderSpec();
+renderPipeline();renderLineChips();renderTable();renderCal();renderNotes();renderSpec();
 </script>
 <style>
 .soon{opacity:.42!important;pointer-events:none!important;cursor:default!important;filter:grayscale(1)}
