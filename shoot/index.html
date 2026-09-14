@@ -440,7 +440,7 @@ document.getElementById('dl').innerHTML=META.deadline||'';
 document.getElementById('h1').innerHTML=`${esc(META.name)}, <em>съёмочный день</em>`;
 {const rd=REELS.filter(r=>r.status==='ready').length, wt=REELS.length-rd;
  const pts=LOCS.length===1?'Одна точка':'Две точки';
- document.getElementById('heroP').textContent=`Сценарии готовы и согласованы. ${pts}, ${rd} ${plural(rd,'ролик','ролика','роликов')} к съёмке${wt?`, ещё ${wt} ${plural(wt,'ждёт','ждут','ждут')} ваших голосовых`:''}, всё с телефона. Открывайте карточку, читайте, снимайте и загружайте видео. Снятое зеленеет само.`;}
+ document.getElementById('heroP').textContent=`Сценарии готовы и согласованы. ${pts}, ${rd} ${plural(rd,'ролик','ролика','роликов')} к съёмке${wt?`, ещё ${wt} ${plural(wt,'ждёт','ждут','ждут')} ваших голосовых`:''}, всё с телефона. Открывайте карточку, читайте, снимайте и загружайте видео. `;}
 
 let state={}; try{state=JSON.parse(localStorage.getItem(META.key)||'{}')}catch(e){state={}}
 state.st=state.st||{}; state.files=state.files||{}; state.takes=state.takes||{}; state.edits=state.edits||{}; state.stop=state.stop||'dom'; state.why=state.why||{}; state.custom=state.custom||[]; state.noDemo=state.noDemo||{};
@@ -530,7 +530,7 @@ function openSheet(id){
   cur=ALL().find(r=>r.id===id); const r=cur, t=st(r), td=takesDone(r), ed=state.edits[r.id]||{};
   let h=`<div class="hd"><span class="no">${r.id.replace('R-','')}</span><span class="meta">${esc(r.fmt)} · <b>${r.len} с</b> · точка ${LOC[r.loc].n}, ${LOC[r.loc].short}${r.difficulty?' · '+r.difficulty:''}</span><button class="x" id="closeS" aria-label="Закрыть">✕</button></div><div class="bd">
     <h2 class="topic">${esc(r.topic)}</h2>`;
-  if(t==='cancel'){h+=`<div class="warn"><b>Вы удалили этот ролик.</b> Причина: «${esc(state.why[r.id]||'')}». Мы увидим это у себя.</div><div class="actions"><button class="btn ghost sm" id="undo">Вернуть</button></div></div>`;show(h);document.getElementById('undo').onclick=()=>{state.st[r.id]='todo';delete state.why[r.id];save();closeSheet();renderAll()};return;}
+  if(t==='cancel'){h+=`<div class="warn"><b>Вы удалили этот ролик.</b> Причина: «${esc(state.why[r.id]||'')}». Пока видно только вам.</div><div class="actions"><button class="btn ghost sm" id="undo">Вернуть</button></div></div>`;show(h);document.getElementById('undo').onclick=()=>{state.st[r.id]='todo';delete state.why[r.id];save();closeSheet();renderAll()};return;}
   if(r.custom){h+=customSheet(r,t);show(h);wireCustom(r);return;}
   if(t==='wait'){h+=`<div class="warn"><b>Сценарий ещё готовится.</b> Голосовое на эту тему не записано, поэтому сценария пока нет. Запишите его в «Записях недели», и карточка появится здесь сама.</div></div>`;show(h);return;}
   if(t==='redo') h+=`<div class="warn"><b>Нужен второй дубль.</b> ${esc(REDO_NOTE[r.id]||'')}</div>`;
@@ -552,7 +552,7 @@ function openSheet(id){
   h+=filesHTML(r);
   h+=`<div class="uploading" id="upl">Загружаем 2 видео… <div class="pb"><i id="upb"></i></div></div>`;
   h+=`<div class="actions" id="acts"><button class="btn ghost" id="prBtn">${ICO.play}Режим суфлёра</button><button class="btn up" id="upBtn">${ICO.up}${t==='done'?'Загрузить ещё':'Загрузить видео'}</button><button class="btn ghost" id="tgBtn">${ICO.tg}Через бота</button></div>
-    <div class="hint">Видео можно отправить и боту в Telegram под этой темой — здесь карточка позеленеет сама. Загружайте все дубли, выберем лучший мы.</div></div>`;
+    <div class="hint">Видео можно отправить и боту в Telegram под этой темой. Загружайте все дубли, выберем лучший мы.</div></div>`;
   show(h);
   document.getElementById('editH').onclick=()=>{const v=document.getElementById('hookV');v.innerHTML=`<div style="flex:1"><textarea class="inp" id="hookI" style="font-family:var(--sans);font-size:15px">${esc(hook(r))}</textarea><div class="actions" style="margin-top:8px"><button class="btn sm" id="hookOk">Сохранить</button><button class="btn ghost sm" id="hookNo">Отмена</button></div><div class="hint" style="font-family:var(--sans);font-size:12.5px;margin-top:6px">Команда увидит правку. Смысл и длина фразы — на ваш вкус, это ваши слова.</div></div>`;
     document.getElementById('hookOk').onclick=()=>{const v=document.getElementById('hookI').value.trim();state.edits[r.id]=Object.assign({},state.edits[r.id],{hook:v&&v!==r.hook?v:undefined});save();openSheet(r.id)};

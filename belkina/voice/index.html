@@ -317,7 +317,7 @@ canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:50}
 
   <section class="hero">
     <h1>Юлия, неделя <em>14 – 20 сентября</em></h1>
-    <p>Тут всё, что нужно наговорить на неделю. Нажмите плитку, прочитайте, что должно быть в голосовом, и запишите его здесь или в боте. Записанное зеленеет само.</p>
+    <p>Тут всё, что нужно наговорить на неделю. Нажмите плитку, прочитайте, что должно быть в голосовом, и запишите его здесь или в боте.</p>
     <button class="done-btn" id="doneBtn"><span>Готово, всё записала</span></button>
     <div class="stats">
       <div class="stat"><div class="n" id="stDone">0<small>из 0</small></div><div class="k">записано</div></div>
@@ -350,7 +350,7 @@ canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:50}
       <li><b>Одна плитка — одно голосовое.</b> Не склеивайте несколько заданий в одну запись, нам потом не разделить. Можно прислать несколько голосовых на одну плитку.</li>
       <li><b>Говорите как клиентке на приёме,</b> а не как диктору. Оговорки и паузы — это хорошо, мы их вырежем сами.</li>
       <li><b>Не надо ничего разыгрывать.</b> Если в задании стоит фраза клиентки, просто произнесите её так, как её говорят.</li>
-      <li><b>Удобнее в Telegram?</b> Отправьте голосовое боту под нужной темой и нажмите там «готово» — плитка здесь позеленеет сама. Туда же можно приложить фото и файлы.</li>
+      <li><b>Удобнее в Telegram?</b> Отправьте голосовое боту под нужной темой и нажмите там «готово». Туда же можно приложить фото и файлы.</li>
       <li><b>Если чего-то не хватило в записи,</b> плитка станет оранжевой и мы напишем, что дозаписать. Это нормально.</li>
     </ol>
   </section>
@@ -526,7 +526,7 @@ function openSheet(id){
   } else if(t==='corpus'){
     h+=`<div class="okbox"><b>Уже есть в ваших записях.</b> ${esc(s.voice_ref||'')}</div>`;
   } else if(t==='cancel'){
-    h+=`<div class="warn red"><b>Вы удалили этот контент.</b> Причина: «${esc(state.why[s.id]||'')}». Мы увидим это у себя и заменим слот.</div><div class="actions"><button class="btn ghost sm" id="undo">Вернуть в неделю</button></div>`;
+    h+=`<div class="warn red"><b>Вы удалили этот контент.</b> Причина: «${esc(state.why[s.id]||'')}». Пока видно только вам.</div><div class="actions"><button class="btn ghost sm" id="undo">Вернуть в неделю</button></div>`;
   } else {
     h+=`<div class="f"><span class="k">Что должно быть в голосовом<small>чек-лист по пунктам</small></span><div class="v">${s.ask?askHTML(s):`<div class="ask"><div class="lead">${ICO.mic}<b>Ваша идея</b></div><p>Наговорите свободно: с чего начинается, что главное, чем закончить. Мы соберём каркас сами.</p></div>`}</div></div>`;
     if(t==='partial') h+=`<div class="warn"><b>Нужно дозаписать</b>${esc(PARTIAL_NOTE[s.id]||'Одного пункта в записи не хватило.')}</div>`;
@@ -535,13 +535,13 @@ function openSheet(id){
     h+=`<div class="recorder" id="rec"><div class="t" id="rt">0:00</div><div class="w">${'<i style="animation-delay:'+[0,.1,.2,.3,.15,.05,.25,.35,.1,.2,.3,.05,.15,.25,.35,.2,.1,.3].join('s"></i><i style="animation-delay:')+'s"></i>'}</div><button class="stop" id="stop">Стоп · отправить</button></div>`;
     h+=`<div class="sent" id="sent">✓ Отправлено. Плитка станет зелёной.</div>`;
     h+=`<div class="actions" id="acts"><button class="btn rec" id="recBtn"><i></i>${t==='partial'?'Дозаписать голосовое':t==='done'?'Записать ещё одно':'Записать голосовое'}</button><button class="btn ghost" id="tgBtn">${ICO.tg}В Telegram-боте</button></div>
-      <div class="hint">В боте: выберите неделю и эту тему, отправьте голосовое (можно несколько, плюс фото или файлы) и нажмите «готово». Плитка здесь позеленеет сама.</div>`;
+      <div class="hint">В боте: выберите неделю и эту тему, отправьте голосовое (можно несколько, плюс фото или файлы) и нажмите «готово».</div>`;
   }
   h+=`</div>`;
   const sh=document.getElementById('sheet'); sh.innerHTML=h; sh.classList.add('on'); document.getElementById('dim').classList.add('on');
   document.getElementById('closeS').onclick=closeSheet;
   const et=document.getElementById('editT'); if(et) et.onclick=()=>{
-    const v=document.getElementById('topicV'); v.innerHTML=`<input class="inp" id="topicI" value="${esc(topic(s))}"><div class="actions" style="margin-top:8px"><button class="btn sm" id="topicOk">Сохранить</button><button class="lnk" id="topicNo">отмена</button></div><div class="hint" style="margin-top:6px">Мы увидим правку и подстроим задание.</div>`;
+    const v=document.getElementById('topicV'); v.innerHTML=`<input class="inp" id="topicI" value="${esc(topic(s))}"><div class="actions" style="margin-top:8px"><button class="btn sm" id="topicOk">Сохранить</button><button class="lnk" id="topicNo">отмена</button></div><div class="hint" style="margin-top:6px">Пока правка видна только вам.</div>`;
     document.getElementById('topicI').focus();
     document.getElementById('topicOk').onclick=()=>{const val=document.getElementById('topicI').value.trim(); if(val){state.topics[s.id]=val;save();} openSheet(s.id); renderGrid();};
     document.getElementById('topicNo').onclick=()=>openSheet(s.id);
@@ -563,7 +563,7 @@ function openAdd(ch){
     const n=state.custom.filter(x=>x.ch===ch).length+1; const pre={ig_reels:'R',ig_posts:'P',ig_stories:'S',tg:'TG'}[ch];
     const id=`${pre}-К${n}`;
     state.custom.push({id,ch,topic:document.getElementById('nTopic').value.trim(),fmt:{ig_reels:'Ваш ролик',ig_posts:'Ваша карусель',ig_stories:'Ваши сторис',tg:'Ваш пост'}[ch],angle:document.getElementById('nAngle').value.trim(),ask:null,date:'2026-09-13',wd:'вс'});
-    save(); renderGrid(); openSheet(id); toast('Плитка добавлена. Мы увидим её у себя');
+    save(); renderGrid(); openSheet(id); toast('Плитка добавлена. Пока видно только вам');
   };
 }
 function startRec(){
