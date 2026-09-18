@@ -174,6 +174,7 @@ textarea.inp{min-height:70px;resize:vertical}
 .beat .tag{display:inline-block;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;padding:1px 7px;border-radius:99px;margin-right:6px;vertical-align:middle}
 .beat.turn{background:#faf9f6}
 .beat.turn .tag{background:var(--orange);color:#fff}
+.beat .tag.card{background:#e8e4da;color:#555}
 .beat.cta .tag{background:var(--blue-t);color:#3350bd}
 .beat.bhook .tag{background:var(--gray-t);color:var(--ink2)}
 .beat .note{display:block;font-size:12.5px;color:var(--muted);margin-top:3px}
@@ -545,7 +546,7 @@ function openSheet(id){
   h+=`<div class="sec"><h3>Сценарий · ${nLive} ${plural(nLive,'реплика','реплики','реплик')} <small>✎ поправить · ✕ убрать · + вставить строку после</small></h3><div class="beats">${eb.map(b=>{
     if(b.added) return `<div class="beat added" data-ai="${b.ai}"><span class="t">—</span><span class="txt">${esc(b.line)}<span class="mine">ваша строка</span></span><span class="acts"><button class="pen" data-aedit="${b.ai}" title="Поправить">✎</button><button class="pen del" data-adel="${b.ai}" title="Убрать">✕</button></span></div>`;
     if(b.removed) return `<div class="beat removed" data-i="${b.i}"><span class="t">${b.t} с</span><span><span class="txt">${esc(b.line)}</span><span class="mine">убрано</span></span><button class="undo" data-undo="${b.i}">вернуть</button></div>`;
-    return `<div class="beat ${b.turn?'turn':''} ${b.cta?'cta':''} ${b.hook?'bhook':''}" data-i="${b.i}"><span class="t">${b.t} с</span><span>${b.turn?'<span class="tag">поворот</span>':b.cta?'<span class="tag">призыв</span>':b.hook?'<span class="tag">хук</span>':''}${esc(b.line)}${b.edited?'<span class="mine">ваша правка</span>':''}${b.turn?`<span class="note">${esc(b.note||'Пауза после, не торопить.')}</span>`:''}</span><span class="acts"><button class="pen" data-edit="${b.i}" title="Поправить">✎</button><button class="pen del" data-bdel="${b.i}" title="Убрать строку">✕</button><button class="pen ins" data-ins="${b.i}" title="Вставить строку после">+</button></span></div>`;
+    return `<div class="beat ${b.turn?'turn':''} ${b.cta?'cta':''} ${b.hook?'bhook':''}" data-i="${b.i}"><span class="t">${b.t} с</span><span>${b.card?'<span class="tag card">карточка · не произносите</span>':''}${b.turn?'<span class="tag">поворот</span>':b.cta?'<span class="tag">призыв</span>':b.hook?'<span class="tag">хук</span>':''}${esc(b.line)}${b.card&&b.do?`<span class="note">В кадре: ${esc(b.do)}</span>`:''}${b.edited?'<span class="mine">ваша правка</span>':''}${b.turn?`<span class="note">${esc(b.note||'Пауза после, не торопить.')}</span>`:''}</span><span class="acts"><button class="pen" data-edit="${b.i}" title="Поправить">✎</button><button class="pen del" data-bdel="${b.i}" title="Убрать строку">✕</button><button class="pen ins" data-ins="${b.i}" title="Вставить строку после">+</button></span></div>`;
   }).join('')}</div><button class="addline" data-ins="${r.beats.length-1}">+ Добавить строку в конец</button></div>`;
   if(r.overlay.length) h+=`<div class="sec"><h3>На экране появится <small>говорить это не нужно</small></h3><div class="overlay">${r.overlay.map(o=>`<div><span>${o.t} с</span><b>${esc(o.text)}</b></div>`).join('')}</div></div>`;
   if(r.takes.length) h+=`<div class="sec"><h3>Хук-дубли · ${r.takes.length} <small>та же точка и свет, 10–15 секунд каждый, сразу после ролика</small></h3><div class="takes">${r.takes.map((tk,i)=>`<div class="take ${td[i]?'on':''}" data-take="${i}"><span class="cb">${td[i]?'✓':''}</span><span><i>${esc(tk)}</i><small>${td[i]?'снят':'отметьте, когда сняли'}</small></span></div>`).join('')}</div></div>`;
@@ -643,7 +644,7 @@ function drawPr(){
   document.getElementById('prompter').innerHTML=`<div class="ph"><span>${r.id.replace('R-','')} · ${esc(r.topic)}</span><span>реплика ${pr.i+1} из ${L.length}</span><button class="x" id="prX" aria-label="Закрыть">✕</button></div>
     <div class="pb"><i style="width:${Math.min(100,pr.el/total*100)}%"></i></div>
     <div class="body"><div class="prev">${prev?esc(prev.line):''}</div>
-      <div class="cur"><span class="tg">${b.added?'ваша строка':b.turn?'поворот · пауза после':b.cta?'призыв':b.hook?'хук · крупно, в камеру':b.t+' с'}</span>${esc(b.line)}</div>
+      <div class="cur"><span class="tg">${b.card?'карточка на экране · молча':b.added?'ваша строка':b.turn?'поворот · пауза после':b.cta?'призыв':b.hook?'хук · крупно, в камеру':b.t+' с'}</span>${esc(b.line)}</div>
       <div class="next">${next?esc(next.line):'<span style="color:var(--orange)">конец · улыбка, стоп</span>'}</div></div>
     <div class="ctl"><button id="prPrev">‹ назад</button><button class="play" id="prPlay">${pr.on?'⏸ пауза':'▶ старт'}</button><span class="tm" id="prTm">${fmtT(pr.el)}</span><button id="prNext">дальше ›</button></div>`;
   document.getElementById('prX').onclick=closePrompter;
